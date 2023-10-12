@@ -24,6 +24,9 @@ save_sizes <- function(plot,
                        path = 'Figures/output',
                        device = 'svg',
                        max = 5){
+  #
+  # save plot in different sizes to try the best position
+  #
   ggsave(filename = paste0(filename, '_larga.', device),
          path = path,
          plot = plot,
@@ -52,6 +55,9 @@ save_sizes <- function(plot,
 
 
 theme_figure <- function(){
+  #
+  # theme to use in plots by defect.
+  #
   theme(
     plot.title = element_blank(),
     legend.position = 'none',
@@ -68,6 +74,9 @@ theme_figure <- function(){
 }
 
 theme_figure_wo_text <- function(){
+  #
+  # theme of figures wo text
+  #
   theme(
     plot.title = element_blank(),
     legend.position = 'none',
@@ -84,6 +93,9 @@ theme_figure_wo_text <- function(){
 }
 
 theme_umap <- function(){
+  #
+  # Theme to use in umap plots
+  #
   theme(
     line = element_blank(),
     rect = element_blank(),
@@ -97,6 +109,9 @@ theme_umap <- function(){
 }
 
 feature_plot <- function(object, features, size = 3, cols = c('lightgray', 'red'), split.by = NULL, ncol = NULL){
+  #
+  # feature plot that allows 2 splits.
+  #
   require(ggplot2)
   require(Seurat)
   require(patchwork)
@@ -301,28 +316,3 @@ feature_plot <- function(object, features, size = 3, cols = c('lightgray', 'red'
 
 }
 
-
-
-Col2Hex <- function(...) {
-  colors <- as.character(x = c(...))
-  alpha <- rep.int(x = 255, times = length(x = colors))
-  if (sum(sapply(X = colors, FUN = grepl, pattern = '^#')) != 0) {
-    hex <- colors[which(x = grepl(pattern = '^#', x = colors))]
-    hex.length <- sapply(X = hex, FUN = nchar)
-    if (9 %in% hex.length) {
-      hex.alpha <- hex[which(x = hex.length == 9)]
-      hex.vals <- sapply(X = hex.alpha, FUN = substr, start = 8, stop = 9)
-      dec.vals <- sapply(X = hex.vals, FUN = strtoi, base = 16)
-      alpha[match(x = hex[which(x = hex.length == 9)], table = colors)] <- dec.vals
-    }
-  }
-  colors <- t(x = col2rgb(col = colors))
-  colors <- mapply(
-    FUN = function(i, alpha) {
-      return(rgb(colors[i, , drop = FALSE], alpha = alpha, maxColorValue = 255))
-    },
-    i = 1:nrow(x = colors),
-    alpha = alpha
-  )
-  return(colors)
-}
