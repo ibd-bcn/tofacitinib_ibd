@@ -46,8 +46,8 @@ save_sizes <- function(plot,
          dpi = 'print',
          device = device,
          units = 'in',
-         height = max,
-         width = max)
+         height = max -2 ,
+         width = max -2)
 }
 
 
@@ -67,15 +67,13 @@ theme_figure <- function(){
 
 theme_umap <- function(){
   theme(
+    line = element_blank(),
+    rect = element_blank(),
     plot.title = element_blank(),
     legend.position = 'none',
-    axis.line =element_blank(),
-    axis.title = element_blank(),
+    strip.text.x = element_blank(),
     axis.text = element_blank(),
     axis.ticks = element_blank(),
-    title = element_blank(),
-    panel.background = element_blank(),
-    plot.background = element_blank(),
-    text = element_text(family = 'helvetica', size = 6)
-  )
+    title = element_blank()
+    )
 }
