@@ -95,3 +95,209 @@ theme_umap <- function(){
     title = element_blank()
     )
 }
+
+feature_plot <- function(object, features, size = 3, cols = c('lightgray', 'red'), split.by = NULL, ncol = NULL){
+  require(ggplot2)
+  require(Seurat)
+  require(patchwork)
+  require(formulaic)
+  plots <- NULL
+  if (sum(features %in% rownames(object)) != length(features)){
+    print(paste('Feature(s)', features[!(features %in% rownames(object))], 'not present in the object'))
+  }
+  if(sum(features %in% rownames(object)) == length(features)){
+    data <- as.data.frame(object@reductions$umap@cell.embeddings)
+    feat <- 2+length(features)
+    for(j in 1:length(features)){
+      data <- cbind(data, object@assays[['RNA']]@data[features[j],])}
+    colnames(data)[3:feat] <- features
+    if(is.null(split.by)){
+      for(i in 1:length(features)){
+        data <- data[order(data[,features[i]]),]
+        if(sum(data[,features[i]]) != 0){
+          plot <- ggplot(data, aes_string(x='UMAP_1', y='UMAP_2', color = add.backtick(features[i], include.backtick = 'all'))) +
+            geom_point(size = size) +
+            scale_color_gradient(low=cols[1], high=cols[2]) +
+            theme_classic() +
+            labs(title = features[i], x = element_blank(), y = element_blank()) +
+            theme(title = element_text(size = 15), axis.text = element_text(size = 12, colour = 'black'))
+          plots[[i]] <- plot
+        }else{
+          plot <- ggplot(data, aes_string(x='UMAP_1', y='UMAP_2', color =add.backtick(features[i], include.backtick = 'all'))) +
+            geom_point(size = size)   +
+            scale_color_gradient(low=cols[1], high=cols[1]) +
+            theme_classic() +
+            labs(title = features[i], x = element_blank(), y = element_blank()) +
+            theme(title = element_text(size = 15), axis.text = element_text(size = 12, colour = 'black'))
+          plots[[i]] <- plot
+        }
+      }
+      if (is.null(x = ncol)) {
+        ncol <- 2
+        if(length(x = features) == 1) {
+          ncol <- 1
+        }
+        if(length(x = features) > 6) {
+          ncol <- 3
+        }
+        if(length(x = features) > 9) {
+          ncol <- 4
+        }
+      }
+
+      plots <- wrap_plots(plots, ncol = ncol)
+      return(plots)
+    }
+
+
+    if(!is.null(split.by)){
+      splitings <- split.by
+      if(length(splitings) == 1){
+        plots <- NULL
+        metadata <- FetchData(object, split.by)
+        data <- cbind(data, metadata)
+        colnames(data)[ncol(data)]<- 'split.by'
+        ncol <- 1
+        for(i in 1:length(features)){
+          if(i == 1){
+            data <- data[order(data[,features[i]]),]
+            if(sum(data[,features[i]]) != 0){
+              plot <- ggplot(data, aes_string(x='UMAP_1', y='UMAP_2', color = add.backtick(features[i], include.backtick = 'all'))) +
+                geom_point(size = size) +
+                scale_color_gradient(low=cols[1], high=cols[2]) +
+                theme_classic() + facet_grid(. ~ split.by) +
+                labs(title = features[i], x = element_blank(), y = '') +
+                theme(title = element_text(size = 15), axis.text = element_text(size = 12, colour = 'black'))+
+                theme(strip.background = element_rect(colour="white", fill="white",
+                                                      size=1.5, linetype="solid"))+
+                theme(strip.text.x = element_text(size=12, color="black",
+                                                  face="bold"))+
+                theme(panel.spacing = unit(1, "lines"))
+              plots[[i]] <- plot
+            }else{
+              plot <- ggplot(data, aes_string(x='UMAP_1', y='UMAP_2', color = add.backtick(features[i], include.backtick = 'all'))) +
+                geom_point(size = size)  +
+                scale_color_gradient(low=cols[1], high=cols[1]) +
+                theme_classic() + facet_grid(. ~ split.by) +
+                labs(title = features[i], x = element_blank(), y = '') +
+                theme(title = element_text(size = 15), axis.text = element_text(size = 12, colour = 'black'))+
+                theme(strip.background = element_rect(colour="white", fill="white",
+                                                      size=1.5, linetype="solid"))+
+                theme(strip.text.x = element_text(size=12, color="black",
+                                                  face="bold"))+
+                theme(panel.spacing = unit(1, "lines"))
+              plots[[i]] <- plot
+            }
+          }
+          if(i != 1){
+            data <- data[order(data[,features[i]]),]
+            if(sum(data[,features[i]]) != 0){
+              plot <- ggplot(data, aes_string(x='UMAP_1', y='UMAP_2', color = add.backtick(features[i], include.backtick = 'all'))) +
+                geom_point(size = size) +
+                scale_color_gradient(low=cols[1], high=cols[2]) +
+                theme_classic() + facet_grid(. ~ split.by) +
+                labs(title = features[i], x = element_blank(), y ='') +
+                theme(title = element_text(size = 15), axis.text = element_text(size = 12, colour = 'black'))+
+                theme(strip.background = element_rect(colour="white", fill="white",
+                                                      size=1.5, linetype="solid"))+
+                theme(strip.text.x = element_text(size=1, color="white",
+                                                  face="bold"))+
+                theme(panel.spacing = unit(1, "lines"))
+              plots[[i]] <- plot
+            }else{
+              plot <- ggplot(data, aes_string(x='UMAP_1', y='UMAP_2', color = add.backtick(features[i], include.backtick = 'all'))) +
+                geom_point(size = size)  +
+                scale_color_gradient(low=cols[1], high=cols[1]) +
+                theme_classic() + facet_grid(. ~ split.by) +
+                labs(title = features[i], x = element_blank(), y ='') +
+                theme(title = element_text(size = 15), axis.text = element_text(size = 12, colour = 'black'))+
+                theme(strip.background = element_rect(colour="white", fill="white",
+                                                      size=1.5, linetype="solid"))+
+                theme(strip.text.x = element_text(size=1, color="white",
+                                                  face="bold"))+
+                theme(panel.spacing = unit(1, "lines"))
+              plots[[i]] <- plot
+            }
+          }
+        }
+        plots <-  wrap_plots(plots, ncol = ncol)
+        return(plots)
+      }
+      if(length(splitings) == 2){
+        plots <- NULL
+        metadata <- FetchData(object, split.by)
+        data <- cbind(data, metadata)
+        colnames(data)[ncol(data) -1]<- 'split.by.1'
+        colnames(data)[ncol(data)]<- 'split.by.2'
+        ncol <- 1
+        for(i in 1:length(features)){
+          if(i == 1){
+            data <- data[order(data[,features[i]]),]
+            if(sum(data[,features[i]]) != 0){
+              plot <- ggplot(data, aes_string(x='UMAP_1', y='UMAP_2', color = add.backtick(features[i], include.backtick = 'all'))) +
+                geom_point(size = size) +
+                scale_color_gradient(low=cols[1], high=cols[2]) +
+                theme_classic() + facet_grid(cols = vars(split.by.1), rows = vars(split.by.2)) +
+                labs(title = features[i], x = element_blank(), y = '') +
+                theme(title = element_text(size = 15), axis.text = element_text(size = 12, colour = 'black'))+
+                theme(strip.background = element_rect(colour="white", fill="white",
+                                                      size=1.5, linetype="solid"))+
+                theme(strip.text.x = element_text(size=12, color="black",
+                                                  face="bold"))+
+                theme(panel.spacing = unit(1, "lines"))
+              plots[[i]] <- plot
+            }else{
+              plot <- ggplot(data, aes_string(x='UMAP_1', y='UMAP_2', color = add.backtick(features[i], include.backtick = 'all'))) +
+                geom_point(size = size)  +
+                scale_color_gradient(low=cols[1], high=cols[1]) +
+                theme_classic() + facet_grid(cols = vars(split.by.1), rows = vars(split.by.2)) +
+                labs(title = features[i], x = element_blank(), y = '') +
+                theme(title = element_text(size = 15), axis.text = element_text(size = 12, colour = 'black'))+
+                theme(strip.background = element_rect(colour="white", fill="white",
+                                                      size=1.5, linetype="solid"))+
+                theme(strip.text.x = element_text(size=12, color="black",
+                                                  face="bold"))+
+                theme(panel.spacing = unit(1, "lines"))
+              plots[[i]] <- plot
+            }
+          }
+          if(i != 1){
+            data <- data[order(data[,features[i]]),]
+            if(sum(data[,features[i]]) != 0){
+              plot <- ggplot(data, aes_string(x='UMAP_1', y='UMAP_2', color = add.backtick(features[i], include.backtick = 'all'))) +
+                geom_point(size = size) +
+                scale_color_gradient(low=cols[1], high=cols[2]) +
+                theme_classic() + facet_grid(cols = vars(split.by.1), rows = vars(split.by.2)) +
+                labs(title = features[i], x = element_blank(), y ='') +
+                theme(title = element_text(size = 15), axis.text = element_text(size = 12, colour = 'black'))+
+                theme(strip.background = element_rect(colour="white", fill="white",
+                                                      size=1.5, linetype="solid"))+
+                theme(strip.text.x = element_text(size=1, color="white",
+                                                  face="bold"))+
+                theme(panel.spacing = unit(1, "lines"))
+              plots[[i]] <- plot
+            }else{
+              plot <- ggplot(data, aes_string(x='UMAP_1', y='UMAP_2', color = add.backtick(features[i], include.backtick = 'all'))) +
+                geom_point(size = size)  +
+                scale_color_gradient(low=cols[1], high=cols[1]) +
+                theme_classic() + facet_grid(cols = vars(split.by.1), rows = vars(split.by.2)) +
+                labs(title = features[i], x = element_blank(), y ='') +
+                theme(title = element_text(size = 15), axis.text = element_text(size = 12, colour = 'black'))+
+                theme(strip.background = element_rect(colour="white", fill="white",
+                                                      size=1.5, linetype="solid"))+
+                theme(strip.text.x = element_text(size=1, color="white",
+                                                  face="bold"))+
+                theme(panel.spacing = unit(1, "lines"))
+              plots[[i]] <- plot
+            }
+          }
+        }
+        plots <-  wrap_plots(plots, ncol = ncol)
+        return(plots)
+      }
+    }
+    rm(plot, plots, data, metadata, i, j, ncol)
+  }
+
+}
+
