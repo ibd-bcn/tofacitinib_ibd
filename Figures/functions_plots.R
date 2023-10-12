@@ -1,3 +1,5 @@
+library(ggplot2)
+library(ggpubr)
 #
 # colors -----------------------------------------------------------------------
 #
@@ -16,3 +18,64 @@ colors_response <- c('R' = '#70ADE6',
 # functions --------------------------------------------------------------------
 #
 message('Loading functions')
+
+save_sizes <- function(plot,
+                       filename,
+                       path = 'Figures/output',
+                       device = 'svg',
+                       max = 5){
+  ggsave(filename = paste0(filename, '_larga.', device),
+         path = path,
+         plot = plot,
+         dpi = 'print',
+         device = device,
+         height = max,
+         width = max - 2,
+         units = 'in')
+  ggsave(filename = paste0(filename, '_ancha.', device),
+         path = path,
+         plot = plot,
+         dpi = 'print',
+         device = device,
+         units = 'in',
+         height = max - 2,
+         width = max)
+  ggsave(filename = paste0(filename, '_cuadrada.', device),
+         path = path,
+         plot = plot,
+         dpi = 'print',
+         device = device,
+         units = 'in',
+         height = max,
+         width = max)
+}
+
+
+theme_figure <- function(){
+  theme(
+    plot.title = element_blank(),
+    legend.position = 'none',
+    axis.line = element_line(colour = 'black', size = 0.5),
+    axis.title = element_blank(),
+    axis.text = element_blank(),
+    title = element_blank(),
+    panel.background = element_blank(),
+    plot.background = element_blank(),
+    text = element_text(family = 'helvetica', size = 6)
+  )
+}
+
+theme_umap <- function(){
+  theme(
+    plot.title = element_blank(),
+    legend.position = 'none',
+    axis.line =element_blank(),
+    axis.title = element_blank(),
+    axis.text = element_blank(),
+    axis.ticks = element_blank(),
+    title = element_blank(),
+    panel.background = element_blank(),
+    plot.background = element_blank(),
+    text = element_text(family = 'helvetica', size = 6)
+  )
+}
