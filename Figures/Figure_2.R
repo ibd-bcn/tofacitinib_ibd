@@ -212,7 +212,7 @@ fig2c_legend <- fig2c +
 t_immune <- ggplot(abundances_data_immune[abundances_data_immune$Response != "PRE R VS NR", ],
                  aes(Cluster,Response, fill= e.score)) +
   geom_raster() +
-  geom_text(mapping = aes(label = ast_Chisq),  size = 10/.pt) +
+  geom_text(mapping = aes(label = ast_Chisq),  size = 10/.pt,angle = 90, vjust = 0.85) +
   scale_fill_gradient2(low = '#023fa5', mid = '#FFFCFC',
                        high = '#8e063b',limits = c(-30,30),
                        midpoint = 0) +
@@ -228,7 +228,7 @@ t_immune <- ggplot(abundances_data_immune[abundances_data_immune$Response != "PR
 t_no_immune <- ggplot(abundances_data_noimmune[abundances_data_noimmune$Response != "PRE R VS NR", ],
                     aes(Cluster, Response, fill= e.score)) +
   geom_raster() +
-  geom_text(mapping = aes(label = ast_Chisq), size = 10/.pt) +
+  geom_text(mapping = aes(label = ast_Chisq), size = 10/.pt, angle = 90, vjust = 0.85) +
   scale_fill_gradient2(low = '#023fa5', mid = '#FFFCFC',
                        high = '#8e063b',limits = c(-30,30),
                        midpoint = 0) +
