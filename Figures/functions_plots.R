@@ -57,11 +57,29 @@ theme_figure <- function(){
     legend.position = 'none',
     axis.line = element_line(colour = 'black', size = 0.5),
     axis.title = element_blank(),
-    axis.text = element_blank(),
-    title = element_blank(),
+    axis.text = element_text(colour = 'black'),
+    title =  element_text(family = 'helvetica', size = 12),
     panel.background = element_blank(),
     plot.background = element_blank(),
-    text = element_text(family = 'helvetica', size = 6)
+    strip.text.x = element_blank(),
+    strip.background = element_blank(),
+    text = element_text(family = 'helvetica', size = 10)
+  )
+}
+
+theme_figure_wo_text <- function(){
+  theme(
+    plot.title = element_blank(),
+    legend.position = 'none',
+    axis.line = element_line(colour = 'black', size = 0.5),
+    axis.title = element_blank(),
+    axis.text = element_text(colour = 'white'),
+    title = element_text(family = 'helvetica', size = 12, color = 'white'),
+    panel.background = element_blank(),
+    plot.background = element_blank(),
+    strip.text.x = element_blank(),
+    strip.background = element_blank(),
+    text = element_text(family = 'helvetica', size = 10)
   )
 }
 
