@@ -65,3 +65,54 @@ save_sizes(plot = fig3a_nl, filename = 'Figure_3A_no_legend', device = 'jpeg')
 save_sizes(plot = fig3a_nl, filename = 'Figure_3A_no_legend', device = 'tiff')
 save_sizes(plot = fig3a_nl, filename = 'Figure_3A_no_legend', device = 'svg')
 save_sizes(plot = fig3a_nl, filename = 'Figure_3A_no_legend', device = 'pdf')
+
+## Figure 3B -------------------------------------------------------------------
+
+#
+# Pendiente!
+#
+
+## Figure 3C -------------------------------------------------------------------
+
+fig3c <- feature_plot(myeloids,
+             feature = c('MT2A','CLEC5A','IDO1', 'MMP9'),
+             split.by = c('pre_post', 'response'),
+             size = 0.1) +
+  patchwork::plot_layout(ncol = 2) &
+  theme_figure() &
+  theme(
+    title = element_text(family = 'Helvetica', size = 10, colour = 'black', hjust = 0),
+    plot.title = element_text(family = 'Helvetica', size = 10, colour = 'black'),
+    axis.text = element_text(family = 'Helvetica', size = 6, colour = 'black'),
+    strip.text.x = element_text(family = 'Helvetica', size = 8, colour = "black"),
+    strip.text.y = element_text(family = 'Helvetica', size = 8, colour = "black"),
+    legend.position = 'none',
+    strip.background = element_blank()
+  )
+
+fig3c_nt <- feature_plot(myeloids,
+                      feature = c('MT2A','CLEC5A','IDO1', 'MMP9'),
+                      split.by = c('pre_post', 'response'),
+                      size = 0.1) +
+  patchwork::plot_layout(ncol = 2) &
+  theme_figure() &
+  theme(
+    title = element_text(family = 'Helvetica', size = 10, colour = 'white', hjust = 0),
+    plot.title = element_text(family = 'Helvetica', size = 10, colour = 'white'),
+    axis.text = element_text(family = 'Helvetica', size = 6, colour = 'white'),
+    strip.text.x = element_text(family = 'Helvetica', size = 8, colour = "white"),
+    strip.text.y = element_text(family = 'Helvetica', size = 8, colour = "white"),
+    legend.position = 'none',
+    strip.background = element_blank()
+  )
+
+save_sizes(plot = fig3c, filename = 'Figure_3C', device = 'jpeg')
+save_sizes(plot = fig3c, filename = 'Figure_3C', device = 'tiff')
+save_sizes(plot = fig3c, filename = 'Figure_3C', device = 'svg')
+save_sizes(plot = fig3c, filename = 'Figure_3C', device = 'pdf')
+
+save_sizes(plot = fig3c_nt, filename = 'Figure_3C_no_text', device = 'jpeg')
+save_sizes(plot = fig3c_nt, filename = 'Figure_3C_no_text', device = 'tiff')
+save_sizes(plot = fig3c_nt, filename = 'Figure_3C_no_text', device = 'svg')
+save_sizes(plot = fig3c_nt, filename = 'Figure_3C_no_text', device = 'pdf')
+
