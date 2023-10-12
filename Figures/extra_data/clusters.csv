@@ -1,0 +1,65 @@
+Include;Cluster;Piece;Plot
+1;CD4;T/ILC;IMMUNE
+2;CD4 CD8 IFIT3;T/ILC;IMMUNE
+3;CD8;T/ILC;IMMUNE
+4;Th17;T/ILC;IMMUNE
+5;Thf;T/ILC;IMMUNE
+6;Tregs;T/ILC;IMMUNE
+7;Naïve T cells;T/ILC;IMMUNE
+8;Ribhi T cells;T/ILC;IMMUNE
+9;DN EOMES;T/ILC;IMMUNE
+10;ILC3;T/ILC;IMMUNE
+11;NK;T/ILC;IMMUNE
+12;MT hi IER;T/ILC;IMMUNE
+13;B_cell;B/PC;IMMUNE
+14;Cycling_B_cell;B/PC;IMMUNE
+15;PC_heat_shock;B/PC;IMMUNE
+16;PC_IER;B/PC;IMMUNE
+17;PC_IgA;B/PC;IMMUNE
+18;PC_IgG;B/PC;IMMUNE
+19;PC_IGLL5;B/PC;IMMUNE
+20;PC_IGLV6-57;B/PC;IMMUNE
+21;PC_PSAT1;B/PC;IMMUNE
+22;Plasmablast_IgA;B/PC;IMMUNE
+23;Plasmablast_IgG;B/PC;IMMUNE
+24;Plasmablast_IGKC;B/PC;IMMUNE
+25;Cycling_B_cell;Cycling;IMMUNE
+26;Cycling_Myeloid_cycling;Cycling;IMMUNE
+27;Cycling_PC;Cycling;IMMUNE
+28;Cycling_T_cell;Cycling;IMMUNE
+29;Mast;Myeloids;IMMUNE
+30;Neutrophils;Myeloids;IMMUNE
+31;Eosinophils;Myeloids;IMMUNE
+32;M0;Myeloids;IMMUNE
+33;M1;Myeloids;IMMUNE
+34;M2;Myeloids;IMMUNE
+35;Macrophage NRG1;Myeloids;IMMUNE
+36;HS;Myeloids;IMMUNE
+37;Rib hi myeloids;Myeloids;IMMUNE
+38;Cycling myeloids;Myeloids;IMMUNE
+39;Inflammatory monocytes;Myeloids;IMMUNE
+40;DCs;Myeloids;IMMUNE
+41;pDC;Myeloids;IMMUNE
+42;APOA4;Epi;NO_IMMUNE
+43;Colonocytes;Epi;NO_IMMUNE
+44;Epithlium Rib hi;Epi;NO_IMMUNE
+45;IER Epithelium;Epi;NO_IMMUNE
+46;Enteroendocrines;Epi;NO_IMMUNE
+47;Tuft;Epi;NO_IMMUNE
+48;Undifferentiated epithelium;Epi;NO_IMMUNE
+49;Cycling TA;Epi;NO_IMMUNE
+50;Stem;Epi;NO_IMMUNE
+51;Goblet;Epi;NO_IMMUNE
+52;Mature goblet;Epi;NO_IMMUNE
+53;Secretory progenitor;Epi;NO_IMMUNE
+54;S1;Stroma;NO_IMMUNE
+55;S2;Stroma;NO_IMMUNE
+56;S3;Stroma;NO_IMMUNE
+57;IER_fibroblasts;Stroma;NO_IMMUNE
+58;Inflammatory_fibroblasts;Stroma;NO_IMMUNE
+59;MT fibroblasts;Stroma;NO_IMMUNE
+60;Cycling_fibroblasts;Stroma;NO_IMMUNE
+61;Myofibroblasts;Stroma;NO_IMMUNE
+62;Endothelium;Stroma;NO_IMMUNE
+63;Perycites;Stroma;NO_IMMUNE
+64;Glia;Stroma;NO_IMMUNE

@@ -58,12 +58,12 @@ theme_figure <- function(){
     axis.line = element_line(colour = 'black', size = 0.5),
     axis.title = element_blank(),
     axis.text = element_text(colour = 'black'),
-    title =  element_text(family = 'helvetica', size = 12),
+    title =  element_text(family = 'Helvetica', size = 12),
     panel.background = element_blank(),
     plot.background = element_blank(),
     strip.text.x = element_blank(),
     strip.background = element_blank(),
-    text = element_text(family = 'helvetica', size = 10)
+    text = element_text(family = 'Helvetica', size = 10)
   )
 }
 
@@ -74,12 +74,12 @@ theme_figure_wo_text <- function(){
     axis.line = element_line(colour = 'black', size = 0.5),
     axis.title = element_blank(),
     axis.text = element_text(colour = 'white'),
-    title = element_text(family = 'helvetica', size = 12, color = 'white'),
+    title = element_text(family = 'Helvetica', size = 12, color = 'white'),
     panel.background = element_blank(),
     plot.background = element_blank(),
     strip.text.x = element_blank(),
     strip.background = element_blank(),
-    text = element_text(family = 'helvetica', size = 10)
+    text = element_text(family = 'Helvetica', size = 10)
   )
 }
 
