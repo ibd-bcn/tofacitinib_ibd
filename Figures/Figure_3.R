@@ -116,3 +116,12 @@ save_sizes(plot = fig3c_nt, filename = 'Figure_3C_no_text', device = 'tiff')
 save_sizes(plot = fig3c_nt, filename = 'Figure_3C_no_text', device = 'svg')
 save_sizes(plot = fig3c_nt, filename = 'Figure_3C_no_text', device = 'pdf')
 
+legend <- fig3c & theme(legend.position = 'right')
+leg <- get_legend(legend)
+
+plot_legend <- patchwork::wrap_plots(leg)
+save_sizes(plot = plot_legend, filename = 'Figure_3C_legend', device = 'pdf')
+save_sizes(plot = plot_legend, filename = 'Figure_3C_legend', device = 'jpeg')
+save_sizes(plot = plot_legend, filename = 'Figure_3C_legend', device = 'tiff')
+save_sizes(plot = plot_legend, filename = 'Figure_3C_legend', device = 'svg')
+
