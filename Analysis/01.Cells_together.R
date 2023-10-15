@@ -7,15 +7,11 @@ library(Seurat)
 library(plyr)
 library(ggplot2)
 library(DropletUtils)
-library(beepr)
-library(celda)
 library(SingleCellExperiment)
 library(scater)
 library(scran)
 library(scDblFinder)
 library(viridis)
-library(MASS)
-library(harmony)
 
 #
 # Extra functions
@@ -75,11 +71,7 @@ meta <- data.frame(
                         "Recto-Sigma","Sigma","Sigma","Sigma","Sigma","Sigma",
                         "Sigma","Sigma","Sigma","Sigma","Recto",
                         "Recto","Sigma","Sigma","Sigma",
-                        "Descendent colon","Sigma","Sigma"),
-  SORTER = c("Yes","Yes",
-             "No","Yes","No","No","No","No","No","No",
-             "No","No","No","No","No","No","No","No",
-             "No","No","No","No","No")
+                        "Descendent colon","Sigma","Sigma")
 )
 
 list_data <- list()
@@ -99,7 +91,6 @@ for(i in list_files){
                    'week_2' = rep(meta[meta$SAMPLE == i, 'week_2'][1], ncol(sce2)),
                    'patient' = rep(meta[meta$SAMPLE == i, 'PATIENT'][1], ncol(sce2)),
                    'BIOPSIES_LOCATION' = rep(meta[meta$SAMPLE == i, 'BIOPSIES.LOCATION'][1], ncol(sce2)),
-                   'SORTER' = rep(meta[meta$SAMPLE == i, 'SORTER'][1], ncol(sce2)),
                    'response' = rep(meta[meta$SAMPLE == i, 'Response'][1], ncol(sce2))
   )
 
@@ -108,7 +99,8 @@ for(i in list_files){
 
 
   data <- CreateSeuratObject(
-    counts(sce2), min.features = 100,
+    counts(sce2),
+    min.features = 100,
     project = i,
     assay = "RNA",
     meta.data = m4
