@@ -31,22 +31,22 @@ colors <- c('HS' = '#bed0e8',
             'Neutrophils' = '#ba4042')
 
 resp_pre <- DimPlot(myeloids[,myeloids@meta.data$response == 'R' & myeloids@meta.data$pre_post == 'PRE'],
-                    group.by = 'annotation_intermediate', pt.size = 0.5) +
+                    group.by = 'annotation_intermediate', pt.size = 0.1) +
   scale_color_manual(values = colors, na.value = '#e6e5e5') +
   theme_umap()
 
 nresp_pre <- DimPlot(myeloids[,myeloids@meta.data$response == 'NR' & myeloids@meta.data$pre_post == 'PRE'],
-                    group.by = 'annotation_intermediate', pt.size = 0.5) +
+                    group.by = 'annotation_intermediate', pt.size = 0.1) +
   scale_color_manual(values = colors, na.value = '#e6e5e5') +
   theme_umap()
 
 resp_post <- DimPlot(myeloids[,myeloids@meta.data$response == 'R' & myeloids@meta.data$pre_post == 'POST'],
-                    group.by = 'annotation_intermediate', pt.size = 0.5) +
+                    group.by = 'annotation_intermediate', pt.size = 0.1) +
   scale_color_manual(values = colors, na.value = '#e6e5e5') +
   theme_umap()
 
 nresp_post <- DimPlot(myeloids[,myeloids@meta.data$response == 'NR' & myeloids@meta.data$pre_post == 'POST'],
-                    group.by = 'annotation_intermediate', pt.size = 0.5) +
+                    group.by = 'annotation_intermediate', pt.size = 0.1) +
   scale_color_manual(values = colors, na.value = '#e6e5e5') +
   theme_umap()+
   theme(legend.position = 'left')
@@ -192,8 +192,8 @@ fig3d <- ggplot(matrix,
        aes(x = name, y = rownames, fill= value)) +
   geom_raster() +
   geom_text(mapping = aes(label = round(value, digits = 2)),  size = 10/.pt) +
-  scale_fill_gradient(low  = '#FFFCFC',
-                      high = '#8e063b',
+  scale_fill_gradient(low  = 'white',
+                      high = 'red',
                       limits = c(0,0.13),
                       name="Jaccard\nIndex",
                       breaks=c(0, 0.13),
