@@ -24,7 +24,7 @@ get_density <- function(x, y, ...) {
   ii <- cbind(ix, iy)
   return(dens$z[ii])
 }
-source('Analysis/functions_rnaseq.R')
+source('Analysis/extra_functions/functions_rnaseq.R')
 
 setwd('~/TOFA_data/output_cellranger/')
 
