@@ -24,7 +24,8 @@ get_density <- function(x, y, ...) {
   ii <- cbind(ix, iy)
   return(dens$z[ii])
 }
-source('~/TOFA_data/functions_scrseq.R')
+source('Analysis/functions_rnaseq.R')
+
 setwd('~/TOFA_data/output_cellranger/')
 
 ## 01. Loading raw data --------------------------------------------------------
@@ -111,12 +112,18 @@ for(i in list_files){
   list_data[[i]] <- data
 }
 
+#
+# Merging raw data
+#
 seudata <- list_data[[1]]
 for(i in 2:length(list_files)){
   print(i)
   seudata <- merge(seudata, list_data[[i]])
 }
 
+#
+# Raw data exploration and filtering
+#
 dir.create('~/TOFA_data/20220222_TOFAS_23')
 setwd('~/TOFA_data/20220222_TOFAS_23')
 VlnPlot(seudata, features = c('percent.mt', 'nFeature_RNA'), group.by = 'sample')
@@ -158,5 +165,12 @@ ggplot(meta) +
 dev.off()
 
 seudata_f <- seudata[, seudata$percent.mt < 50 & seudata$nFeature_RNA > 100]
+
+
+#
+# Saving raw and filtered data
+#
+message('Saving raw and filtered data')
+
 saveRDS(seudata_f,'~/TOFA_data/20220222_TOFAS_23/seudata_f.RDS')
 saveRDS(seudata,'~/TOFA_data/20220222_TOFAS_23/seudata.RDS')
