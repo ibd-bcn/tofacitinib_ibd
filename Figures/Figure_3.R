@@ -5,7 +5,7 @@ library(ggplot2)
 library(dplyr)
 library(readr)
 library(dplyr)
-
+library(ggrepel)
 source('Figures/functions_plots.R')
 
 ## Data ------------------------------------------------------------------------
@@ -68,9 +68,55 @@ save_sizes(plot = fig3a_nl, filename = 'Figure_3A_no_legend', device = 'pdf')
 
 ## Figure 3B -------------------------------------------------------------------
 
-#
-# Pendiente!
-#
+# Volcano plots  myeloid cells
+
+de_data <- readRDS('/home/acorraliza/TOFA_data/20220222_TOFAS_23/01_DE/REPASO/new_complete.RDS') #load DE data
+
+# M2
+
+de_data2 <- de_data[de_data$cluster == 'M2' &
+                      de_data$annotation == 'annotation_intermediate' &
+                      de_data$comp %in% c('w0R_vs_POSTR', 'w0NR_vs_POSTNR', 'RPOST_NRPOST') &
+                      de_data$sign %in% c('UPP', 'UP' ,'DWW','DW', "0"), c("p_val","avg_log2FC",  "sign", "comp", "gene")]
+
+responders<- subset(de_data2, comp == "w0R_vs_POSTR", select = c("avg_log2FC", "p_val", "gene", "sign"))
+
+non_responders <- subset(de_data2, comp == "w0NR_vs_POSTNR", select = c("avg_log2FC", "p_val", "gene", "sign"))
+p <- ggplot(data=responders, aes(x=avg_log2FC, y=-log10(p_val),
+                                    col=sign)) +
+  geom_point(size = 5) +
+  scale_color_manual(values= colors_volcano, labels = c(
+                                "UPP" = "UPP",
+                                "UP" = "UP",
+                                "0" = "0",
+                                "DW" = "DW",
+                                'DWW' = 'DWW'
+                              ))+
+  theme(text=element_text(family="Helvetica"))+
+  theme_classic() + guides(color = guide_legend(
+    override.aes=list(shape = 19)))
+
+
+filtered_data <- responders[responders$gene %in% c("IGF1", "CLEC10A", "TLR7", "CD163L1", "IL10RA",
+                                                         "INSIG1", "AHR", "MAF", "CXCL12", "FOS", "FOSB",
+                                                         "S100A9", "GBP1", "MMP12", "CCL13", "IFITM3",
+                                                         "STAT1", "C1QA", "C1QB", "FCGR3A", "FCGR2A"),]
+
+
+
+
+p <- p + geom_label_repel(data = filtered_data, aes(label = gene, group = gene), size = 14) +
+  ggtitle("M2 Responders") +
+  guides(color = guide_legend(override.aes = list(shape = 14))) +
+  theme(plot.title = element_text(size = 46),  # Adjust title size
+        axis.text = element_text(size = 20), # Adjust axis text
+        axis.title.x = element_text(size = 30), # Adjust x-axis label size
+        axis.title.y = element_text(size = 30), # Adjust y-axis label size
+        axis.line = element_line(linewidth = 1)
+)
+
+
+p
 
 ## Figure 3C -------------------------------------------------------------------
 
