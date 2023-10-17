@@ -120,7 +120,9 @@ fig3b_1 <- ggplot(data = responders, aes(x = avg_log2FC, y = -log10(p_val), col 
   theme(text = element_text(family = "Helvetica")) +
   theme_classic() +
   guides(color = guide_legend(override.aes = list(shape = 19))) +
-  theme(legend.position = "none")
+  theme(legend.position = "none") + scale_y_continuous(breaks = c(seq(0, 20, 5)), # Modify x-axis tick intervals
+                                                       limits = c(0, 25))
+
 
 filtered_genes <- c("IGF1", "CLEC10A", "TLR7", "CD163L1", "IL10RA", "INSIG1", "AHR", "MAF", "CXCL12", "FOS", "FOSB", "S100A9", "GBP1", "MMP12", "CCL13", "IFITM3", "STAT1", "C1QA", "C1QB", "FCGR3A", "FCGR2A")
 filtered_data <- responders[responders$gene %in% filtered_genes, ]
@@ -141,7 +143,6 @@ fig3b_1 <- fig3b_1 + geom_label_repel(data = filtered_data, aes(label = gene, gr
   )
 
 fig3b_1
-
 
 
 
