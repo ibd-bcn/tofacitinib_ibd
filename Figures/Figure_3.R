@@ -70,7 +70,7 @@ save_sizes(plot = fig3a_nl, filename = 'Figure_3A_no_legend', device = 'pdf')
 
 # Volcano plots  myeloid cells
 
-de_data <- readRDS('/home/acorraliza/TOFA_data/20220222_TOFAS_23/01_DE/REPASO/new_complete.RDS') #load DE data
+de_data <- readRDS('/home/acorraliza/TOFA_data/20220222_TOFAS_23/01_DE/REPASO/new_complete.RDS')
 
 # M2
 
@@ -108,11 +108,11 @@ filtered_data <- responders[responders$gene %in% c("IGF1", "CLEC10A", "TLR7", "C
 p <- p + geom_label_repel(data = filtered_data, aes(label = gene, group = gene), size = 14) +
   ggtitle("M2 Responders") +
   guides(color = guide_legend(override.aes = list(shape = 14))) +
-  theme(plot.title = element_text(size = 46),  # Adjust title size
-        axis.text = element_text(size = 20), # Adjust axis text
-        axis.title.x = element_text(size = 30), # Adjust x-axis label size
-        axis.title.y = element_text(size = 30), # Adjust y-axis label size
-        axis.line = element_line(linewidth = 1)
+  theme(plot.title = element_blank(),
+        axis.text = element_blank(),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.line = element_line(linewidth = 2)
 )
 
 
