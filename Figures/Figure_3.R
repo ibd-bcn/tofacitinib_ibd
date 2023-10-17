@@ -123,7 +123,7 @@ fig3b_1 <- ggplot(data = responders, aes(x = avg_log2FC, y = -log10(p_val), col 
   theme(legend.position = "none")
 
 filtered_genes <- c("IGF1", "CLEC10A", "TLR7", "CD163L1", "IL10RA", "INSIG1", "AHR", "MAF", "CXCL12", "FOS", "FOSB", "S100A9", "GBP1", "MMP12", "CCL13", "IFITM3", "STAT1", "C1QA", "C1QB", "FCGR3A", "FCGR2A")
-filtered_data <- responders[responders$gene %in$filtered_genes, ]
+filtered_data <- responders[responders$gene %in% filtered_genes, ]
 
 fig3b_1 <- fig3b_1 + geom_label_repel(data = filtered_data, aes(label = gene, group = gene, fill = sign), size = 14,
                                       fill = colors_volcano[filtered_data$sign], # Set the fill color using the colors_volcano palette
