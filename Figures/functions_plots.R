@@ -322,3 +322,12 @@ feature_plot <- function(object, features, size = 3, cols = c('lightgray', 'red'
 
 }
 
+# Filter DE for volcano data
+filter_data <- function(data, cluster, annotation, comps, signs) {
+  filtered_data <- data[data$cluster == cluster &
+                          data$annotation == annotation &
+                          data$comp %in% comps &
+                          data$sign %in% signs,
+                        c("p_val", "avg_log2FC", "sign", "comp", "gene")]
+  return(filtered_data)
+}

@@ -72,51 +72,81 @@ save_sizes(plot = fig3a_nl, filename = 'Figure_3A_no_legend', device = 'pdf')
 
 de_data <- readRDS('/home/acorraliza/TOFA_data/20220222_TOFAS_23/01_DE/REPASO/new_complete.RDS')
 
-# M2
-
-de_data2 <- de_data[de_data$cluster == 'M2' &
-                      de_data$annotation == 'annotation_intermediate' &
-                      de_data$comp %in% c('w0R_vs_POSTR', 'w0NR_vs_POSTNR', 'RPOST_NRPOST') &
-                      de_data$sign %in% c('UPP', 'UP' ,'DWW','DW', "0"), c("p_val","avg_log2FC",  "sign", "comp", "gene")]
-
-responders<- subset(de_data2, comp == "w0R_vs_POSTR", select = c("avg_log2FC", "p_val", "gene", "sign"))
-
-non_responders <- subset(de_data2, comp == "w0NR_vs_POSTNR", select = c("avg_log2FC", "p_val", "gene", "sign"))
-p <- ggplot(data=responders, aes(x=avg_log2FC, y=-log10(p_val),
-                                    col=sign)) +
-  geom_point(size = 5) +
-  scale_color_manual(values= colors_volcano, labels = c(
-                                "UPP" = "UPP",
-                                "UP" = "UP",
-                                "0" = "0",
-                                "DW" = "DW",
-                                'DWW' = 'DWW'
-                              ))+
-  theme(text=element_text(family="Helvetica"))+
-  theme_classic() + guides(color = guide_legend(
-    override.aes=list(shape = 19)))
-
-
-filtered_data <- responders[responders$gene %in% c("IGF1", "CLEC10A", "TLR7", "CD163L1", "IL10RA",
-                                                         "INSIG1", "AHR", "MAF", "CXCL12", "FOS", "FOSB",
-                                                         "S100A9", "GBP1", "MMP12", "CCL13", "IFITM3",
-                                                         "STAT1", "C1QA", "C1QB", "FCGR3A", "FCGR2A"),]
-
-
-
-
-p <- p + geom_label_repel(data = filtered_data, aes(label = gene, group = gene), size = 14) +
-  ggtitle("M2 Responders") +
-  guides(color = guide_legend(override.aes = list(shape = 14))) +
-  theme(plot.title = element_blank(),
-        axis.text = element_blank(),
-        axis.title.x = element_blank(),
-        axis.title.y = element_blank(),
-        axis.line = element_line(linewidth = 2)
+label_mapping <- c(
+  "UPP" = "UPP",
+  "UP" = "UP",
+  "0" = "0",
+  "DW" = "DW",
+  "DWW" = "DWW"
 )
 
 
-p
+##  M2  Plotting relevant genes
+de_data2 <- filter_data(de_data, "M2", "annotation_intermediate", c('w0R_vs_POSTR', 'w0NR_vs_POSTNR', 'RPOST_NRPOST'), c('UPP', 'UP', 'DWW', 'DW', "0"))
+
+### Responders
+
+responders <- subset(de_data2, comp == "w0R_vs_POSTR", select = c("avg_log2FC", "p_val", "gene", "sign"))
+
+fig3b_1 <- ggplot(data = responders, aes(x = avg_log2FC, y = -log10(p_val), col = sign)) +
+  geom_point(size = 5) +
+  scale_color_manual(values = colors_volcano, labels = label_mapping) +
+  theme(text=element_text(family="Helvetica"))+
+  theme_classic() + guides(color = guide_legend(
+    override.aes=list(shape = 19))) + theme(legend.position = "none")
+filtered_genes <- c("IGF1", "CLEC10A", "TLR7", "CD163L1", "IL10RA", "INSIG1", "AHR", "MAF", "CXCL12", "FOS", "FOSB", "S100A9", "GBP1", "MMP12", "CCL13", "IFITM3", "STAT1", "C1QA", "C1QB", "FCGR3A", "FCGR2A")
+filtered_data <- responders[responders$gene %in% filtered_genes, ]
+fig3b_1 <- fig3b_1 + geom_label_repel(data = filtered_data, aes(label = gene, group = gene), size = 14) + scale_fill_manual(values = colors_volcano) +
+  scale_color_manual(values = colors_volcano ) +
+  guides(color = guide_legend(override.aes = list(shape = 14)))+
+  theme(
+    plot.title = element_blank(),
+    axis.text = element_blank(),
+    axis.title.x = element_blank(),
+    axis.title.y = element_blank(),
+    axis.line = element_line(linewidth = 1.5),
+    axis.ticks.length = unit(0.3, "cm"),
+    axis.ticks = element_line(colour = "black", size = 1)
+  )
+
+fig3b_1
+
+
+# SAME BUT THE COLORS ARE INSIDE IS UP TO ELISA
+
+fig3b_1 <- ggplot(data = responders, aes(x = avg_log2FC, y = -log10(p_val), col = sign)) +
+  geom_point(size = 5) +
+  scale_color_manual(values = colors_volcano, labels = label_mapping) +
+  theme(text = element_text(family = "Helvetica")) +
+  theme_classic() +
+  guides(color = guide_legend(override.aes = list(shape = 19))) +
+  theme(legend.position = "none")
+
+filtered_genes <- c("IGF1", "CLEC10A", "TLR7", "CD163L1", "IL10RA", "INSIG1", "AHR", "MAF", "CXCL12", "FOS", "FOSB", "S100A9", "GBP1", "MMP12", "CCL13", "IFITM3", "STAT1", "C1QA", "C1QB", "FCGR3A", "FCGR2A")
+filtered_data <- responders[responders$gene %in$filtered_genes, ]
+
+fig3b_1 <- fig3b_1 + geom_label_repel(data = filtered_data, aes(label = gene, group = gene, fill = sign), size = 14,
+                                      fill = colors_volcano[filtered_data$sign], # Set the fill color using the colors_volcano palette
+                                      color = "white",  # Set the text color to white
+                                      segment.color = "black", fontface = 'bold',
+                                      box.padding = unit(0.35, "lines"), point.padding = unit(0.5, "lines")) +
+  theme(
+    plot.title = element_blank(),
+    axis.text = element_blank(),
+    axis.title.x = element_blank(),
+    axis.title.y = element_blank(),
+    axis.line = element_line(linewidth = 1.5),
+    axis.ticks.length = unit(0.3, "cm"),
+    axis.ticks = element_line(colour = "black", size = 1)
+  )
+
+fig3b_1
+
+
+
+
+
+
 
 ## Figure 3C -------------------------------------------------------------------
 
