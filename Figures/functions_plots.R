@@ -324,8 +324,7 @@ feature_plot <- function(object, features, size = 3, cols = c('lightgray', 'red'
 
 
 # Volcano_plot function
-de_data <- readRDS('/home/acorraliza/TOFA_data/20220222_TOFAS_23/01_DE/REPASO/new_complete.RDS')
-de_data$cluster <- gsub('Macrophage NRG1', 'IDA macrophages', de_data$cluster)
+
 volcano_plot <- function(cluster, comp, filtered_genes) {
 
   label_mapping <- c(
@@ -345,19 +344,19 @@ volcano_plot <- function(cluster, comp, filtered_genes) {
 
   if (cluster != "IDA macrophages") {
     fig <- ggplot(data = response, aes(x = avg_log2FC, y = -log10(p_val), col = sign)) +
-      geom_point(size = 1) +
+      geom_point(size = 0.5) +
       scale_color_manual(values = colors_volcano, labels = label_mapping) +
-      theme(text = element_text(family = "Helvetica")) +
       theme_classic() +
+      theme(text = element_text(family = "Helvetica")) +
       guides(color = guide_legend(override.aes = list(shape = 1))) +
       theme(legend.position = "none") +
       scale_y_continuous(breaks = c(seq(0, 20, 5)), limits = c(0, 25))
   } else {
     fig <- ggplot(data = response, aes(x = avg_log2FC, y = -log10(p_val), col = sign)) +
-      geom_point(size = 1) +
+      geom_point(size = 0.5) +
       scale_color_manual(values = colors_volcano, labels = label_mapping) +
-      theme(text = element_text(family = "Helvetica")) +
       theme_classic() +
+      theme(text = element_text(family = "Helvetica")) +
       guides(color = guide_legend(override.aes = list(shape = 1))) +
       theme(legend.position = "none") +
       scale_x_continuous(breaks = c(seq(-3, 3, 1)), limits = c(-3, 3))
@@ -367,7 +366,7 @@ volcano_plot <- function(cluster, comp, filtered_genes) {
 
   filtered_data <- response[response$gene %in% filtered_genes, ]
 
-  fig <- fig+ geom_label_repel(data = filtered_data, aes(label = gene, group = gene, fill = sign), size = 1,
+  fig <- fig+ geom_label_repel(data = filtered_data, aes(label = gene, group = gene, fill = sign), size = 6/.pt,
                                fill = colors_volcano[filtered_data$sign],
                                color = "white",
                                segment.color = "black",
@@ -379,7 +378,7 @@ volcano_plot <- function(cluster, comp, filtered_genes) {
       axis.text = element_blank(),
       axis.title.x = element_blank(),
       axis.title.y = element_blank(),
-      axis.line = element_line(linewidth = 1),
+      axis.line = element_line(linewidth = 0.5),
       axis.ticks.length = unit(0.1, "cm"),
 
     )
