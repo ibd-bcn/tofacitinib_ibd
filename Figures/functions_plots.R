@@ -322,12 +322,53 @@ feature_plot <- function(object, features, size = 3, cols = c('lightgray', 'red'
 
 }
 
-# Filter DE for volcano data
-filter_data <- function(data, cluster, annotation, comps, signs) {
-  filtered_data <- data[data$cluster == cluster &
-                          data$annotation == annotation &
-                          data$comp %in% comps &
-                          data$sign %in% signs,
-                        c("p_val", "avg_log2FC", "sign", "comp", "gene")]
-  return(filtered_data)
+
+# Volcano_plot function
+
+volcano_plot <- function(cluster, comp, filtered_genes) {
+  de_data <- readRDS('/home/acorraliza/TOFA_data/20220222_TOFAS_23/01_DE/REPASO/new_complete.RDS')
+  label_mapping <- c(
+    "UPP" = "UPP",
+    "UP" = "UP",
+    "0" = "0",
+    "DW" = "DW",
+    "DWW" = "DWW"
+  )
+
+  de_data2 <- de_data[de_data$cluster == cluster &
+                        de_data$annotation == 'annotation_intermediate' &
+                        de_data$comp == comp &
+                        de_data$sign %in% names(colors_volcano), c("p_val", "avg_log2FC", "sign", "comp", "gene")]
+
+  response <- subset(de_data2, comp == comp, select = c("avg_log2FC", "p_val", "gene", "sign"))
+
+  fig <- ggplot(data = response, aes(x = avg_log2FC, y = -log10(p_val), col = sign)) +
+    geom_point(size = 1) +
+    scale_color_manual(values = colors_volcano, labels = label_mapping) +
+    theme(text = element_text(family = "Helvetica")) +
+    theme_classic() +
+    guides(color = guide_legend(override.aes = list(shape = 4))) +
+    theme(legend.position = "none") +
+    scale_y_continuous(breaks = c(seq(0, 20, 5)), limits = c(0, 25))
+
+  filtered_data <- response[response$gene %in% filtered_genes, ]
+
+  fig <- fig+ geom_label_repel(data = filtered_data, aes(label = gene, group = gene, fill = sign), size = 4,
+                               fill = colors_volcano[filtered_data$sign],
+                               color = "white",
+                               segment.color = "black",
+                               fontface = 'bold',
+                               box.padding = unit(0.35, "lines"),
+                               point.padding = unit(0.5, "lines")) +
+    theme(
+      plot.title = element_blank(),
+      axis.text = element_blank(),
+      axis.title.x = element_blank(),
+      axis.title.y = element_blank(),
+      axis.line = element_line(linewidth = 1.5),
+      axis.ticks.length = unit(0.3, "cm"),
+      axis.ticks = element_line(colour = "black", size = 1)
+    )
+
+  return(fig)
 }
