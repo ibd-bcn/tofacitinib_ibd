@@ -372,16 +372,16 @@ volcano_plot <- function(cluster, comp, filtered_genes) {
                                color = "white",
                                segment.color = "black",
                                fontface = 'bold',
-                               box.padding = unit(0.35, "lines"),
+                               box.padding = unit(0.2, "lines"),
                                point.padding = unit(0.5, "lines")) +
     theme(
       plot.title = element_blank(),
       axis.text = element_blank(),
       axis.title.x = element_blank(),
       axis.title.y = element_blank(),
-      axis.line = element_line(linewidth = 1.5),
-      axis.ticks.length = unit(0.3, "cm"),
-      axis.ticks = element_line(colour = "black", size = 1)
+      axis.line = element_line(linewidth = 1),
+      axis.ticks.length = unit(0.1, "cm"),
+
     )
 
   return(fig)
