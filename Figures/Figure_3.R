@@ -195,8 +195,8 @@ save_sizes(plot = fig3b_IDANR, filename = 'fig3b_IDANR', device = 'pdf')
 ## Figure 3C -------------------------------------------------------------------
 
 fig3c <- feature_plot(myeloids,
-             feature = c('MT2A','CLEC5A','IDO1', 'MMP9'),
-             split.by = c('pre_post', 'response'),
+             feature = c('MT2A','CLEC5A','IDO1', 'MMP9', 'SPP1', 'IL7R'),
+             split.by = c('response','pre_post'),
              size = 0.1) +
   patchwork::plot_layout(ncol = 2) &
   theme_figure() &
@@ -211,8 +211,8 @@ fig3c <- feature_plot(myeloids,
   )
 
 fig3c_nt <- feature_plot(myeloids,
-                      feature = c('MT2A','CLEC5A','IDO1', 'MMP9'),
-                      split.by = c('pre_post', 'response'),
+                      feature = c('MT2A','CLEC5A','IDO1', 'MMP9', 'SPP1', 'IL7R'),
+                      split.by = c('response','pre_post'),
                       size = 0.1) +
   patchwork::plot_layout(ncol = 2) &
   theme_figure() &

@@ -125,7 +125,7 @@ save_sizes(plot = pat4, filename = 'Figure_2B_BARPLOTS_AND_UMAP', device = 'svg'
 save_sizes(plot = pat4, filename = 'Figure_2B_BARPLOTS_AND_UMAP', device = 'jpeg')
 save_sizes(plot = pat4, filename = 'Figure_2B_BARPLOTS_AND_UMAP', device = 'pdf')
 
-# Figure 2A and 2B together ----------------------------------------------------
+# Figure 2 A and 2B together ----------------------------------------------------
 
 design <- "#AA#
            #AA#
@@ -139,7 +139,7 @@ fin <- fig + umap2b + pat + patchwork::plot_layout(design = design) & theme(text
 
 ggsave(filename = 'Figure_2AB_text.jpeg', plot = fin, dpi = 300, device = 'jpeg', path = 'Figures/output/')
 
-# Figure 3C: Abundances --------------------------------------------------------
+# Figure 2 C: Abundances --------------------------------------------------------
 
 
 immune <- ggplot(abundances_data_immune[abundances_data_immune$Response != "PRE R VS NR", ],
@@ -250,7 +250,7 @@ fig2ct <- t_immune / t_no_immune  &
         axis.title = element_blank()) &
   patchwork::plot_layout(guides = 'collect')
 
-# Figure 2ABC ------------------------------------------------------------------
+# Figure 2 ABC ------------------------------------------------------------------
 
 
 design <- "#AAAA#
