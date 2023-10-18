@@ -169,7 +169,25 @@ print(fig3b_IDAR)
 save_sizes(plot =fig3b_IDAR , filename = 'fig3b_IDAR', device = 'jpeg')
 save_sizes(plot = fig3b_IDAR, filename = 'fig3b_IDAR', device = 'tiff')
 save_sizes(plot = fig3b_IDAR, filename = 'fig3b_IDAR', device = 'svg')
-save_sizes(plot = fig3b_M0NR, filename = 'fig3b_M0NR', device = 'pdf')
+save_sizes(plot = fig3b_IDAR, filename = 'fig3b_IDAR', device = 'pdf')
+
+# IDA macrophages non-responders
+
+
+cluster <- "IDA macrophages"
+comp <- "w0NR_vs_POSTNR"
+filtered_genes <- c("PLGC2", "C15orf48", "MT-ATP8", "MYL6", "S100A11",
+                    "MMP9", "IDO1", "CCL4", "INHBA", "IL1A", "TPT1",
+                    "RPL9", "RPL23A", "RPL21", "HERPUD1", "DDIT3",
+                    "RETN")
+
+fig3b_IDANR <- volcano_plot(cluster, comp, filtered_genes)
+print(fig3b_IDANR)
+
+save_sizes(plot =fig3b_IDANR , filename = 'fig3b_IDANR', device = 'jpeg')
+save_sizes(plot = fig3b_IDANR, filename = 'fig3b_IDANR', device = 'tiff')
+save_sizes(plot = fig3b_IDANR, filename = 'fig3b_IDANR', device = 'svg')
+save_sizes(plot = fig3b_IDANR, filename = 'fig3b_IDANR', device = 'pdf')
 
 
 
