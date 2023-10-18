@@ -121,6 +121,54 @@ save_sizes(plot = fig3b_M1NR, filename = 'fig3b_M1NR', device = 'svg')
 save_sizes(plot = fig3b_M1NR, filename = 'fig3b_M1NR', device = 'pdf')
 
 
+# M0 Responders
+
+cluster <- "M0"
+comp <- "w0R_vs_POSTR"
+filtered_genes <- c("S100A9", "CD14", "MMP12", "CXCL9", "IFI27",
+                    "CCL18", "C1QA", "C1QB", "STAT1", "ISG15", "FCGR2A",
+                    "FABP1", "LYZ", "IGF1", "RLPSSS", "MARCKS",
+                    "HLA-DQA2", "RPL39", "RPS3A", "RPS28", "RPL34", "TMSB4X")
+
+fig3b_M0R <- volcano_plot(cluster, comp, filtered_genes)
+print(fig3b_M0R)
+
+save_sizes(plot =fig3b_M0R , filename = 'fig3b_M0R', device = 'jpeg')
+save_sizes(plot = fig3b_M0R, filename = 'fig3b_M0R', device = 'tiff')
+save_sizes(plot = fig3b_M0R, filename = 'fig3b_M0R', device = 'svg')
+save_sizes(plot = fig3b_M0R, filename = 'fig3b_M0R', device = 'pdf')
+
+#M0 non-responders
+
+cluster <- "M0"
+comp <- "w0NR_vs_POSTNR"
+filtered_genes <- c("MMP9", "MALAT1", "NEAT1", "C15orf48", "FABP5",
+                    "S100A8", "IFITM2", "CYBA", "MTRNR2L8", "MTRNR2L12", "RPS2")
+
+fig3b_M0NR <- volcano_plot(cluster, comp, filtered_genes)
+print(fig3b_M0NR)
+
+save_sizes(plot =fig3b_M0NR , filename = 'fig3b_M0NR', device = 'jpeg')
+save_sizes(plot = fig3b_M0NR, filename = 'fig3b_M0NR', device = 'tiff')
+save_sizes(plot = fig3b_M0NR, filename = 'fig3b_M0NR', device = 'svg')
+save_sizes(plot = fig3b_M0NR, filename = 'fig3b_M0NR', device = 'pdf')
+
+# IDA macrophages
+
+cluster <- "IDA macrophages"
+comp <- "w0R_vs_POSTR"
+filtered_genes <- c("S100A9", "TIMP1", "S100A8", "CD300E", "GBP5",
+                    "GBP1", "VCAN", "IFITM3", "ISG15", "WARS", "PRELID1",
+                    "SERPINB1", "SELENOP", "IGF1", "C1QA", "C1QC",
+                    "MAF", "FCER1A", "DNASE1L3", "LILRB5", "RPS28", "RPL39", "RPL41")
+
+fig3b_IDAR <- volcano_plot(cluster, comp, filtered_genes)
+print(fig3b_IDAR)
+
+save_sizes(plot =fig3b_IDAR , filename = 'fig3b_IDAR', device = 'jpeg')
+save_sizes(plot = fig3b_IDAR, filename = 'fig3b_IDAR', device = 'tiff')
+save_sizes(plot = fig3b_IDAR, filename = 'fig3b_IDAR', device = 'svg')
+save_sizes(plot = fig3b_M0NR, filename = 'fig3b_M0NR', device = 'pdf')
 
 
 
