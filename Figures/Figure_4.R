@@ -1,7 +1,70 @@
+options(stringsAsFactors = FALSE)
+library(Seurat)
+library(patchwork)
+library(ggplot2)
+library(dplyr)
+library(readr)
+library(dplyr)
+library(ggrepel)
+source('Figures/functions_plots.R')
 
 
+## Data ------------------------------------------------------------------------
+message('Loading data')
 
-# 4C Volcano plots stromal cells
+stroma <- readRDS('/home/acorraliza/TOFA_data/20220222_TOFAS_23/00_annotation_process/00_anotadas/stroma.RDS')
+stroma$annotation_intermediate <- gsub('Inflammatory_fibroblasts', 'Inflammatory fibroblasts', stroma$annotation_intermediate)
+stroma$annotation_intermediate <- gsub('IER_fibroblasts', 'IER fibroblasts', stroma$annotation_intermediate)
+stroma$pre_post <- plyr::mapvalues(stroma$week_3, from = c('W0', 'POST'), to = c('PRE', 'POST'))
+stroma$pre_post <- factor(stroma$pre_post, levels = c('PRE', 'POST'))
+stroma$response <- factor(stroma$response, levels = c('R', 'NR'))
+stroma$subset <- factor(stroma$subset, levels = c('epi', 'stroma', 'plasmas', 'myeloids', 'cycling', 'tcells'))
+# Figure 4A ----------------------------------------------------------------------------------
+# UMAP split by response and treatment, with some celltypes in colour
+color_list <- c( "S3" = "#C5D5EA", "Inflammatory fibroblasts" = "#EC769A", "S2" = "#C5D86D", "S1" = "#1F487E", "Myofibroblasts" = "#1B998B", "IER fibroblasts" = "#BC4749" )
+
+
+resp_pre <- DimPlot(stroma[,stroma@meta.data$response == 'R' & stroma@meta.data$pre_post == 'PRE'],
+                    group.by = 'annotation_intermediate', pt.size = 0.1) +
+  scale_color_manual(values = color_list, na.value = '#e6e5e5') +
+  theme_umap()
+
+nresp_pre <- DimPlot(stroma[,stroma@meta.data$response == 'NR' & stroma@meta.data$pre_post == 'PRE'],
+                     group.by = 'annotation_intermediate', pt.size = 0.1) +
+  scale_color_manual(values = color_list, na.value = '#e6e5e5') +
+  theme_umap()
+
+resp_post <- DimPlot(stroma[,stroma@meta.data$response == 'R' & stroma@meta.data$pre_post == 'POST'],
+                     group.by = 'annotation_intermediate', pt.size = 0.1) +
+  scale_color_manual(values = color_list, na.value = '#e6e5e5') +
+  theme_umap()
+
+nresp_post <- DimPlot(stroma[,stroma@meta.data$response == 'NR' & stroma@meta.data$pre_post == 'POST'],
+                      group.by = 'annotation_intermediate', pt.size = 0.1) +
+  scale_color_manual(values = color_list, na.value = '#e6e5e5') +
+  theme_umap()+
+  theme(legend.position = 'left')
+
+fig4a <- patchwork::wrap_plots(resp_pre, nresp_pre, resp_post, nresp_post, guides = 'collect') &
+  theme(text = element_text(family = 'Helvetica', size = 8))
+
+fig4a_nl <- fig4a & theme(legend.position = 'none')
+
+save_sizes(plot = fig4a, filename = 'Figure_4A', device = 'jpeg')
+save_sizes(plot = fig4a, filename = 'Figure_4A', device = 'tiff')
+save_sizes(plot = fig4a, filename = 'Figure_4A', device = 'svg')
+save_sizes(plot = fig4a, filename = 'Figure_4A', device = 'pdf')
+
+save_sizes(plot = fig4a_nl, filename = 'Figure_4A_no_legend', device = 'jpeg')
+save_sizes(plot = fig4a_nl, filename = 'Figure_4A_no_legend', device = 'tiff')
+save_sizes(plot = fig4a_nl, filename = 'Figure_4A_no_legend', device = 'svg')
+save_sizes(plot = fig4a_nl, filename = 'Figure_4A_no_legend', device = 'pdf')
+
+# Figure 4 B
+
+# TO DO!
+
+# Figure 4C Volcano plots stromal cells -------------------------------------------------------------------------
 
 de_data <- readRDS('/home/acorraliza/TOFA_data/20220222_TOFAS_23/01_DE/REPASO/new_complete.RDS')
 
