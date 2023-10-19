@@ -38,7 +38,7 @@ filtered_df_w0NR_vs_POSTNR_DWW$condition <- rep("non_responder_DWW", nrow(filter
 dataframe_NR <- rbind(filtered_df_w0NR_vs_POSTNR_UPP, filtered_df_w0NR_vs_POSTNR_DWW) # Final dataframe Non-responders
 
 # Data from other paper
-res_DE <- read_csv("~/Azu/rnaseq2/res_DE.csv") # DEGs
+res_DE <- read_csv("~/Azu/rnaseq2/res_DE.csv") # DEGs nota para angela de subirlo al git
 res_DE <- na.omit(res_DE)
 
 res_DE_upp <- res_DE[res_DE$padj < 0.05 & res_DE$log2FoldChange >=1,]
@@ -49,7 +49,7 @@ resfinal <- rbind(res_DE_upp, res_DE_dww)
 
 
 
-# Consistency for binding
+# Tidying the data
 
 names(dataframe_R)[names(dataframe_R) == "avg_log2FC"] <- "log2FoldChange"
 resfinal <- resfinal[order(names(resfinal))]
