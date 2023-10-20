@@ -5,6 +5,8 @@ library(ggplot2)
 library(dplyr)
 library(readr)
 library(dplyr)
+library(readxl)
+
 
 source('Figures/functions_plots.R')
 
@@ -125,7 +127,7 @@ save_sizes(plot = pat4, filename = 'Figure_2B_BARPLOTS_AND_UMAP', device = 'svg'
 save_sizes(plot = pat4, filename = 'Figure_2B_BARPLOTS_AND_UMAP', device = 'jpeg')
 save_sizes(plot = pat4, filename = 'Figure_2B_BARPLOTS_AND_UMAP', device = 'pdf')
 
-# Figure 2 A and 2B together ----------------------------------------------------
+# Figure 2 A and 2B together ---------------------------------------------------
 
 design <- "#AA#
            #AA#
@@ -139,7 +141,7 @@ fin <- fig + umap2b + pat + patchwork::plot_layout(design = design) & theme(text
 
 ggsave(filename = 'Figure_2AB_text.jpeg', plot = fin, dpi = 300, device = 'jpeg', path = 'Figures/output/')
 
-# Figure 2 C: Abundances --------------------------------------------------------
+# Figure 2 C: Abundances -------------------------------------------------------
 
 
 immune <- ggplot(abundances_data_immune[abundances_data_immune$Response != "PRE R VS NR", ],
@@ -250,7 +252,7 @@ fig2ct <- t_immune / t_no_immune  &
         axis.title = element_blank()) &
   patchwork::plot_layout(guides = 'collect')
 
-# Figure 2 ABC ------------------------------------------------------------------
+# Figure 2 ABC -----------------------------------------------------------------
 
 
 design <- "#AAAA#
@@ -275,3 +277,51 @@ fin <- fig_legend + umap2b_legend + pat + fig2ct +
 ggsave(filename = 'Figure_2ABC_text_larga.pdf', plot = fin, dpi = 300, device = 'pdf',
        path = 'Figures/output/', width = 5, height = 9, units = 'in')
 
+# Figure 3C --------------------------------------------------------------------
+
+
+#
+# qPCR Boxplots data
+#
+
+qpcr <- read_excel("Figures/extra_data/Base_de_datos_bx_reals_bcn_bram_boxplots.xlsx",
+                   col_types = c("text", "text", "text",
+                                 "text", "numeric", "numeric", "numeric",
+                                 "numeric", "numeric", "numeric",
+                                 "numeric", "numeric", "numeric",
+                                 "numeric", "numeric", "numeric",
+                                 "numeric", "numeric", "numeric",
+                                 "numeric", "numeric", "numeric",
+                                 "numeric", "numeric", "numeric",
+                                 "numeric", "numeric", "numeric",
+                                 "numeric", "numeric", "numeric",
+                                 "numeric", "numeric", "numeric",
+                                 "numeric", "numeric", "numeric","numeric","numeric","numeric"))
+
+#
+# qPCR Boxplots
+#
+
+qpcr$Response <- factor(qpcr$Response, levels = c("R", "NR"))
+qpcr$Cohort <- factor(qpcr$Cohort, levels = c("BCN", "LEU"))
+qpcr$Time <- factor(qpcr$Time, levels = c("Pre-tx", "Post-tx"))
+qpcr$facet_group <- factor(qpcr$Response)
+
+
+qpcr_r <- qpcr[qpcr$Response=="R",]
+qpcr_nr <- qpcr[qpcr$Response == "NR",]
+list_genes <- colnames(qpcr)[6:length(colnames(qpcr))-1]
+
+
+# Iterate over genes to obtain qPCR boxplots
+for(gene in list_genes){
+
+  qpcr_plot <- boxplot_plot(qpcr_r,qpcr_nr,gene)
+  print(qpcr_plot)
+
+  save_sizes(plot = qpcr_plot, filename = paste0(gene,"_qpcr",sep = ""), device = 'jpeg')
+  save_sizes(plot = qpcr_plot, filename = paste0(gene,"_qpcr",sep = ""), device = 'tiff')
+  save_sizes(plot = qpcr_plot, filename = paste0(gene,"_qpcr",sep = ""), device = 'svg')
+  save_sizes(plot = qpcr_plot, filename = paste0(gene,"_qpcr",sep = ""), device = 'pdf')
+
+}

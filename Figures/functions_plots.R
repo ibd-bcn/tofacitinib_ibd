@@ -1,5 +1,6 @@
 library(ggplot2)
 library(ggpubr)
+library(patchwork)
 #
 # colors -----------------------------------------------------------------------
 #
@@ -384,4 +385,76 @@ volcano_plot <- function(cluster, comp, filtered_genes) {
     )
 
   return(fig)
+}
+
+# Boxplot function
+
+boxplot_plot <- function(qpcr_r,qpcr_nr,gene) {
+
+  #Compute max Y label
+  value1 <- max(na.omit(qpcr_r[[gene]]))
+  value2 <- max(na.omit(qpcr_nr[[gene]]))
+  max_value <- max(c(value1,value2))
+  label_y_max <- max_value + (max_value*0.2)
+  label_y_stat <- max_value + (max_value*0.11)
+
+  #Responder plot
+  p <- ggplot(qpcr_r, aes(x = Time, y = .data[[gene]])) +
+    geom_boxplot(aes(fill = facet_group), color = "black", alpha = 0.9,size = 0.5,outlier.shape = NA) +
+    geom_jitter(aes(color = facet_group),
+                position = position_jitterdodge(dodge.width = 0.4, jitter.width = 0.2),
+                alpha = 1, size = 1) +
+    theme_classic()+
+    theme(legend.position = 'none',
+          axis.title.x = element_blank(),
+          axis.text = element_blank(),
+          axis.text.x = element_blank(),
+          axis.title.y = element_blank(),
+          strip.text.y = element_blank(),
+          plot.title = element_blank(),
+          panel.grid.major.x = element_line(size = 0.5),
+          panel.grid.major.y = element_line(size = 0.5),
+          axis.ticks=element_line(size=0.5),
+          axis.line = element_line(linewidth = 0.5),
+          axis.ticks.length = unit(0.1, "cm")
+    ) +
+    ylim(c(0,round(label_y_max)))
+
+
+  p <- p + scale_fill_manual(values = c("#70ADE6")) + scale_color_manual(values = c("#778899"))
+
+
+  #Non-responder plot
+  comparison_result <- pairwise.wilcox.test(qpcr_nr[[gene]], qpcr_nr$Time, p.adjust.method = "none")
+  p_value <- comparison_result$p.value[1]
+
+  q <- ggplot(qpcr_nr, aes(x = Time, y = .data[[gene]])) +
+    geom_boxplot(aes(fill = facet_group), color = "black", alpha = 0.9,size = 0.5, outlier.shape = NA) +
+    geom_jitter(aes(color = facet_group),
+                position = position_jitterdodge(dodge.width = 0.4, jitter.width = 0.2),
+                alpha = 1,size = 1) +
+    theme_classic()+
+    theme(legend.position = 'none',
+          axis.title.x = element_blank(),
+          axis.text = element_blank(),
+          axis.text.x = element_blank(),
+          axis.title.y = element_blank(),
+          strip.text.y = element_blank(),
+          plot.title = element_blank(),
+          panel.grid.major.x = element_line(size = 0.5),
+          panel.grid.major.y = element_line(size = 0.5),
+          axis.ticks.y = element_blank(),
+          axis.ticks=element_line(size=0.5),
+          axis.line = element_line(linewidth = 0.5),
+          axis.ticks.length = unit(0.1, "cm"))  +
+    ylim(c(0,round(label_y_max)))
+
+
+  q <- q + scale_fill_manual(values = c("#FF8E47")) + scale_color_manual(values = c("#778899"))
+
+  #Join two plots
+  combined_plot <- p + q
+
+  return(combined_plot)
+
 }
