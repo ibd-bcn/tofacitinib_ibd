@@ -1,7 +1,7 @@
 options(stringsAsFactors = FALSE)
 library(ggplot2)
 library(ggrepel)
-
+library(tidyr)
 # Figure 5E -------------------------
 
 ## Scatter plots of our DE data and __ paper
@@ -72,7 +72,22 @@ responders <- rbind(resfinal, dataframe_R)
 nonresponders <- rbind(resfinal, dataframe_NR)
 
 responders <- na.omit(responders)
+responders$p_val <- NULL
+responders2 <- pivot_wider(responders, names_from = "condition", values_from = "log2FoldChange")
+
+
 nonresponders <- na.omit(nonresponders)
+nonresponders$p_val <- NULL
+nonresponders2 <- pivot_wider(nonresponders, names_from = "condition", values_from = "log2FoldChange")
+
+filtered_p3 <- subset(nonresponders2, !is.na(paper_upp) & !is.na(non_responder_UPP))
+filtered_p4 <- subset(nonresponders2, !is.na(paper_dww) & !is.na(non_responder_DWW))
+
+filtered_p3$paper_dww<- NULL
+filtered_p3$non_responder_DWW <- NULL
+filtered_p4$paper_upp <- NULL
+filtered_p4$non_responder_UPP <- NULL
+final <- merge(filtered_p3, filtered_p4, by.y = "gene", all.x = TRUE, all.y  = TRUE)
 
 # Plot
 
