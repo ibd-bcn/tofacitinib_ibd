@@ -277,7 +277,7 @@ fin <- fig_legend + umap2b_legend + pat + fig2ct +
 ggsave(filename = 'Figure_2ABC_text_larga.pdf', plot = fin, dpi = 300, device = 'pdf',
        path = 'Figures/output/', width = 5, height = 9, units = 'in')
 
-# Figure 3C --------------------------------------------------------------------
+# Figure 2D --------------------------------------------------------------------
 
 
 #
