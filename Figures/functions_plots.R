@@ -345,7 +345,7 @@ volcano_plot <- function(cluster, comp, filtered_genes) {
 
   if (cluster != "IDA macrophages") {
     fig <- ggplot(data = response, aes(x = avg_log2FC, y = -log10(p_val), col = sign)) +
-      geom_point(size = 0.5) +
+      geom_point(size = 1) +
       scale_color_manual(values = colors_volcano, labels = label_mapping) +
       theme_classic() +
       theme(text = element_text(family = "Helvetica")) +
@@ -354,7 +354,7 @@ volcano_plot <- function(cluster, comp, filtered_genes) {
       scale_y_continuous(breaks = c(seq(0, 20, 5)), limits = c(0, 25))
   } else {
     fig <- ggplot(data = response, aes(x = avg_log2FC, y = -log10(p_val), col = sign)) +
-      geom_point(size = 0.5) +
+      geom_point(size = 1) +
       scale_color_manual(values = colors_volcano, labels = label_mapping) +
       theme_classic() +
       theme(text = element_text(family = "Helvetica")) +
@@ -367,7 +367,7 @@ volcano_plot <- function(cluster, comp, filtered_genes) {
 
   filtered_data <- response[response$gene %in% filtered_genes, ]
 
-  fig <- fig+ geom_label_repel(data = filtered_data, aes(label = gene, group = gene, fill = sign), size = 6/.pt,
+  fig <- fig+ geom_label_repel(data = filtered_data, aes(label = gene, group = gene, fill = sign), size = 14/.pt,
                                fill = colors_volcano[filtered_data$sign],
                                color = "white",
                                segment.color = "black",

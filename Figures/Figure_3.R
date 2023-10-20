@@ -173,7 +173,6 @@ save_sizes(plot = fig3b_IDAR, filename = 'fig3b_IDAR', device = 'pdf')
 
 # IDA macrophages non-responders
 
-
 cluster <- "IDA macrophages"
 comp <- "w0NR_vs_POSTNR"
 filtered_genes <- c("PLGC2", "C15orf48", "MT-ATP8", "MYL6", "S100A11",
