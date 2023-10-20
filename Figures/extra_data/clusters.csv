@@ -12,7 +12,7 @@ Include;Cluster;Piece;Plot
 11;NK;T/ILC;IMMUNE
 12;MT hi IER;T/ILC;IMMUNE
 13;B_cell;B/PC;IMMUNE
-14;Cycling_B_cell;B/PC;IMMUNE
+14;Cycling_Bcell;B/PC;IMMUNE
 15;PC_heat_shock;B/PC;IMMUNE
 16;PC_IER;B/PC;IMMUNE
 17;PC_IgA;B/PC;IMMUNE
@@ -24,7 +24,7 @@ Include;Cluster;Piece;Plot
 23;Plasmablast_IgG;B/PC;IMMUNE
 24;Plasmablast_IGKC;B/PC;IMMUNE
 25;Cycling_B_cell;Cycling;IMMUNE
-26;Cycling_Myeloid_cycling;Cycling;IMMUNE
+26;Cycling_Myeloid;Cycling;IMMUNE
 27;Cycling_PC;Cycling;IMMUNE
 28;Cycling_T_cell;Cycling;IMMUNE
 29;Mast;Myeloids;IMMUNE
