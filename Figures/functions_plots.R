@@ -328,7 +328,7 @@ feature_plot <- function(object, features, size = 3, cols = c('lightgray', 'red'
 
 volcano_plot <- function(cluster, comp, filtered_genes) {
 
-  label_mapping <- c(
+  labels <- c(
     "UPP" = "UPP",
     "UP" = "UP",
     "0" = "0",
@@ -339,14 +339,14 @@ volcano_plot <- function(cluster, comp, filtered_genes) {
   de_data2 <- de_data[de_data$cluster == cluster &
                         de_data$annotation == 'annotation_intermediate' &
                         de_data$comp == comp &
-                        de_data$sign %in% names(colors_volcano), c("p_val", "avg_log2FC", "sign", "comp", "gene")]
+                        de_data$sign %in% names(labels), c("p_val", "avg_log2FC", "sign", "comp", "gene")]
 
   response <- subset(de_data2, comp == comp, select = c("avg_log2FC", "p_val", "gene", "sign"))
 
   if (cluster != "IDA macrophages") {
     fig <- ggplot(data = response, aes(x = avg_log2FC, y = -log10(p_val), col = sign)) +
       geom_point(size = 1) +
-      scale_color_manual(values = colors_volcano, labels = label_mapping) +
+      scale_color_manual(values = colors_volcano, labels = labels) +
       theme_classic() +
       theme(text = element_text(family = "Helvetica")) +
       guides(color = guide_legend(override.aes = list(shape = 1))) +
@@ -355,7 +355,7 @@ volcano_plot <- function(cluster, comp, filtered_genes) {
   } else {
     fig <- ggplot(data = response, aes(x = avg_log2FC, y = -log10(p_val), col = sign)) +
       geom_point(size = 1) +
-      scale_color_manual(values = colors_volcano, labels = label_mapping) +
+      scale_color_manual(values = colors_volcano, labels = labels) +
       theme_classic() +
       theme(text = element_text(family = "Helvetica")) +
       guides(color = guide_legend(override.aes = list(shape = 1))) +
@@ -367,13 +367,14 @@ volcano_plot <- function(cluster, comp, filtered_genes) {
 
   filtered_data <- response[response$gene %in% filtered_genes, ]
 
-  fig <- fig+ geom_label_repel(data = filtered_data, aes(label = gene, group = gene, fill = sign), size = 14/.pt,
-                               fill = colors_volcano[filtered_data$sign],
-                               color = "white",
-                               segment.color = "black",
-                               fontface = 'bold',
-                               box.padding = unit(0.2, "lines"),
-                               point.padding = unit(0.5, "lines")) +
+  fig <- fig+ geom_text_repel(data = filtered_data, aes(label = gene, color = "gray4"), size = 14/.pt
+                               # fill = colors_volcano[filtered_data$sign],
+                               # color = "white",
+                               # segment.color = "black",
+                               # fontface = 'bold',
+                               # box.padding = unit(0.2, "lines"),
+                               # point.padding = unit(0.5, "lines")
+                               ) +
     theme(
       plot.title = element_blank(),
       axis.text = element_blank(),

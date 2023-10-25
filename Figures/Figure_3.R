@@ -74,10 +74,8 @@ de_data$cluster <- gsub('Macrophage NRG1', 'IDA macrophages', de_data$cluster)
 # M2 responders
 cluster <- "M2"
 comp <- "w0R_vs_POSTR"
-filtered_genes <- c("IGF1", "CLEC10A", "TLR7", "CD163L1", "IL10RA",
-                    "INSIG1", "AHR", "MAF", "CXCL12", "FOS", "FOSB",
-                    "S100A9", "GBP1", "MMP12", "CCL13", "IFITM3",
-                    "STAT1", "C1QA", "C1QB", "FCGR3A", "FCGR2A")
+filtered_genes <-  c("IGF1", "CLEC10A", "CD163L1", "IL10RA", "AHR", "MAF", "S100A9", "GBP1", "MMP12", "HLA-A",
+                     "IFITM3", "STAT1", "HLA-B", "FCGR3A", "FCGR2A", "CCL13")
 
 fig3b_M2R <- volcano_plot(cluster, comp, filtered_genes)
 print(fig3b_M2R)
@@ -90,10 +88,8 @@ save_sizes(plot = fig3b_M2R, filename = 'fig3b_M2R', device = 'pdf')
 # M2 non-responders
 cluster <- "M2"
 comp <- "w0NR_vs_POSTNR"
-filtered_genes <- c("MMP9", "INHBA", "CD300E", "SPP1", "IDO1",
-                    "MMP12", "CLEC5A", "PLCG2", "ITGAX", "PLAUR", "IL1RN",
-                    "CXCL3", "VIM", "IL7R", "TMSB4X", "TPT1",
-                    "RPL9", "MS4A6A", "SELENOP", "FUCA1", "CYBA")
+filtered_genes <- c("MMP9", "INHBA", "SPP1", "IDO1", "CLEC5A", "PLAUR", "IL1RN", "IL7R", "MT2A",
+                    "SOD2", "TMSB4X", "TPT1", "FUCA1")
 
 fig3b_M2NR <- volcano_plot(cluster, comp, filtered_genes)
 print(fig3b_M2NR)
@@ -108,10 +104,7 @@ save_sizes(plot = fig3b_M2NR, filename = 'fig3b_M2NR', device = 'pdf')
 # M1 non-responders
 cluster <- "M1"
 comp <- "w0NR_vs_POSTNR"
-filtered_genes <- c("PLCG2", "MIF", "FTH1", "ENO1", "TPI1",
-                    "MT-ATP8", "P4HA1", "GAPDH", "SPP1", "MT-CO3", "MT-CYB",
-                    "MT-CO2", "MT-ATP6", "MT-CO1", "MT-ND1", "MT-ND3",
-                    "IFI6", "OAS1", "S100A9", "MX1")
+filtered_genes <- c("PLCG2", "MIF", "FTH1", "GAPDH", "MT-CO3", "MT-CO2", "IFI6", "OAS1", "S100A9", "MX1")
 
 fig3b_M1NR <- volcano_plot(cluster, comp, filtered_genes)
 print(fig3b_M1NR)
