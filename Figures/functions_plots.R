@@ -327,8 +327,7 @@ feature_plot <- function(object, features, size = 3, cols = c('lightgray', 'red'
 
 
 # Volcano_plot function
-
-volcano_plot <- function(cluster, comp, filtered_genes) {
+volcano_plot <- function(cluster, comp, filtered_genes_down, filtered_genes_up) {
 
   labels <- c(
     "UPP" = "UPP",
@@ -353,7 +352,7 @@ volcano_plot <- function(cluster, comp, filtered_genes) {
       theme(text = element_text(family = "Helvetica")) +
       guides(color = guide_legend(override.aes = list(shape = 1))) +
       theme(legend.position = "none") +
-      scale_y_continuous(breaks = c(seq(0, 20, 5)), limits = c(0, 25))
+      scale_y_continuous(breaks = c(seq(0, 30, 5)), limits = c(0, 30))
   } else {
     fig <- ggplot(data = response, aes(x = avg_log2FC, y = -log10(p_val), col = sign)) +
       geom_point(size = 1) +
@@ -367,23 +366,34 @@ volcano_plot <- function(cluster, comp, filtered_genes) {
 
 
 
-  filtered_data <- response[response$gene %in% filtered_genes, ]
+  filtered_data <- response[response$gene %in% filtered_genes_down, ]
+  filtered_data2 <- response[response$gene %in% filtered_genes_up, ]
 
-  fig <- fig+ geom_text_repel(data = filtered_data, aes(label = gene, color = "gray4"), size = 14/.pt
+  fig <- fig+ geom_label_repel(data = filtered_data, aes(label = gene, group = gene, col = sign), size = 10/.pt,
+                               segment.color = "black",
                                # fill = colors_volcano[filtered_data$sign],
                                # color = "white",
                                # segment.color = "black",
                                # fontface = 'bold',
                                # box.padding = unit(0.2, "lines"),
-                               # point.padding = unit(0.5, "lines")
-                               ) +
+                               # point.padding = unit(0.5, "lines"),
+                               position = position_nudge_repel(x = 0, y = 9)) +
+    geom_label_repel(data = filtered_data2, aes(label = gene, group = gene, col = sign), size = 10/.pt,
+                     segment.color = "black",
+                     # fill = colors_volcano[filtered_data$sign],
+                     # color = "white",
+                     # segment.color = "black",
+                     # fontface = 'bold',
+                     # box.padding = unit(0.2, "lines"),
+                     # point.padding = unit(0.5, "lines"),
+                     position = position_nudge_repel(x = 0, y = 4)) +
     theme(
       plot.title = element_blank(),
       axis.text = element_blank(),
       axis.title.x = element_blank(),
       axis.title.y = element_blank(),
       axis.line = element_line(linewidth = 0.5),
-      axis.ticks.length = unit(0.1, "cm"),
+      axis.ticks.length = unit(0.1, "cm")
 
     )
 
