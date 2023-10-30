@@ -1,6 +1,8 @@
 library(ggplot2)
 library(ggpubr)
 library(patchwork)
+library(ComplexHeatmap)
+library(circlize)
 #
 # colors -----------------------------------------------------------------------
 #
@@ -452,4 +454,176 @@ boxplot_plot <- function(qpcr_r,qpcr_nr,gene) {
 
   return(combined_plot)
 
+}
+
+
+# Heatmap dataframe cleaning
+
+heatmap_data <- function(input_hm, df) {
+  #Delete IL4 data
+  if(input_hm == "DMSO"){
+    df <- TOFA[TOFA$Condition != "M-DMSO-IL4", ]
+  }else{
+    df <- TOFA[TOFA$Condition != "M-TOFA-IL4", ]
+  }
+
+}
+
+
+#Heatmap dataframe preparation
+
+dataframe_function <- function(dataframe){
+  names <- dataframe$Donor
+  dataframe <- dataframe[,-2]
+  dataframe <- dataframe[,-1]
+  dataframe <- as.data.frame(dataframe)
+  rownames(dataframe) <- names
+
+  return(dataframe)
+}
+
+
+# Heatmap function
+
+heatmap_plot <- function(input_hm, df) {
+
+  if(input_hm == "DMSO"){
+    #Color
+    col_fun = colorRamp2(c(-2,0,1,3), c("green", "black", "darkred","red"))
+  }else{
+    #Color
+    col_fun = colorRamp2(c(-1,-0.5,0,0.5,1), c("green", "darkgreen","black","darkred","red"))
+  }
+
+  ht_opt$TITLE_PADDING = unit(c(10, 10), "points")
+
+  #Gene vector
+  gene_vector <- c("TNF", "IDO1", "SOCS3", "IRF1", "OAS1", "MX1", "CXCL1", "CXCL5", "CXCL8", "CXCL10", "CCL5", "IL1B", "IL6", "IL23A", "IL10", "CD209", "MMP9", "CLEC5A", "SPP1", "ACOD1", "INHBA")
+
+  #Group rows
+  row_groups <- factor(
+    c(rep("IFNg", 6), rep("Inflammatory cytokines", 6), rep("JAK dependent", 3), rep("M2", 2), rep("M1", 4))
+  )
+
+  #Colnames
+  col_names <- c("LPS1", "LPS2", "LPS3", "LPS4", "TNF1", "TNF2", "TNF3", "TNF4", "IFNG1", "IFNG2", "IFNG3", "IFNG4")
+
+  #Create col groups
+  col_groups <- factor(substring(col_names, 1, 3), levels = c("LPS", "TNF", "IFNG"),
+                       labels = c("LPS Group", "TNF Group", "IFNG Group"))
+
+  # note how we set the width of this empty annotation
+  ha = rowAnnotation(foo = anno_empty(border = FALSE,
+                                      width =unit(0.5, "mm")))
+
+
+  # Identify numeric columns in the elisa dataframe
+  numeric_cols <- sapply(df, is.numeric)
+
+  df[numeric_cols] <- log10(df[numeric_cols])
+
+  df <- df[1:16,]
+
+  if(input_hm == "DMSO"){
+    #LPS
+    LPS <- subset(df, Condition == "M-DMSO-LPS")
+    LPS <- dataframe_function(LPS)
+    LPS <- data.frame(LPS, row.names = NULL)
+    rownames(LPS) <- c("LPS1","LPS2","LPS3","LPS4")
+
+    #IFNg
+    IFNG <- subset(df, Condition == "M-DMSO-IFNg")
+    IFNG <- dataframe_function(IFNG)
+    IFNG <- data.frame(IFNG, row.names = NULL)
+    rownames(IFNG) <- c("IFNG1","IFNG2","IFNG3","IFNG4")
+
+
+    #TNFa
+    TNFa <- subset(df, Condition == "M-DMSO-TNFa")
+    TNFa <- dataframe_function(TNFa)
+    TNFa <- data.frame(TNFa, row.names = NULL)
+    rownames(TNFa) <- c("TNF1","TNF2","TNF3","TNF4")
+  }else{
+    #LPS
+    LPS <- subset(df, Condition == "M-TOFA-LPS")
+    LPS <- dataframe_function(LPS)
+    LPS <- data.frame(LPS, row.names = NULL)
+    rownames(LPS) <- c("LPS1","LPS2","LPS3","LPS4")
+
+    #IFNg
+    IFNG <- subset(df, Condition == "M-TOFA-IFNg")
+    IFNG <- dataframe_function(IFNG)
+    IFNG <- data.frame(IFNG, row.names = NULL)
+    rownames(IFNG) <- c("IFNG1","IFNG2","IFNG3","IFNG4")
+
+
+    #TNFa
+    TNFa <- subset(df, Condition == "M-TOFA-TNFa")
+    TNFa <- dataframe_function(TNFa)
+    TNFa <- data.frame(TNFa, row.names = NULL)
+    rownames(TNFa) <- c("TNF1","TNF2","TNF3","TNF4")
+  }
+
+  t_df <- rbind(LPS,TNFa,IFNG)
+  t_df <- t_df[gene_vector]
+  t_df <- t(t_df)
+
+  desired_order <- c("LPS1","LPS2","LPS3","LPS4","TNF1","TNF2","TNF3","TNF4","IFNG1","IFNG2","IFNG3","IFNG4")
+  ## Obtain database
+
+  heatmap <- Heatmap(t_df,
+                     na_col = "white",
+                     name = "Legend",
+                     col = col_fun,
+                     cluster_rows = FALSE,
+                     cluster_columns = FALSE,
+                     show_heatmap_legend = FALSE,
+                     column_split = col_groups,
+                     row_split = row_groups,
+                     column_title = c("","",""),
+                     show_column_names = FALSE,
+                     right_annotation = ha,
+                     show_row_names = FALSE,
+                     row_title=NULL
+
+  )
+
+  draw(heatmap)
+
+  #Row groups colors
+  heatmap_colors <- c("#B4DC7F", "#FF6392", "#F9A03F", "#8BAEC7", "#516C7B")
+
+  for(i in 1:5) {
+    decorate_annotation("foo", slice = i, {
+      grid.rect(x = 0, width = unit(2, "mm"), gp = gpar(fill = heatmap_colors[i], col =NA), just = "left")
+    })
+  }
+
+  dev.off()
+}
+
+#Legend function
+
+heatmap_lgd <- function(input_hm) {
+
+  if(input_hm == "DMSO"){
+    #Color
+    col_fun = colorRamp2(c(-2,0,1,3), c("green", "black", "darkred","red"))
+    #At
+    at_vec <- c(-2,0,1,3)
+    #Label
+    lab_vec <- c("","","","")
+  }else{
+    #Color
+    col_fun = colorRamp2(c(-1,-0.5,0,0.5,1), c("green", "darkgreen","black","darkred","red"))
+    #At
+    at_vec <- c(-1,-0.5,0,0.5,1)
+    #Label
+    lab_vec <- c("","","","","")
+  }
+
+  lgd = Legend(col_fun = col_fun, direction = "horizontal", legend_width = unit(7, "cm"),at = at_vec,labels = lab_vec)
+  draw(lgd)
+
+  dev.off()
 }

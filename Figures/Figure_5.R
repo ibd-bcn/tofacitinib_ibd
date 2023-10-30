@@ -2,6 +2,9 @@ options(stringsAsFactors = FALSE)
 library(ggplot2)
 library(ggrepel)
 library(tidyr)
+library(readxl)
+
+source('Figures/functions_plots.R')
 # Figure 5E -------------------------
 
 ## Scatter plots of our DE data and __ paper
@@ -114,5 +117,88 @@ plot <- ggplot(data = final) +
 
 
 print(plot)
+
+
+# Figure 4B --------------------------------------------------------------------
+
+#
+# Data Heatmap TOFA
+#
+
+TOFA <- read_excel("Figures/extra_data/230916_base_de_datos_Mac_Madrid_FC.xlsx",
+                   sheet = "FC Tofa stimuli-stimuli", col_types = c("text",
+                                                                    "text", "numeric", "numeric", "numeric",
+                                                                    "numeric", "skip", "skip", "numeric",
+                                                                    "numeric", "numeric", "numeric",
+                                                                    "numeric", "skip", "numeric", "skip",
+                                                                    "numeric", "numeric", "numeric",
+                                                                    "numeric", "numeric", "skip", "numeric",
+                                                                    "numeric", "numeric", "numeric",
+                                                                    "numeric", "numeric", "numeric"))
+
+#
+# Heatmap TOFA
+#
+
+#Dataframe
+TOFA <- heatmap_data("TOFA", TOFA)
+
+#Heatmap
+tiff(filename = "Figures/output/heatmap_larga.tiff", width=3,height=5,units = "in",res = 1200)
+heatmap <- heatmap_plot("TOFA", TOFA)
+tiff(filename = "Figures/output/heatmap_ancha.tiff",width=5,height=3,units = "in",res = 1200)
+heatmap <- heatmap_plot("TOFA", TOFA)
+tiff(filename = "Figures/output/heatmap_cuadrada.tiff",width=3,height=3,units = "in",res = 1200)
+heatmap <- heatmap_plot("TOFA", TOFA)
+
+jpeg(filename = "Figures/output/heatmap_larga.jpeg",width=3,height=5,units = "in",res = 1200)
+heatmap <- heatmap_plot("TOFA", TOFA)
+jpeg(filename = "Figures/output/heatmap_ancha.jpeg",width=5,height=3,units = "in",res = 1200)
+heatmap <- heatmap_plot("TOFA", TOFA)
+jpeg(filename = "Figures/output/heatmap_cuadrada.jpeg",width=3,height=3,units = "in",res = 1200)
+heatmap <- heatmap_plot("TOFA", TOFA)
+
+svg(filename = "Figures/output/heatmap_larga.svg",width=3,height=5)
+heatmap <- heatmap_plot("TOFA", TOFA)
+svg(filename = "Figures/output/heatmap_ancha.svg",width=5,height=3)
+heatmap <- heatmap_plot("TOFA", TOFA)
+svg(filename = "Figures/output/heatmap_cuadrada.svg",width=3,height=3)
+heatmap <- heatmap_plot("TOFA", TOFA)
+
+pdf(file= "Figures/output/heatmap_larga.pdf",width=3,height=5)
+heatmap <- heatmap_plot("TOFA", TOFA)
+pdf(file = "Figures/output/heatmap_ancha.pdf",width=5,height=3)
+heatmap <- heatmap_plot("TOFA", TOFA)
+pdf(file = "Figures/output/heatmap_cuadrada.pdf",width=3,height=3)
+heatmap <- heatmap_plot("TOFA", TOFA)
+
+#Legend
+tiff(filename = "Figures/output/legend_larga.tiff", width=3,height=5,units = "in",res = 1200)
+legend <- heatmap_lgd("TOFA")
+tiff(filename = "Figures/output/legend_ancha.tiff",width=5,height=3,units = "in",res = 1200)
+legend <- heatmap_lgd("TOFA")
+tiff(filename = "Figures/output/legend_cuadrada.tiff",width=3,height=3,units = "in",res = 1200)
+legend <- heatmap_lgd("TOFA")
+
+jpeg(filename = "Figures/output/legend_larga.jpeg",width=3,height=5,units = "in",res = 1200)
+legend <- heatmap_lgd("TOFA")
+jpeg(filename = "Figures/output/legend_ancha.jpeg",width=5,height=3,units = "in",res = 1200)
+legend <- heatmap_lgd("TOFA")
+jpeg(filename = "Figures/output/legend_cuadrada.jpeg",width=3,height=3,units = "in",res = 1200)
+legend <- heatmap_lgd("TOFA")
+
+svg(filename = "Figures/output/legend_larga.svg",width=3,height=5)
+legend <- heatmap_lgd("TOFA")
+svg(filename = "Figures/output/legend_ancha.svg",width=5,height=3)
+legend <- heatmap_lgd("TOFA")
+svg(filename = "Figures/output/legend_cuadrada.svg",width=3,height=3)
+legend <- heatmap_lgd("TOFA")
+
+pdf(file= "Figures/output/legend_larga.pdf",width=3,height=5)
+legend <- heatmap_lgd("TOFA")
+pdf(file = "Figures/output/legend_ancha.pdf",width=5,height=3)
+legend <- heatmap_lgd("TOFA")
+pdf(file = "Figures/output/legend_cuadrada.pdf",width=3,height=3)
+legend <- heatmap_lgd("TOFA")
 
 
