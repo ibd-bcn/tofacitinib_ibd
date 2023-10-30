@@ -74,10 +74,12 @@ de_data$cluster <- gsub('Macrophage NRG1', 'IDA macrophages', de_data$cluster)
 # M2 responders
 cluster <- "M2"
 comp <- "w0R_vs_POSTR"
-filtered_genes <-  c("IGF1", "CLEC10A", "CD163L1", "IL10RA", "AHR", "MAF", "S100A9", "GBP1", "MMP12", "HLA-A",
-                     "IFITM3", "STAT1", "HLA-B", "FCGR3A", "FCGR2A", "CCL13")
 
-fig3b_M2R <- volcano_plot(cluster, comp, filtered_genes)
+filtered_genes_down <-  c("IGF1", "CLEC10A", "CD163L1", "IL10RA", "AHR", "MAF")
+filtered_genes_up <- c("S100A9", "GBP1", "MMP12", "HLA-A","IFITM3", "STAT1", "HLA-B", "FCGR3A", "FCGR2A", "CCL13")
+
+fig3b_M2R <- volcano_plot(cluster, comp, filtered_genes_down, filtered_genes_up)
+
 print(fig3b_M2R)
 
 save_sizes(plot =fig3b_M2R , filename = 'fig3b_M2R', device = 'jpeg')
