@@ -405,7 +405,7 @@ boxplot_plot <- function(qpcr_r,qpcr_nr,gene) {
     geom_jitter(aes(color = facet_group),
                 position = position_jitterdodge(dodge.width = 0.4, jitter.width = 0.2),
                 alpha = 1, size = 1) +
-    theme_classic()+
+    theme_bw(base_rect_size = 1,base_size = 20) +  facet_grid(. ~ "") +
     theme(legend.position = 'none',
           axis.title.x = element_blank(),
           axis.text = element_blank(),
@@ -413,16 +413,13 @@ boxplot_plot <- function(qpcr_r,qpcr_nr,gene) {
           axis.title.y = element_blank(),
           strip.text.y = element_blank(),
           plot.title = element_blank(),
-          panel.grid.major.x = element_line(size = 0.5),
-          panel.grid.major.y = element_line(size = 0.5),
           axis.ticks=element_line(size=0.5),
-          axis.line = element_line(linewidth = 0.5),
           axis.ticks.length = unit(0.1, "cm")
     ) +
     ylim(c(0,round(label_y_max)))
 
 
-  p <- p + scale_fill_manual(values = c("#70ADE6")) + scale_color_manual(values = c("#778899"))
+  p <- p + scale_fill_manual(values = c("#70ADE6")) + scale_color_manual(values = c("#000000"))
 
 
   #Non-responder plot
@@ -434,7 +431,7 @@ boxplot_plot <- function(qpcr_r,qpcr_nr,gene) {
     geom_jitter(aes(color = facet_group),
                 position = position_jitterdodge(dodge.width = 0.4, jitter.width = 0.2),
                 alpha = 1,size = 1) +
-    theme_classic()+
+    theme_bw( base_rect_size = 1,base_size = 20)  + facet_grid(. ~ "") +
     theme(legend.position = 'none',
           axis.title.x = element_blank(),
           axis.text = element_blank(),
@@ -442,16 +439,13 @@ boxplot_plot <- function(qpcr_r,qpcr_nr,gene) {
           axis.title.y = element_blank(),
           strip.text.y = element_blank(),
           plot.title = element_blank(),
-          panel.grid.major.x = element_line(size = 0.5),
-          panel.grid.major.y = element_line(size = 0.5),
           axis.ticks.y = element_blank(),
           axis.ticks=element_line(size=0.5),
-          axis.line = element_line(linewidth = 0.5),
           axis.ticks.length = unit(0.1, "cm"))  +
     ylim(c(0,round(label_y_max)))
 
 
-  q <- q + scale_fill_manual(values = c("#FF8E47")) + scale_color_manual(values = c("#778899"))
+  q <- q + scale_fill_manual(values = c("#FF8E47")) + scale_color_manual(values = c("#000000"))
 
   #Join two plots
   combined_plot <- p + q
