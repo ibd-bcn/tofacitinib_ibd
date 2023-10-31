@@ -73,12 +73,85 @@ de_data <- readRDS('/home/acorraliza/TOFA_data/20220222_TOFAS_23/01_DE/REPASO/ne
 # S1 responders
 cluster <- "S1"
 comp <- "w0R_vs_POSTR"
-filtered_genes <- c("ABCA8", "ADAMDEC1", "FOS", "GSN", "FN1",
-                    "SELENOP", "EGR1", "ADIRF", "COL15A1", "AC007952.4", "CHI3L1",
-                    "IL13RA2", "CXCL6", "OSMR", "IFITM3", "INHBA",
-                    "GBP1", "NRG1", "WNT5A", "MMP3", "CXCL1", "CCL19", "FTH1", "F3", "IGFBP7", "CXCL14", "PDLIM4")
+filtered_genes_down <- c("ADIRF", "ADAMDEC1", "FOS")
+filtered_genes_up <- c("CHI3L1", "HIF1A", "WNT5A", "IFI27", "IFITM3", "ISG15", "GBP1", "CCL19", "JAK1", "STAT1", "SOCS1",
+                       "IL7R", "IL4R", "OSMR", "IL15RA", "IL13RA2")
 
-fig4c_S1 <- volcano_plot(cluster, comp, filtered_genes)
+volcano_plot <- function(cluster, comp, filtered_genes_down, filtered_genes_up) {
+
+  labels <- c(
+    "UPP" = "UPP",
+    "UP" = "UP",
+    "0" = "0",
+    "DW" = "DW",
+    "DWW" = "DWW"
+  )
+
+  de_data2 <- de_data[de_data$cluster == cluster &
+                        de_data$annotation == 'annotation_intermediate' &
+                        de_data$comp == comp &
+                        de_data$sign %in% names(labels), c("p_val", "avg_log2FC", "sign", "comp", "gene")]
+
+  response <- subset(de_data2, comp == comp, select = c("avg_log2FC", "p_val", "gene", "sign"))
+
+  if (cluster != "IDA macrophages") {
+    fig <- ggplot(data = response, aes(x = avg_log2FC, y = -log10(p_val), col = sign)) +
+      geom_point(size = 1) +
+      scale_color_manual(values = colors_volcano, labels = labels) +
+      theme_classic() +
+      theme(text = element_text(family = "Helvetica")) +
+      guides(color = guide_legend(override.aes = list(shape = 1))) +
+      theme(legend.position = "none") +
+      scale_y_continuous(breaks = c(seq(0, 30, 5)), limits = c(0, 30))
+  } else {
+    fig <- ggplot(data = response, aes(x = avg_log2FC, y = -log10(p_val), col = sign)) +
+      geom_point(size = 1) +
+      scale_color_manual(values = colors_volcano, labels = labels) +
+      theme_classic() +
+      theme(text = element_text(family = "Helvetica")) +
+      guides(color = guide_legend(override.aes = list(shape = 1))) +
+      theme(legend.position = "none") +
+      scale_x_continuous(breaks = c(seq(-3, 3, 1)), limits = c(-3, 3))
+  }
+
+
+
+  filtered_data <- response[response$gene %in% filtered_genes_down, ]
+  filtered_data2 <- response[response$gene %in% filtered_genes_up, ]
+
+  fig <- fig+ geom_label_repel(data = filtered_data, aes(label = gene, group = gene, col = sign), size = 8/.pt,
+                               segment.color = "black",
+                               # fill = colors_volcano[filtered_data$sign],
+                               # color = "white",
+                               # segment.color = "black",
+                               fontface = 'bold',
+                               # box.padding = unit(0.2, "lines"),
+                               # point.padding = unit(0.5, "lines"),
+                               position = position_nudge_repel(x = 0, y = 2)) +
+    geom_label_repel(data = filtered_data2, aes(label = gene, group = gene, col = sign), size = 8/.pt,
+                     segment.color = "black",
+                     # fill = colors_volcano[filtered_data$sign],
+                     # color = "white",
+                     # segment.color = "black",
+                     fontface = 'bold',
+                     # box.padding = unit(0.2, "lines"),
+                     # point.padding = unit(0.5, "lines"),
+                     position = position_nudge_repel(x = 0, y = 1)) +
+    theme(
+      plot.title = element_blank(),
+      axis.text = element_blank(),
+      axis.title.x = element_blank(),
+      axis.title.y = element_blank(),
+      axis.line = element_line(linewidth = 0.5),
+      axis.ticks.length = unit(0.1, "cm")
+
+    )
+
+  return(fig)
+}
+
+
+fig4c_S1 <- volcano_plot(cluster, comp, filtered_genes_down, filtered_genes_up)
 print(fig4c_S1)
 
 save_sizes(plot =fig4c_S1 , filename = 'fig4c_S1R', device = 'jpeg')
@@ -89,12 +162,84 @@ save_sizes(plot = fig4c_S1, filename = 'fig4c_S1R', device = 'pdf')
 # S1 non-responders
 cluster <- "S1"
 comp <- "w0NR_vs_POSTNR"
-filtered_genes <- c("CHI3L1", "POSTN", "FTH1", "RPS4Y1", "PTMA",
-                    "PLCG2", "TIMP1", "PPIB", "RPL8", "RARRES2", "TPM2",
-                    "MT-CO3", "MT-ND1", "MT-ND3", "RPL23A", "MTRNR2L8",
-                    "IFI27", "CD63", "XIST", "RPL21", "RPL9")
+filtered_genes_down <- c("CHI3L1", "POSTN", "FTH1", "RPS4Y1", "TIMP1", "MT-CO3")
+filtered_genes_up <- c("MT2A", "IFI27")
 
-fig4c_S1NR <- volcano_plot(cluster, comp, filtered_genes)
+
+volcano_plot <- function(cluster, comp, filtered_genes_down, filtered_genes_up) {
+
+  labels <- c(
+    "UPP" = "UPP",
+    "UP" = "UP",
+    "0" = "0",
+    "DW" = "DW",
+    "DWW" = "DWW"
+  )
+
+  de_data2 <- de_data[de_data$cluster == cluster &
+                        de_data$annotation == 'annotation_intermediate' &
+                        de_data$comp == comp &
+                        de_data$sign %in% names(labels), c("p_val", "avg_log2FC", "sign", "comp", "gene")]
+
+  response <- subset(de_data2, comp == comp, select = c("avg_log2FC", "p_val", "gene", "sign"))
+
+  if (cluster != "IDA macrophages") {
+    fig <- ggplot(data = response, aes(x = avg_log2FC, y = -log10(p_val), col = sign)) +
+      geom_point(size = 1) +
+      scale_color_manual(values = colors_volcano, labels = labels) +
+      theme_classic() +
+      theme(text = element_text(family = "Helvetica")) +
+      guides(color = guide_legend(override.aes = list(shape = 1))) +
+      theme(legend.position = "none") +
+      scale_y_continuous(breaks = c(seq(0, 30, 5)), limits = c(0, 30))
+  } else {
+    fig <- ggplot(data = response, aes(x = avg_log2FC, y = -log10(p_val), col = sign)) +
+      geom_point(size = 1) +
+      scale_color_manual(values = colors_volcano, labels = labels) +
+      theme_classic() +
+      theme(text = element_text(family = "Helvetica")) +
+      guides(color = guide_legend(override.aes = list(shape = 1))) +
+      theme(legend.position = "none") +
+      scale_x_continuous(breaks = c(seq(-3, 3, 1)), limits = c(-3, 3))
+  }
+
+
+
+  filtered_data <- response[response$gene %in% filtered_genes_down, ]
+  filtered_data2 <- response[response$gene %in% filtered_genes_up, ]
+
+  fig <- fig+ geom_label_repel(data = filtered_data, aes(label = gene, group = gene, col = sign), size = 8/.pt,
+                               segment.color = "black",
+                               # fill = colors_volcano[filtered_data$sign],
+                               # color = "white",
+                               # segment.color = "black",
+                               fontface = 'bold',
+                               # box.padding = unit(0.2, "lines"),
+                               # point.padding = unit(0.5, "lines"),
+                               position = position_nudge_repel(x = 0, y = 2)) +
+    geom_label_repel(data = filtered_data2, aes(label = gene, group = gene, col = sign), size = 8/.pt,
+                     segment.color = "black",
+                     # fill = colors_volcano[filtered_data$sign],
+                     # color = "white",
+                     # segment.color = "black",
+                     fontface = 'bold',
+                     # box.padding = unit(0.2, "lines"),
+                     # point.padding = unit(0.5, "lines"),
+                     position = position_nudge_repel(x = 0, y = 1)) +
+    theme(
+      plot.title = element_blank(),
+      axis.text = element_blank(),
+      axis.title.x = element_blank(),
+      axis.title.y = element_blank(),
+      axis.line = element_line(linewidth = 0.5),
+      axis.ticks.length = unit(0.1, "cm")
+
+    )
+
+  return(fig)
+}
+
+fig4c_S1NR <- volcano_plot(cluster, comp, filtered_genes_down, filtered_genes_up)
 print(fig4c_S1NR)
 
 save_sizes(plot =fig4c_S1NR , filename = 'fig4c_S1NR', device = 'jpeg')
@@ -110,12 +255,84 @@ save_sizes(plot = fig4c_S1NR, filename = 'fig4c_S1NR', device = 'pdf')
 
 cluster <- "S2"
 comp <- "w0R_vs_POSTR"
-filtered_genes <- c("CHI3L1", "OSMR", "CXCL1", "MX1", "C1R",
-                    "PDLIM4", "CST3", "IL15RA", "VIM", "COL6A2", "TIMP1",
-                    "IGFBP7", "IFI6", "CFD", "HMGB1", "MALAT1",
-                    "EGR1", "RPL39", "FOS", "TXNIP", "H3F3B", "FOSB", "IGFBP3", "RPL34")
+filtered_genes_down <- c("HMGB1", "EGR1", "IGFBP3", "HIF1A", "ISG15", "SOCS1", "OSMR")
+filtered_genes_up <- c("CHI3LI", "STAT1", "IL7R", "IL15RA")
 
-fig4c_S2R <- volcano_plot(cluster, comp, filtered_genes)
+
+volcano_plot <- function(cluster, comp, filtered_genes_down, filtered_genes_up) {
+
+  labels <- c(
+    "UPP" = "UPP",
+    "UP" = "UP",
+    "0" = "0",
+    "DW" = "DW",
+    "DWW" = "DWW"
+  )
+
+  de_data2 <- de_data[de_data$cluster == cluster &
+                        de_data$annotation == 'annotation_intermediate' &
+                        de_data$comp == comp &
+                        de_data$sign %in% names(labels), c("p_val", "avg_log2FC", "sign", "comp", "gene")]
+
+  response <- subset(de_data2, comp == comp, select = c("avg_log2FC", "p_val", "gene", "sign"))
+
+  if (cluster != "IDA macrophages") {
+    fig <- ggplot(data = response, aes(x = avg_log2FC, y = -log10(p_val), col = sign)) +
+      geom_point(size = 1) +
+      scale_color_manual(values = colors_volcano, labels = labels) +
+      theme_classic() +
+      theme(text = element_text(family = "Helvetica")) +
+      guides(color = guide_legend(override.aes = list(shape = 1))) +
+      theme(legend.position = "none") +
+      scale_y_continuous(breaks = c(seq(0, 30, 5)), limits = c(0, 30))
+  } else {
+    fig <- ggplot(data = response, aes(x = avg_log2FC, y = -log10(p_val), col = sign)) +
+      geom_point(size = 1) +
+      scale_color_manual(values = colors_volcano, labels = labels) +
+      theme_classic() +
+      theme(text = element_text(family = "Helvetica")) +
+      guides(color = guide_legend(override.aes = list(shape = 1))) +
+      theme(legend.position = "none") +
+      scale_x_continuous(breaks = c(seq(-3, 3, 1)), limits = c(-3, 3))
+  }
+
+
+
+  filtered_data <- response[response$gene %in% filtered_genes_down, ]
+  filtered_data2 <- response[response$gene %in% filtered_genes_up, ]
+
+  fig <- fig+ geom_label_repel(data = filtered_data, aes(label = gene, group = gene, col = sign), size = 8/.pt,
+                               segment.color = "black",
+                               # fill = colors_volcano[filtered_data$sign],
+                               # color = "white",
+                               # segment.color = "black",
+                               fontface = 'bold',
+                               # box.padding = unit(0.2, "lines"),
+                               # point.padding = unit(0.5, "lines"),
+                               position = position_nudge_repel(x = 0, y = 2)) +
+    geom_label_repel(data = filtered_data2, aes(label = gene, group = gene, col = sign), size = 8/.pt,
+                     segment.color = "black",
+                     # fill = colors_volcano[filtered_data$sign],
+                     # color = "white",
+                     # segment.color = "black",
+                     fontface = 'bold',
+                     # box.padding = unit(0.2, "lines"),
+                     # point.padding = unit(0.5, "lines"),
+                     position = position_nudge_repel(x = 0, y = 1)) +
+    theme(
+      plot.title = element_blank(),
+      axis.text = element_blank(),
+      axis.title.x = element_blank(),
+      axis.title.y = element_blank(),
+      axis.line = element_line(linewidth = 0.5),
+      axis.ticks.length = unit(0.1, "cm")
+
+    )
+
+  return(fig)
+}
+
+fig4c_S2R <- volcano_plot(cluster, comp, filtered_genes_down, filtered_genes_up)
 print(fig4c_S2R)
 
 save_sizes(plot =fig4c_S2R , filename = 'fig4c_S2R', device = 'jpeg')
@@ -127,12 +344,83 @@ save_sizes(plot = fig4c_S2R, filename = 'fig4c_S2R', device = 'pdf')
 
 cluster <- "S2"
 comp <- "w0NR_vs_POSTNR"
-filtered_genes <- c("PLCG2", "FTH1", "TMEM176A", "RPS8", "PFN1",
-                    "RPL11", "VIM", "CXCL14", "IFITM3", "TPI1", "GBP3",
-                    "GBP1", "MT-ND3", "MT-CO3", "MT-ND1", "MT-ATP6",
-                    "MT-CO2", "MT-CYB", "MTRNR2L8", "MT-CO1", "MT-ND4")
+filtered_genes_down <- c("PLCG2", "FTH1", "TMEM176A", "CXCL14")
+filtered_genes_up <- c("GBP3", "GBP1", "MT-ND3", "MT-CO3")
 
-fig4c_S2NR <- volcano_plot(cluster, comp, filtered_genes)
+volcano_plot <- function(cluster, comp, filtered_genes_down, filtered_genes_up) {
+
+  labels <- c(
+    "UPP" = "UPP",
+    "UP" = "UP",
+    "0" = "0",
+    "DW" = "DW",
+    "DWW" = "DWW"
+  )
+
+  de_data2 <- de_data[de_data$cluster == cluster &
+                        de_data$annotation == 'annotation_intermediate' &
+                        de_data$comp == comp &
+                        de_data$sign %in% names(labels), c("p_val", "avg_log2FC", "sign", "comp", "gene")]
+
+  response <- subset(de_data2, comp == comp, select = c("avg_log2FC", "p_val", "gene", "sign"))
+
+  if (cluster != "IDA macrophages") {
+    fig <- ggplot(data = response, aes(x = avg_log2FC, y = -log10(p_val), col = sign)) +
+      geom_point(size = 1) +
+      scale_color_manual(values = colors_volcano, labels = labels) +
+      theme_classic() +
+      theme(text = element_text(family = "Helvetica")) +
+      guides(color = guide_legend(override.aes = list(shape = 1))) +
+      theme(legend.position = "none") +
+      scale_y_continuous(breaks = c(seq(0, 30, 5)), limits = c(0, 30))
+  } else {
+    fig <- ggplot(data = response, aes(x = avg_log2FC, y = -log10(p_val), col = sign)) +
+      geom_point(size = 1) +
+      scale_color_manual(values = colors_volcano, labels = labels) +
+      theme_classic() +
+      theme(text = element_text(family = "Helvetica")) +
+      guides(color = guide_legend(override.aes = list(shape = 1))) +
+      theme(legend.position = "none") +
+      scale_x_continuous(breaks = c(seq(-3, 3, 1)), limits = c(-3, 3))
+  }
+
+
+
+  filtered_data <- response[response$gene %in% filtered_genes_down, ]
+  filtered_data2 <- response[response$gene %in% filtered_genes_up, ]
+
+  fig <- fig+ geom_label_repel(data = filtered_data, aes(label = gene, group = gene, col = sign), size = 8/.pt,
+                               segment.color = "black",
+                               # fill = colors_volcano[filtered_data$sign],
+                               # color = "white",
+                               # segment.color = "black",
+                               fontface = 'bold',
+                               # box.padding = unit(0.2, "lines"),
+                               # point.padding = unit(0.5, "lines"),
+                               position = position_nudge_repel(x = 0, y = 2)) +
+    geom_label_repel(data = filtered_data2, aes(label = gene, group = gene, col = sign), size = 8/.pt,
+                     segment.color = "black",
+                     # fill = colors_volcano[filtered_data$sign],
+                     # color = "white",
+                     # segment.color = "black",
+                     fontface = 'bold',
+                     # box.padding = unit(0.2, "lines"),
+                     # point.padding = unit(0.5, "lines"),
+                     position = position_nudge_repel(x = 0, y = 1)) +
+    theme(
+      plot.title = element_blank(),
+      axis.text = element_blank(),
+      axis.title.x = element_blank(),
+      axis.title.y = element_blank(),
+      axis.line = element_line(linewidth = 0.5),
+      axis.ticks.length = unit(0.1, "cm")
+
+    )
+
+  return(fig)
+}
+
+fig4c_S2NR <- volcano_plot(cluster, comp, filtered_genes_down, filtered_genes_up )
 print(fig4c_S2NR)
 
 save_sizes(plot =fig4c_S2NR , filename = 'fig4c_S2NR', device = 'jpeg')
@@ -144,12 +432,84 @@ save_sizes(plot = fig4c_S2NR, filename = 'fig4c_S2NR', device = 'pdf')
 
 cluster <- "S3"
 comp <- "w0R_vs_POSTR"
-filtered_genes <- c("ADAMDEC1", "ABCA8", "CXCL12", "TXNIP", "SELENOP",
-                    "IGFBP3", "OGN", "FXYD1", "RPL30", "RPS28", "RPS21",
-                    "CHI3L1", "CCL19", "CXCL12", "CXCL6", "CXCL2",
-                    "CXCL14", "CXCL8", "FAP", "CLU", "TIMP1", "CXCL1", "CHRDL2", "RARRES1", "FTH1", "IGFBP4")
+filtered_genes_down <- c("ADAMDEC1", "ABCA8", "CXCL12", "SELENOP",
+                    "HIF1A", "ISG15", "STAT1", "IL15RA")
+filtereD_genes_up <- c("CHI3L1", "CCL19")
 
-fig4c_S3R <- volcano_plot(cluster, comp, filtered_genes)
+
+volcano_plot <- function(cluster, comp, filtered_genes_down, filtered_genes_up) {
+
+  labels <- c(
+    "UPP" = "UPP",
+    "UP" = "UP",
+    "0" = "0",
+    "DW" = "DW",
+    "DWW" = "DWW"
+  )
+
+  de_data2 <- de_data[de_data$cluster == cluster &
+                        de_data$annotation == 'annotation_intermediate' &
+                        de_data$comp == comp &
+                        de_data$sign %in% names(labels), c("p_val", "avg_log2FC", "sign", "comp", "gene")]
+
+  response <- subset(de_data2, comp == comp, select = c("avg_log2FC", "p_val", "gene", "sign"))
+
+  if (cluster != "IDA macrophages") {
+    fig <- ggplot(data = response, aes(x = avg_log2FC, y = -log10(p_val), col = sign)) +
+      geom_point(size = 1) +
+      scale_color_manual(values = colors_volcano, labels = labels) +
+      theme_classic() +
+      theme(text = element_text(family = "Helvetica")) +
+      guides(color = guide_legend(override.aes = list(shape = 1))) +
+      theme(legend.position = "none") +
+      scale_y_continuous(breaks = c(seq(0, 30, 5)), limits = c(0, 30))
+  } else {
+    fig <- ggplot(data = response, aes(x = avg_log2FC, y = -log10(p_val), col = sign)) +
+      geom_point(size = 1) +
+      scale_color_manual(values = colors_volcano, labels = labels) +
+      theme_classic() +
+      theme(text = element_text(family = "Helvetica")) +
+      guides(color = guide_legend(override.aes = list(shape = 1))) +
+      theme(legend.position = "none") +
+      scale_x_continuous(breaks = c(seq(-3, 3, 1)), limits = c(-3, 3))
+  }
+
+
+
+  filtered_data <- response[response$gene %in% filtered_genes_down, ]
+  filtered_data2 <- response[response$gene %in% filtered_genes_up, ]
+
+  fig <- fig+ geom_label_repel(data = filtered_data, aes(label = gene, group = gene, col = sign), size = 8/.pt,
+                               segment.color = "black",
+                               # fill = colors_volcano[filtered_data$sign],
+                               # color = "white",
+                               # segment.color = "black",
+                               fontface = 'bold',
+                               # box.padding = unit(0.2, "lines"),
+                               # point.padding = unit(0.5, "lines"),
+                               position = position_nudge_repel(x = 0, y = 2)) +
+    geom_label_repel(data = filtered_data2, aes(label = gene, group = gene, col = sign), size = 8/.pt,
+                     segment.color = "black",
+                     # fill = colors_volcano[filtered_data$sign],
+                     # color = "white",
+                     # segment.color = "black",
+                     fontface = 'bold',
+                     # box.padding = unit(0.2, "lines"),
+                     # point.padding = unit(0.5, "lines"),
+                     position = position_nudge_repel(x = 0, y = 1)) +
+    theme(
+      plot.title = element_blank(),
+      axis.text = element_blank(),
+      axis.title.x = element_blank(),
+      axis.title.y = element_blank(),
+      axis.line = element_line(linewidth = 0.5),
+      axis.ticks.length = unit(0.1, "cm")
+
+    )
+
+  return(fig)
+}
+fig4c_S3R <- volcano_plot(cluster, comp, filtered_genes_down, filtered_genes_up)
 print(fig4c_S3R)
 
 save_sizes(plot =fig4c_S3R , filename = 'fig4c_S3R', device = 'jpeg')
@@ -161,13 +521,83 @@ save_sizes(plot = fig4c_S3R, filename = 'fig4c_S3R', device = 'pdf')
 
 cluster <- "S3"
 comp <- "w0NR_vs_POSTNR"
-filtered_genes <- c("CXCL14", "PLCG2", "RPS4Y1", "PTMA", "TMEM176A",
-                    "SERF2", "RARRES2", "RPL8", "RPL12", "TMEM14C", "LGALS3",
-                    "CD99", "SOCS3", "MT-CO3", "MT-CO2", "MT-ATP6",
-                    "MT-CO2", "MT-CYB", "MTRNR2L8", "MT-CO1", "MT-CO1", "TPT1", "MT-ATP6", "MT-CYB", "RPL9",
-                    "RPL21", "CD63", "EMILIN1", "RPS27")
+filtered_genes_down <- c("CXCL14", "PLCG2", "RPS4Y1")
+filtered_genes_up <- c("SOCS3", "MT-CO3", "MT-ATP6", "RPL9")
 
-fig4c_S3NR <- volcano_plot(cluster, comp, filtered_genes)
+volcano_plot <- function(cluster, comp, filtered_genes_down, filtered_genes_up) {
+
+  labels <- c(
+    "UPP" = "UPP",
+    "UP" = "UP",
+    "0" = "0",
+    "DW" = "DW",
+    "DWW" = "DWW"
+  )
+
+  de_data2 <- de_data[de_data$cluster == cluster &
+                        de_data$annotation == 'annotation_intermediate' &
+                        de_data$comp == comp &
+                        de_data$sign %in% names(labels), c("p_val", "avg_log2FC", "sign", "comp", "gene")]
+
+  response <- subset(de_data2, comp == comp, select = c("avg_log2FC", "p_val", "gene", "sign"))
+
+  if (cluster != "IDA macrophages") {
+    fig <- ggplot(data = response, aes(x = avg_log2FC, y = -log10(p_val), col = sign)) +
+      geom_point(size = 1) +
+      scale_color_manual(values = colors_volcano, labels = labels) +
+      theme_classic() +
+      theme(text = element_text(family = "Helvetica")) +
+      guides(color = guide_legend(override.aes = list(shape = 1))) +
+      theme(legend.position = "none") +
+      scale_y_continuous(breaks = c(seq(0, 30, 5)), limits = c(0, 30))
+  } else {
+    fig <- ggplot(data = response, aes(x = avg_log2FC, y = -log10(p_val), col = sign)) +
+      geom_point(size = 1) +
+      scale_color_manual(values = colors_volcano, labels = labels) +
+      theme_classic() +
+      theme(text = element_text(family = "Helvetica")) +
+      guides(color = guide_legend(override.aes = list(shape = 1))) +
+      theme(legend.position = "none") +
+      scale_x_continuous(breaks = c(seq(-3, 3, 1)), limits = c(-3, 3))
+  }
+
+
+
+  filtered_data <- response[response$gene %in% filtered_genes_down, ]
+  filtered_data2 <- response[response$gene %in% filtered_genes_up, ]
+
+  fig <- fig+ geom_label_repel(data = filtered_data, aes(label = gene, group = gene, col = sign), size = 8/.pt,
+                               segment.color = "black",
+                               # fill = colors_volcano[filtered_data$sign],
+                               # color = "white",
+                               # segment.color = "black",
+                               fontface = 'bold',
+                               # box.padding = unit(0.2, "lines"),
+                               # point.padding = unit(0.5, "lines"),
+                               position = position_nudge_repel(x = 0, y = 2)) +
+    geom_label_repel(data = filtered_data2, aes(label = gene, group = gene, col = sign), size = 8/.pt,
+                     segment.color = "black",
+                     # fill = colors_volcano[filtered_data$sign],
+                     # color = "white",
+                     # segment.color = "black",
+                     fontface = 'bold',
+                     # box.padding = unit(0.2, "lines"),
+                     # point.padding = unit(0.5, "lines"),
+                     position = position_nudge_repel(x = 0, y = 1)) +
+    theme(
+      plot.title = element_blank(),
+      axis.text = element_blank(),
+      axis.title.x = element_blank(),
+      axis.title.y = element_blank(),
+      axis.line = element_line(linewidth = 0.5),
+      axis.ticks.length = unit(0.1, "cm")
+
+    )
+
+  return(fig)
+}
+
+fig4c_S3NR <- volcano_plot(cluster, comp, filtered_genes_down, filtered_genes_up)
 print(fig4c_S3NR)
 
 save_sizes(plot =fig4c_S3NR , filename = 'fig4c_S3NR', device = 'jpeg')
@@ -180,11 +610,82 @@ save_sizes(plot = fig4c_S3NR, filename = 'fig4c_S3NR', device = 'pdf')
 
 cluster <- "Inflammatory_fibroblasts"
 comp <- "w0R_vs_POSTR"
-filtered_genes <- c("CHI3L1", "PDPN", "PLAU", "ACTG1", "RRBP1",
-                    "IGFBP4", "BGN", "ADM", "COL6A2", "FBLN2", "HLA-C",
-                    "TMEM165", "YIPF2")
+filtered_genes_up <- c("CHI3L1", "PDPN", "PLAU")
 
-fig4c_IFR <- volcano_plot(cluster, comp, filtered_genes)
+volcano_plot <- function(cluster, comp, filtered_genes_down, filtered_genes_up) {
+
+  labels <- c(
+    "UPP" = "UPP",
+    "UP" = "UP",
+    "0" = "0",
+    "DW" = "DW",
+    "DWW" = "DWW"
+  )
+
+  de_data2 <- de_data[de_data$cluster == cluster &
+                        de_data$annotation == 'annotation_intermediate' &
+                        de_data$comp == comp &
+                        de_data$sign %in% names(labels), c("p_val", "avg_log2FC", "sign", "comp", "gene")]
+
+  response <- subset(de_data2, comp == comp, select = c("avg_log2FC", "p_val", "gene", "sign"))
+
+  if (cluster != "IDA macrophages") {
+    fig <- ggplot(data = response, aes(x = avg_log2FC, y = -log10(p_val), col = sign)) +
+      geom_point(size = 1) +
+      scale_color_manual(values = colors_volcano, labels = labels) +
+      theme_classic() +
+      theme(text = element_text(family = "Helvetica")) +
+      guides(color = guide_legend(override.aes = list(shape = 1))) +
+      theme(legend.position = "none") +
+      scale_y_continuous(breaks = c(seq(0, 30, 5)), limits = c(0, 30))
+  } else {
+    fig <- ggplot(data = response, aes(x = avg_log2FC, y = -log10(p_val), col = sign)) +
+      geom_point(size = 1) +
+      scale_color_manual(values = colors_volcano, labels = labels) +
+      theme_classic() +
+      theme(text = element_text(family = "Helvetica")) +
+      guides(color = guide_legend(override.aes = list(shape = 1))) +
+      theme(legend.position = "none") +
+      scale_x_continuous(breaks = c(seq(-3, 3, 1)), limits = c(-3, 3))
+  }
+
+
+
+  filtered_data <- response[response$gene %in% filtered_genes_down, ]
+  filtered_data2 <- response[response$gene %in% filtered_genes_up, ]
+
+  fig <- fig+ geom_label_repel(data = filtered_data, aes(label = gene, group = gene, col = sign), size = 8/.pt,
+                               segment.color = "black",
+                               # fill = colors_volcano[filtered_data$sign],
+                               # color = "white",
+                               # segment.color = "black",
+                               fontface = 'bold',
+                               # box.padding = unit(0.2, "lines"),
+                               # point.padding = unit(0.5, "lines"),
+                               position = position_nudge_repel(x = 0, y = 2)) +
+    geom_label_repel(data = filtered_data2, aes(label = gene, group = gene, col = sign), size = 8/.pt,
+                     segment.color = "black",
+                     # fill = colors_volcano[filtered_data$sign],
+                     # color = "white",
+                     # segment.color = "black",
+                     fontface = 'bold',
+                     # box.padding = unit(0.2, "lines"),
+                     # point.padding = unit(0.5, "lines"),
+                     position = position_nudge_repel(x = 0, y = 1)) +
+    theme(
+      plot.title = element_blank(),
+      axis.text = element_blank(),
+      axis.title.x = element_blank(),
+      axis.title.y = element_blank(),
+      axis.line = element_line(linewidth = 0.5),
+      axis.ticks.length = unit(0.1, "cm")
+
+    )
+
+  return(fig)
+}
+
+fig4c_IFR <- volcano_plot(cluster, comp, filtered_genes_up)
 print(fig4c_IFR)
 
 save_sizes(plot =fig4c_IFR , filename = 'fig4c_IFR', device = 'jpeg')
@@ -196,11 +697,83 @@ save_sizes(plot = fig4c_IFR, filename = 'fig4c_IFR', device = 'pdf')
 
 cluster <- "Inflammatory_fibroblasts"
 comp <- "w0NR_vs_POSTNR"
-filtered_genes <- c("PLCG2", "RPS26", "TPI1", "RPL19", "RPL11",
-                    "FTH1", "HLA-B", "MT2A", "S100A11", "FAU", "TNFRSF12A",
-                    "IL32", "TIMP1", "MT-ND1", "MT-CO3", "RPL10A",
-                    "TPT1", "MT-ND4", "MT-ATP6", "RPS16", "SOCS3", "CXCL13", "IER2")
-fig4c_IFNR <- volcano_plot(cluster, comp, filtered_genes)
+filtered_genes_down <- c("PLCG2", "IL32", "MT2A", "TNFRSF12A")
+filtered_genes_up <- c("MT-ND1", "MT-CO3", "SOCS3", "CXCL13")
+
+volcano_plot <- function(cluster, comp, filtered_genes_down, filtered_genes_up) {
+
+  labels <- c(
+    "UPP" = "UPP",
+    "UP" = "UP",
+    "0" = "0",
+    "DW" = "DW",
+    "DWW" = "DWW"
+  )
+
+  de_data2 <- de_data[de_data$cluster == cluster &
+                        de_data$annotation == 'annotation_intermediate' &
+                        de_data$comp == comp &
+                        de_data$sign %in% names(labels), c("p_val", "avg_log2FC", "sign", "comp", "gene")]
+
+  response <- subset(de_data2, comp == comp, select = c("avg_log2FC", "p_val", "gene", "sign"))
+
+  if (cluster != "IDA macrophages") {
+    fig <- ggplot(data = response, aes(x = avg_log2FC, y = -log10(p_val), col = sign)) +
+      geom_point(size = 1) +
+      scale_color_manual(values = colors_volcano, labels = labels) +
+      theme_classic() +
+      theme(text = element_text(family = "Helvetica")) +
+      guides(color = guide_legend(override.aes = list(shape = 1))) +
+      theme(legend.position = "none") +
+      scale_y_continuous(breaks = c(seq(0, 30, 5)), limits = c(0, 30))
+  } else {
+    fig <- ggplot(data = response, aes(x = avg_log2FC, y = -log10(p_val), col = sign)) +
+      geom_point(size = 1) +
+      scale_color_manual(values = colors_volcano, labels = labels) +
+      theme_classic() +
+      theme(text = element_text(family = "Helvetica")) +
+      guides(color = guide_legend(override.aes = list(shape = 1))) +
+      theme(legend.position = "none") +
+      scale_x_continuous(breaks = c(seq(-3, 3, 1)), limits = c(-3, 3))
+  }
+
+
+
+  filtered_data <- response[response$gene %in% filtered_genes_down, ]
+  filtered_data2 <- response[response$gene %in% filtered_genes_up, ]
+
+  fig <- fig+ geom_label_repel(data = filtered_data, aes(label = gene, group = gene, col = sign), size = 8/.pt,
+                               segment.color = "black",
+                               # fill = colors_volcano[filtered_data$sign],
+                               # color = "white",
+                               # segment.color = "black",
+                               fontface = 'bold',
+                               # box.padding = unit(0.2, "lines"),
+                               # point.padding = unit(0.5, "lines"),
+                               position = position_nudge_repel(x = 0, y = 2)) +
+    geom_label_repel(data = filtered_data2, aes(label = gene, group = gene, col = sign), size = 8/.pt,
+                     segment.color = "black",
+                     # fill = colors_volcano[filtered_data$sign],
+                     # color = "white",
+                     # segment.color = "black",
+                     fontface = 'bold',
+                     # box.padding = unit(0.2, "lines"),
+                     # point.padding = unit(0.5, "lines"),
+                     position = position_nudge_repel(x = 0, y = 1)) +
+    theme(
+      plot.title = element_blank(),
+      axis.text = element_blank(),
+      axis.title.x = element_blank(),
+      axis.title.y = element_blank(),
+      axis.line = element_line(linewidth = 0.5),
+      axis.ticks.length = unit(0.1, "cm")
+
+    )
+
+  return(fig)
+}
+
+fig4c_IFNR <- volcano_plot(cluster, comp, filtered_genes_down, filtered_genes_up)
 print(fig4c_IFNR)
 
 save_sizes(plot =fig4c_IFNR , filename = 'fig4c_IFNR', device = 'jpeg')
