@@ -369,21 +369,21 @@ volcano_plot <- function(cluster, comp, filtered_genes_down, filtered_genes_up) 
   filtered_data <- response[response$gene %in% filtered_genes_down, ]
   filtered_data2 <- response[response$gene %in% filtered_genes_up, ]
 
-  fig <- fig+ geom_label_repel(data = filtered_data, aes(label = gene, group = gene, col = sign), size = 10/.pt,
+  fig <- fig+ geom_label_repel(data = filtered_data, aes(label = gene, group = gene, col = sign), size = 8/.pt,
                                segment.color = "black",
                                # fill = colors_volcano[filtered_data$sign],
                                # color = "white",
                                # segment.color = "black",
-                               # fontface = 'bold',
+                               fontface = 'bold',
                                # box.padding = unit(0.2, "lines"),
                                # point.padding = unit(0.5, "lines"),
-                               position = position_nudge_repel(x = 0, y = 3)) +
-    geom_label_repel(data = filtered_data2, aes(label = gene, group = gene, col = sign), size = 10/.pt,
+                               position = position_nudge_repel(x = 0, y = 2)) +
+    geom_label_repel(data = filtered_data2, aes(label = gene, group = gene, col = sign), size = 8/.pt,
                      segment.color = "black",
                      # fill = colors_volcano[filtered_data$sign],
                      # color = "white",
                      # segment.color = "black",
-                     # fontface = 'bold',
+                     fontface = 'bold',
                      # box.padding = unit(0.2, "lines"),
                      # point.padding = unit(0.5, "lines"),
                      position = position_nudge_repel(x = 0, y = 1)) +
