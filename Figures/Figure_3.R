@@ -121,24 +121,26 @@ volcano_plot <- function(cluster, comp, filtered_genes_down, filtered_genes_up) 
   filtered_data <- response[response$gene %in% filtered_genes_down, ]
   filtered_data2 <- response[response$gene %in% filtered_genes_up, ]
 
-  fig <- fig+ geom_label_repel(data = filtered_data, aes(label = gene, group = gene, col = sign), size = 8/.pt,
+  fig <- fig+ geom_point(data = filtered_data,shape = 21,color = "black", fill = "#911704" ) +
+    geom_point(data = filtered_data2,shape = 21, color = "black", fill = "#376D38") +
+    geom_label_repel(data = filtered_data, aes(label = gene, group = gene, col = sign), size = 8/.pt,
                                segment.color = "black",
                                # fill = colors_volcano[filtered_data$sign],
                                # color = "white",
                                # segment.color = "black",
-                               fontface = 'bold',
+                               fontface = 'bold') +
                                # box.padding = unit(0.2, "lines"),
                                # point.padding = unit(0.5, "lines"),
-                               position = position_nudge_repel(x = 0, y = 2)) +
+                               # position = position_nudge_repel(x = 0, y = 2)) +
     geom_label_repel(data = filtered_data2, aes(label = gene, group = gene, col = sign), size = 8/.pt,
                      segment.color = "black",
                      # fill = colors_volcano[filtered_data$sign],
                      # color = "white",
                      # segment.color = "black",
-                     fontface = 'bold',
+                     fontface = 'bold')+
                      # box.padding = unit(0.2, "lines"),
                      # point.padding = unit(0.5, "lines"),
-                     position = position_nudge_repel(x = 0, y = 1)) +
+                     # position = position_nudge_repel(x = 0, y = 1))
     theme(
       plot.title = element_blank(),
       axis.text = element_blank(),
@@ -194,7 +196,8 @@ volcano_plot <- function(cluster, comp, filtered_genes_down, filtered_genes_up) 
       theme(text = element_text(family = "Helvetica")) +
       guides(color = guide_legend(override.aes = list(shape = 1))) +
       theme(legend.position = "none") +
-      scale_y_continuous(breaks = c(seq(0, 30, 5)), limits = c(0, 30))
+      scale_y_continuous(breaks = c(seq(0, 30, 5)), limits = c(0, 30)) +
+      scale_x_continuous(breaks = c(seq(-2, 3, 1)), limits = c(-2, 3))
   } else {
     fig <- ggplot(data = response, aes(x = avg_log2FC, y = -log10(p_val), col = sign)) +
       geom_point(size = 1) +
@@ -211,24 +214,26 @@ volcano_plot <- function(cluster, comp, filtered_genes_down, filtered_genes_up) 
   filtered_data <- response[response$gene %in% filtered_genes_down, ]
   filtered_data2 <- response[response$gene %in% filtered_genes_up, ]
 
-  fig <- fig+ geom_label_repel(data = filtered_data, aes(label = gene, group = gene, col = sign), size = 8/.pt,
-                               segment.color = "black",
-                               # fill = colors_volcano[filtered_data$sign],
-                               # color = "white",
-                               # segment.color = "black",
-                               fontface = 'bold',
-                               # box.padding = unit(0.2, "lines"),
-                               # point.padding = unit(0.5, "lines"),
-                               position = position_nudge_repel(x = 0, y = 2)) +
+  fig <- fig+ geom_point(data = filtered_data,shape = 21,color = "black", fill = "#911704" ) +
+    geom_point(data = filtered_data2,shape = 21, color = "black", fill = "#376D38") +
+    geom_label_repel(data = filtered_data, aes(label = gene, group = gene, col = sign), size = 8/.pt,
+                     segment.color = "black",
+                     # fill = colors_volcano[filtered_data$sign],
+                     # color = "white",
+                     # segment.color = "black",
+                     fontface = 'bold', max.overlaps = Inf) +
+    # box.padding = unit(0.2, "lines"),
+    # point.padding = unit(0.5, "lines"),
+    # position = position_nudge_repel(x = 0, y = 2)) +
     geom_label_repel(data = filtered_data2, aes(label = gene, group = gene, col = sign), size = 8/.pt,
                      segment.color = "black",
                      # fill = colors_volcano[filtered_data$sign],
                      # color = "white",
                      # segment.color = "black",
-                     fontface = 'bold',
-                     # box.padding = unit(0.2, "lines"),
-                     # point.padding = unit(0.5, "lines"),
-                     position = position_nudge_repel(x = 0, y = 1)) +
+                     fontface = 'bold', max.overlaps = Inf)+
+    # box.padding = unit(0.2, "lines"),
+    # point.padding = unit(0.5, "lines"),
+    # position = position_nudge_repel(x = 0, y = 1))
     theme(
       plot.title = element_blank(),
       axis.text = element_blank(),

@@ -95,30 +95,43 @@ final <- merge(filtered_p3, filtered_p4, by.y = "gene", all.x = TRUE, all.y  = T
 # Plot
 
 plot <- ggplot(data = final) +
-  geom_point(aes(x = paper_upp, y = non_responder_UPP), color = "red", size = 3) +
-  geom_point(aes(x = paper_dww, y = non_responder_DWW), color = "blue", size = 3) +
-  geom_label_repel(aes(label = gene, x = paper_upp, y = non_responder_UPP),
-                   box.padding = 0.5, size = 7, color = "black",
-                   nudge_y = 1, segment.size = 0.1,
-                   arrow = arrow(length = unit(0.01, "npc"), type = "closed", ends = "last")) +
-  geom_label_repel(data = final, aes(label = gene, x = paper_dww, y = non_responder_DWW),
-                   box.padding = 0.5, size = 7, color = "black",
-                   nudge_y = 1, segment.size = 0.1,
-                   arrow = arrow(length = unit(0.01, "npc"), type = "closed", ends = "last")) +
+  geom_point(aes(x = paper_upp, y = non_responder_UPP), color = "red", size = 1) +
+  geom_point(aes(x = paper_dww, y = non_responder_DWW), color = "blue", size = 1) +
   geom_vline(xintercept = 0, colour = "gray") +
   geom_hline(yintercept = 0, colour = "gray") +
-  labs(title = "Non-Responders", x = "log2FoldChange", y = "avg_log2FoldChange") +
+  geom_label_repel(aes(label = gene, x = paper_upp, y = non_responder_UPP),
+                   box.padding = 0.5, size = 2.5, color = "black",
+                   nudge_y = 0.01, segment.size = 0.1,
+                   arrow = arrow(length = unit(0.005, "npc"), type = "closed", ends = "last"), max.overlaps = Inf) +
+  geom_label_repel(data = final, aes(label = gene, x = paper_dww, y = non_responder_DWW),
+                   box.padding = 0.5, size = 2.5, color = "black",
+                   nudge_y = 0.01, segment.size = 0.1,
+                   arrow = arrow(length = unit(0.005, "npc"), type = "closed", ends = "last"), max.overlaps =  Inf) +
+
+  labs(x = "log2FoldChange", y = "avg_log2FoldChange") +
   theme_bw() +
   theme(
-    axis.text = element_text(size = 14),
-    axis.title = element_text(size = 16),
-    plot.title = element_text(size = 18)
+    axis.text = element_text(size = 6),
+    axis.title = element_text(size = 6)
   )
 
 
 print(plot)
+save_sizes(plot =plot , filename = '5E', device = 'jpeg')
+save_sizes(plot = plot, filename = '5E', device = 'tiff')
+save_sizes(plot = plot, filename = '5E', device = 'svg')
+save_sizes(plot = plot, filename = '5E', device = 'pdf')
 
 
+
+
+labs(title = "Responders", x = "log2FoldChange", y = "avg_log2FoldChange") +
+  theme_bw() +
+  theme(
+    axis.text = element_text(size = 14),       # Increase axis text size
+    axis.title = element_text(size = 16),      # Increase axis label size
+    plot.title = element_text(size = 18)       # Increase title size
+  )
 # Figure 4B --------------------------------------------------------------------
 
 #
