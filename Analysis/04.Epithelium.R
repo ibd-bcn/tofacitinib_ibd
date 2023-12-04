@@ -142,3 +142,296 @@ epi <- resolutions(epi,
 
 saveRDS(epi, file = 'Analysis/00_annotation_process/epi/epi_harmony_33_26/epi_filtered_33_26.RDS')
 
+#
+# Extra cleaning after analysis ------------------------------------------------
+#
+# Since epithelium has a less strict filter for MT genes, we have to make 5 rounds
+# of correction until we get the cells that have key information.
+#
+# 1rst
+#
+epi <- readRDS('Analysis/00_annotation_process/epi/epi_harmony_33_26/epi_filtered_33_26.RDS')
+DimPlot(epi, label=T)
+epi <- epi[,!(epi$RNA_snn_res.1.5 %in% c(27, 26, 28, 31))]
+
+counts <- epi@assays$RNA@counts
+pp <- which(Matrix::rowSums(counts)==0)
+length(pp)
+# 90
+xx <-setdiff(rownames(epi), names(pp))
+epi <- subset(epi, features = xx)
+epi
+# 24343 features across 9456 samples within 1 assay
+
+epi <- NormalizeData(epi)
+epi <- FindVariableFeatures(epi,selection.method = "vst", nfeatures = 2000)
+epi <- ScaleData(epi)
+epi <- RunPCA(epi, npcs = 100)
+
+PCS <- select_pcs(epi, 2)
+PCS2 <- select_pcs(epi, 1.6)
+ElbowPlot(epi, ndims = 100) +
+  geom_vline(xintercept = 50, linetype = 'dotted') +
+  geom_vline(xintercept = PCS) +
+  geom_vline(xintercept = PCS2, colour="#BB0000")+
+  annotate(geom="text", x=PCS, y=6, label= paste("sdev > 2; PCs =", PCS),
+           color="black")+
+  annotate(geom="text", x=PCS2, y=4, label= paste("sdev > 1.6; PCs =", PCS2),
+           color="#BB0000")+
+  labs(title = paste0('Tofacitinib - epi'))
+
+epi<- FindNeighbors(epi,  dims = 1:33, reduction = 'pca')
+epi<-RunUMAP(epi, dims=1:33, reduction = 'pca')
+
+DimPlot(epi, group.by = 'sample') +
+  labs(title = 'Tofacitinib 23 samples - 33PCs')
+
+epi <- RunHarmony(epi, group.by = 'sample', dims.use = 1:33)
+ElbowPlot(epi, ndims = 100, reduction = 'harmony') +
+  geom_vline(xintercept = 19, linetype = 2) +
+  geom_vline(xintercept = 36, linetype = 2) +
+  labs(title = paste0('Harmony - 33PCS'))
+epi<- FindNeighbors(epi, reduction = "harmony", dims = 1:36)
+epi<-RunUMAP(epi, dims=1:36, reduction= "harmony")
+
+DimPlot(epi, group.by = 'sample') + labs(title = 'epi - Harmony 33_36')
+
+setwd('Analysis/00_annotation_process/epi/')
+dir.create('epi_reanalysis_harmony_33_36')
+epi <- resolutions(epi,
+                   workingdir = 'epi_reanalysis_harmony_33_36',
+                   title = 'epi_reanalysis_harmony_33_36')
+saveRDS(epi, file = 'epi_reanalysis_harmony_33_36/epi_reanalysis_33_36.RDS')
+epi <- readRDS('Analysis/00_annotation_process/epi/epi_reanalysis_harmony_33_36/epi_reanalysis_33_36.RDS')
+
+
+#
+# 2nd time
+#
+epi <- readRDS('Analysis/00_annotation_process/epi/epi_reanalysis_harmony_33_36/epi_reanalysis_33_36.RDS')
+DimPlot(epi, label=T)
+epi <- epi[,!(epi$RNA_snn_res.1.5 %in% c(21, 23, 24, 25, 27))] #
+
+counts <- epi@assays$RNA@counts
+pp <- which(Matrix::rowSums(counts)==0)
+length(pp)
+# 226
+xx <-setdiff(rownames(epi), names(pp))
+epi <- subset(epi, features = xx)
+epi
+# 24117 features across 8867 samples within 1 assay
+
+epi <- NormalizeData(epi)
+epi <- FindVariableFeatures(epi,selection.method = "vst", nfeatures = 2000)
+epi <- ScaleData(epi)
+epi <- RunPCA(epi, npcs = 100)
+
+PCS <- select_pcs(epi, 2)
+PCS2 <- select_pcs(epi, 1.6)
+ElbowPlot(epi, ndims = 100) +
+  geom_vline(xintercept = 50, linetype = 'dotted') +
+  geom_vline(xintercept = PCS) +
+  geom_vline(xintercept = PCS2, colour="#BB0000")+
+  annotate(geom="text", x=PCS, y=6, label= paste("sdev > 2; PCs =", PCS),
+           color="black")+
+  annotate(geom="text", x=PCS2, y=4, label= paste("sdev > 1.6; PCs =", PCS2),
+           color="#BB0000")+
+  labs(title = paste0('Tofacitinib - epi'))
+
+epi<- FindNeighbors(epi,  dims = 1:50, reduction = 'pca')
+epi<-RunUMAP(epi, dims=1:50, reduction = 'pca')
+
+DimPlot(epi, group.by = 'sample') +
+  labs(title = 'Tofacitinib 23 samples - 50PCs')
+
+epi <- RunHarmony(epi, group.by = 'sample', dims.use = 1:50)
+ElbowPlot(epi, ndims = 100, reduction = 'harmony') +
+  geom_vline(xintercept = 19, linetype = 2) +
+  geom_vline(xintercept = 35, linetype = 2) +
+  labs(title = paste0('Harmony - 50PCS'))
+epi<- FindNeighbors(epi, reduction = "harmony", dims = 1:35)
+epi<-RunUMAP(epi, dims=1:35, reduction= "harmony")
+
+DimPlot(epi, group.by = 'sample') + labs(title = 'epi - Harmony 50_35')
+
+setwd('Analysis/00_annotation_process/epi/')
+dir.create('epi_reanalysis_2_harmony_50_35')
+epi <- resolutions(epi,
+                   workingdir = 'epi_reanalysis_2_harmony_50_35',
+                   title = 'epi_reanalysis_2_harmony_50_35')
+saveRDS(epi, file = 'epi_reanalysis_2_harmony_50_35/epi_reanalysis_2_50_35.RDS')
+
+#
+# 3rd time
+#
+epi <- readRDS('Analysis/00_annotation_process/epi/epi_reanalysis_2_harmony_50_35/epi_reanalysis_2_50_35.RDS')
+DimPlot(epi, label=T)
+epi <- epi[,!(epi$RNA_snn_res.1.5 %in% c(27))] #
+
+counts <- epi@assays$RNA@counts
+pp <- which(Matrix::rowSums(counts)==0)
+length(pp)
+# 23
+xx <-setdiff(rownames(epi), names(pp))
+epi <- subset(epi, features = xx)
+epi
+# 24094 features across 8844 samples within 1 assay
+
+epi <- NormalizeData(epi)
+epi <- FindVariableFeatures(epi,selection.method = "vst", nfeatures = 2000)
+epi <- ScaleData(epi)
+epi <- RunPCA(epi, npcs = 100)
+
+PCS <- select_pcs(epi, 2)
+PCS2 <- select_pcs(epi, 1.6)
+ElbowPlot(epi, ndims = 100) +
+  geom_vline(xintercept = 50, linetype = 'dotted') +
+  geom_vline(xintercept = PCS) +
+  geom_vline(xintercept = PCS2, colour="#BB0000")+
+  annotate(geom="text", x=PCS, y=6, label= paste("sdev > 2; PCs =", PCS),
+           color="black")+
+  annotate(geom="text", x=PCS2, y=4, label= paste("sdev > 1.6; PCs =", PCS2),
+           color="#BB0000")+
+  labs(title = paste0('Tofacitinib - epi'))
+
+epi<- FindNeighbors(epi,  dims = 1:50, reduction = 'pca')
+epi<-RunUMAP(epi, dims=1:50, reduction = 'pca')
+
+DimPlot(epi, group.by = 'sample') +
+  labs(title = 'Tofacitinib 23 samples - 50PCs')
+
+epi <- RunHarmony(epi, group.by = 'sample', dims.use = 1:50)
+ElbowPlot(epi, ndims = 100, reduction = 'harmony') +
+  geom_vline(xintercept = 19, linetype = 2) +
+  geom_vline(xintercept = 34, linetype = 2) +
+  labs(title = paste0('Harmony - 50PCS'))
+epi<- FindNeighbors(epi, reduction = "harmony", dims = 1:34)
+epi<-RunUMAP(epi, dims=1:34, reduction= "harmony")
+
+DimPlot(epi, group.by = 'sample') + labs(title = 'epi - Harmony 50_34')
+
+setwd('Analysis/00_annotation_process/epi/')
+dir.create('epi_reanalysis_3_harmony_50_34')
+epi <- resolutions(epi,
+                   workingdir = 'epi_reanalysis_3_harmony_50_34',
+                   title = 'epi_reanalysis_3_harmony_50_34')
+saveRDS(epi, file = 'epi_reanalysis_3_harmony_50_34/epi_reanalysis_3_50_34.RDS')
+epi <- readRDS('Analysis/00_annotation_process/epi/epi_reanalysis_3_harmony_50_34/epi_reanalysis_3_50_34.RDS')
+FeaturePlot(epi, features = c('KRT34', 'COL3A1', 'VWF', 'CHI3L1'), order =T, cols = c('lightgray', 'red'), )
+FeaturePlot(epi, features = c('COL3A1'), order =T, cols = c('lightgray', 'red'), pt.size = 3 )
+
+#
+# 4th time
+#
+epi <- readRDS('Analysis/00_annotation_process/epi/epi_reanalysis_3_harmony_50_34/epi_reanalysis_3_50_34.RDS')
+epi <- epi[,!(epi$RNA_snn_res.1.5 %in% c(25))]
+
+counts <- epi@assays$RNA@counts
+pp <- which(Matrix::rowSums(counts)==0)
+length(pp)
+# 19
+xx <-setdiff(rownames(epi), names(pp))
+epi <- subset(epi, features = xx)
+epi
+# 24075 features across 8827 samples within 1 assay
+
+epi <- NormalizeData(epi)
+epi <- FindVariableFeatures(epi,selection.method = "vst", nfeatures = 2000)
+epi <- ScaleData(epi)
+epi <- RunPCA(epi, npcs = 100)
+
+PCS <- select_pcs(epi, 2)
+PCS2 <- select_pcs(epi, 1.6)
+ElbowPlot(epi, ndims = 100) +
+  geom_vline(xintercept = 50, linetype = 'dotted') +
+  geom_vline(xintercept = PCS) +
+  geom_vline(xintercept = PCS2, colour="#BB0000")+
+  annotate(geom="text", x=PCS, y=6, label= paste("sdev > 2; PCs =", PCS),
+           color="black")+
+  annotate(geom="text", x=PCS2, y=4, label= paste("sdev > 1.6; PCs =", PCS2),
+           color="#BB0000")+
+  labs(title = paste0('Tofacitinib - epi'))
+
+epi<- FindNeighbors(epi,  dims = 1:50, reduction = 'pca')
+epi<-RunUMAP(epi, dims=1:50, reduction = 'pca')
+
+DimPlot(epi, group.by = 'sample') +
+  labs(title = 'Tofacitinib 23 samples - 50PCs')
+
+epi <- RunHarmony(epi, group.by = 'sample', dims.use = 1:50)
+ElbowPlot(epi, ndims = 100, reduction = 'harmony') +
+  geom_vline(xintercept = 19, linetype = 2) +
+  geom_vline(xintercept = 25, linetype = 2) +
+  labs(title = paste0('Harmony - 50PCS'))
+epi<- FindNeighbors(epi, reduction = "harmony", dims = 1:25)
+epi<-RunUMAP(epi, dims=1:25, reduction= "harmony")
+
+DimPlot(epi, group.by = 'sample') + labs(title = 'epi - Harmony 50_25')
+
+setwd('Analysis/00_annotation_process/epi/')
+dir.create('epi_reanalysis_4_harmony_50_25')
+epi <- resolutions(epi,
+                   workingdir = 'epi_reanalysis_4_harmony_50_25',
+                   title = 'epi_reanalysis_4_harmony_50_25')
+saveRDS(epi, file = 'epi_reanalysis_4_harmony_50_25/epi_reanalysis_4_50_25.RDS')
+epi <- readRDS('Analysis/00_annotation_process/epi/epi_reanalysis_4_harmony_50_25/epi_reanalysis_4_50_25.RDS')
+FeaturePlot(epi, features = c('KRT25', 'COL3A1', 'VWF', 'CHI3L1'), order =T, cols = c('lightgray', 'red'), )
+FeaturePlot(epi, features = c('COL3A1'), order =T, cols = c('lightgray', 'red'), pt.size = 3 )
+
+
+#
+# 5th time
+#
+
+epi <- readRDS('Analysis/00_annotation_process/epi/epi_reanalysis_4_harmony_50_25/epi_reanalysis_4_50_25.RDS')
+DimPlot(epi, label=T)
+epi <- epi[,!(epi$RNA_snn_res.1.5 %in% c(25))] #
+
+counts <- epi@assays$RNA@counts
+pp <- which(Matrix::rowSums(counts)==0)
+length(pp)
+# 8
+xx <-setdiff(rownames(epi), names(pp))
+epi <- subset(epi, features = xx)
+epi
+# 24067 features across 8788 samples within 1 assay
+
+epi <- NormalizeData(epi)
+epi <- FindVariableFeatures(epi,selection.method = "vst", nfeatures = 2000)
+epi <- ScaleData(epi)
+epi <- RunPCA(epi, npcs = 100)
+
+PCS <- select_pcs(epi, 2)
+PCS2 <- select_pcs(epi, 1.6)
+ElbowPlot(epi, ndims = 100) +
+  geom_vline(xintercept = 50, linetype = 'dotted') +
+  geom_vline(xintercept = PCS) +
+  geom_vline(xintercept = PCS2, colour="#BB0000")+
+  annotate(geom="text", x=PCS, y=6, label= paste("sdev > 2; PCs =", PCS),
+           color="black")+
+  annotate(geom="text", x=PCS2, y=4, label= paste("sdev > 1.6; PCs =", PCS2),
+           color="#BB0000")+
+  labs(title = paste0('Tofacitinib - epi'))
+
+epi<- FindNeighbors(epi,  dims = 1:28, reduction = 'pca')
+epi<-RunUMAP(epi, dims=1:28, reduction = 'pca')
+
+DimPlot(epi, group.by = 'sample') +
+  labs(title = 'Tofacitinib 23 samples - 28PCs')
+
+epi <- RunHarmony(epi, group.by = 'sample', dims.use = 1:28)
+ElbowPlot(epi, ndims = 100, reduction = 'harmony') +
+  geom_vline(xintercept = 19, linetype = 2) +
+  geom_vline(xintercept = 25, linetype = 2) +
+  labs(title = paste0('Harmony - 28PCS'))
+epi<- FindNeighbors(epi, reduction = "harmony", dims = 1:25)
+epi<-RunUMAP(epi, dims=1:25, reduction= "harmony")
+
+DimPlot(epi, group.by = 'sample') + labs(title = 'epi - Harmony 28_25')
+
+setwd('Analysis/00_annotation_process/epi/')
+dir.create('epi_reanalysis_5_harmony_28_25')
+epi <- resolutions(epi,
+                   workingdir = 'epi_reanalysis_5_harmony_28_25',
+                   title = 'epi_reanalysis_5_harmony_28_25')
+saveRDS(epi, file = 'epi_reanalysis_5_harmony_28_25/epi_reanalysis_5_28_25.RDS')
