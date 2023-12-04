@@ -133,8 +133,6 @@ for(i in 2:length(list_files)){
 #
 # Raw data exploration and filtering
 #
-dir.create('~/TOFA_data/20220222_TOFAS_23')
-setwd('~/TOFA_data/20220222_TOFAS_23')
 VlnPlot(seudata, features = c('percent.mt', 'nFeature_RNA'), group.by = 'sample')
 VlnPlot(seudata, features = c( 'nCount_RNA'), group.by = 'sample')
 
@@ -153,7 +151,7 @@ seudata
 
 meta <- seudata@meta.data
 meta$density <- get_density(meta$percent.mt, meta$nFeature_RNA, n = 100)
-jpeg(filename = '~/TOFA_data/20220222_TOFAS_23/density.jpeg', width = 1500, height = 1500, res = 150)
+jpeg(filename = 'Analysis/plots/density.jpeg', width = 1500, height = 1500, res = 150)
 ggplot(meta) +
   geom_point(aes(percent.mt, nFeature_RNA, color = density)) +
   geom_hline(yintercept = 100, color = 'gray', linetype="dashed") +
@@ -164,7 +162,7 @@ ggplot(meta) +
 dev.off()
 
 meta$density <- get_density(meta$nCount_RNA, meta$nFeature_RNA, n = 1000)
-jpeg(filename = '~/TOFA_data/20220222_TOFAS_23/feature_counts.jpeg', width = 1500, height = 1500, res = 150)
+jpeg(filename = 'Analysis/plots/feature_counts.jpeg', width = 1500, height = 1500, res = 150)
 ggplot(meta) +
   geom_point(aes(nCount_RNA, nFeature_RNA, color = density)) +
   scale_color_viridis() +
@@ -181,5 +179,5 @@ seudata_f <- seudata[, seudata$percent.mt < 50 & seudata$nFeature_RNA > 100]
 #
 message('Saving raw and filtered data')
 
-saveRDS(seudata_f,'~/TOFA_data/20220222_TOFAS_23/seudata_f.RDS')
-saveRDS(seudata,'~/TOFA_data/20220222_TOFAS_23/seudata.RDS')
+saveRDS(seudata_f,'Analysis/data/seudata_f.RDS')
+saveRDS(seudata,'Analysis/data/seudata.RDS')
