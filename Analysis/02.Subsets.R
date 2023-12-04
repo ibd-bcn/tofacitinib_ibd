@@ -105,8 +105,8 @@ cycling <- seudata_f[,seudata_f$RNA_snn_res.0.5 %in% subsets$cluster[subsets$sub
 
 saveRDS(tcells, file = 'Analysis/data/00_annotation_process/tcells.RDS')
 saveRDS(plasmas, file = 'Analysis/data/00_annotation_process/plasmas.RDS')
-saveRDS(tcells, file = 'Analysis/data/00_annotation_process/tcells.RDS')
-saveRDS(tcells, file = 'Analysis/data/00_annotation_process/tcells.RDS')
-saveRDS(tcells, file = 'Analysis/data/00_annotation_process/tcells.RDS')
-saveRDS(tcells, file = 'Analysis/data/00_annotation_process/tcells.RDS')
+saveRDS(myeloids, file = 'Analysis/data/00_annotation_process/myeloids.RDS')
+saveRDS(epi, file = 'Analysis/data/00_annotation_process/epi.RDS')
+saveRDS(stroma, file = 'Analysis/data/00_annotation_process/stroma.RDS')
+saveRDS(cycling, file = 'Analysis/data/00_annotation_process/cycling.RDS')
 
