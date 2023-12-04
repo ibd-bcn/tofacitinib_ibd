@@ -65,12 +65,12 @@ DimPlot(cycling, group.by = 'sample') + labs(title = 'Tofacitinib 23 samples - 2
 #
 # Louvain clustering without batch correction ----------------------------------
 #
-dir.create('Analysis/00_annotation_process/cycling')
-dir.create('Analysis/00_annotation_process/cycling_no_harmony')
+dir.create('Analysis/data/00_annotation_process/cycling')
+dir.create('Analysis/data/00_annotation_process/cycling_no_harmony')
 cycling <- resolutions(cycling,
-                       workingdir = 'Analysis/00_annotation_process/cycling_no_harmony',
+                       workingdir = 'Analysis/data/00_annotation_process/cycling_no_harmony',
                        title = 'cycling_no_harmony')
-saveRDS(cycling, file = 'Analysis/00_annotation_process/cycling/cycling_no_harmony/cycling_filtered_20.RDS')
+saveRDS(cycling, file = 'Analysis/data/00_annotation_process/cycling/cycling_no_harmony/cycling_filtered_20.RDS')
 
 #
 # Louvain clustering with batch correction -------------------------------------
@@ -85,9 +85,9 @@ cycling<-RunUMAP(cycling, dims=1:23, reduction= "harmony")
 DimPlot(cycling, group.by = 'sample') + labs(title = 'Tofacitinib 23 samples - cycling - Harmony 20-23')
 
 
-dir.create('Analysis/00_annotation_process/cycling_harmony_20_23/')
+dir.create('Analysis/data/00_annotation_process/cycling_harmony_20_23/')
 cycling <- resolutions(cycling,
-                       workingdir = 'Analysis/00_annotation_process/cycling_harmony_20_23',
+                       workingdir = 'Analysis/data/00_annotation_process/cycling_harmony_20_23',
                        title = 'Togehter_cycling_filt25_20_23')
-saveRDS(cycling, file = 'Analysis/00_annotation_process/cycling/cycling_harmony_20_23/cycling_filtered_20_23.RDS')
+saveRDS(cycling, file = 'Analysis/data/00_annotation_process/cycling/cycling_harmony_20_23/cycling_filtered_20_23.RDS')
 

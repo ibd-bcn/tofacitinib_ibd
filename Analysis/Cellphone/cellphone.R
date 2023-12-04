@@ -288,12 +288,12 @@ dummydata <- read10xCounts('/home/acorraliza/TOFA_data/output_cellranger/TOF-005
 geneinfo <- rowData(dummydata)
 
 #Read the subset objects
-epi <- readRDS('/home/acorraliza/TOFA_data/20220222_TOFAS_23/00_annotation_process/00_anotadas/epi.RDS')
-stroma <- readRDS('/home/acorraliza/TOFA_data/20220222_TOFAS_23/00_annotation_process/00_anotadas/stroma.RDS')
-plasmas <- readRDS('/home/acorraliza/TOFA_data/20220222_TOFAS_23/00_annotation_process/00_anotadas/plasmas.RDS')
-tcells <- readRDS('/home/acorraliza/TOFA_data/20220222_TOFAS_23/00_annotation_process/00_anotadas/tcells.RDS')
-cycling <- readRDS('/home/acorraliza/TOFA_data/20220222_TOFAS_23/00_annotation_process/00_anotadas/cycling.RDS')
-myeloids <- readRDS('/home/acorraliza/TOFA_data/20220222_TOFAS_23/00_annotation_process/00_anotadas/myeloids.RDS')
+epi <- readRDS('Analysis/data/00_annotation_process/00_anotadas/epi.RDS')
+stroma <- readRDS('Analysis/data/00_annotation_process/00_anotadas/stroma.RDS')
+plasmas <- readRDS('Analysis/data/00_annotation_process/00_anotadas/plasmas.RDS')
+tcells <- readRDS('Analysis/data/00_annotation_process/00_anotadas/tcells.RDS')
+cycling <- readRDS('Analysis/data/00_annotation_process/00_anotadas/cycling.RDS')
+myeloids <- readRDS('Analysis/data/00_annotation_process/00_anotadas/myeloids.RDS')
 
 #Modify certain cell names to avoid overlapping
 myeloids$annotation_intermediate <- gsub("HS","HS_myeloids", myeloids$annotation_intermediate)

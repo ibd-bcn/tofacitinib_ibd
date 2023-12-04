@@ -12,7 +12,7 @@ source('Figures/functions_plots.R')
 ## Data ------------------------------------------------------------------------
 message('Loading data')
 
-stroma <- readRDS('/home/acorraliza/TOFA_data/20220222_TOFAS_23/00_annotation_process/00_anotadas/stroma.RDS')
+stroma <- readRDS('Analysis/data/00_annotation_process/00_anotadas/stroma.RDS')
 stroma$annotation_intermediate <- gsub('Inflammatory_fibroblasts', 'Inflammatory fibroblasts', stroma$annotation_intermediate)
 stroma$annotation_intermediate <- gsub('IER_fibroblasts', 'IER fibroblasts', stroma$annotation_intermediate)
 stroma$pre_post <- plyr::mapvalues(stroma$week_3, from = c('W0', 'POST'), to = c('PRE', 'POST'))
@@ -66,7 +66,7 @@ save_sizes(plot = fig4a_nl, filename = 'Figure_4A_no_legend', device = 'pdf')
 
 # Figure 4C Volcano plots stromal cells -------------------------------------------------------------------------
 
-de_data <- readRDS('/home/acorraliza/TOFA_data/20220222_TOFAS_23/01_DE/REPASO/new_complete.RDS')
+de_data <- readRDS('Analysis/01_DE/REPASO/new_complete.RDS')
 
 # Volcano plots  myeloid cells
 

@@ -113,14 +113,14 @@ DimPlot(epi, group.by = 'sample') + labs(title = 'Tofacitinib 23 samples - 33PCs
 #
 # Louvain clustering without batch correction ----------------------------------
 #
-setwd('Analysis/00_annotation_process/')
+setwd('Analysis/data/00_annotation_process/')
 dir.create('epi')
 dir.create('epi/epi_no_harmony')
 
 epi <- resolutions(epi,
-                   workingdir = 'Analysis/00_annotation_process/epi/epi_no_harmony',
+                   workingdir = 'Analysis/data/00_annotation_process/epi/epi_no_harmony',
                    title = 'epi_no_harmony')
-saveRDS(epi, file = 'Analysis/00_annotation_process/epi/epi_no_harmony/epi_filtered_33.RDS')
+saveRDS(epi, file = 'Analysis/data/00_annotation_process/epi/epi_no_harmony/epi_filtered_33.RDS')
 
 
 #
@@ -135,12 +135,12 @@ epi<-RunUMAP(epi, dims=1:26, reduction= "harmony")
 
 DimPlot(epi, group.by = 'sample') + labs(title = 'Tofacitinib 23 samples - epi - Harmony 33-26')
 
-dir.create('Analysis/00_annotation_process/epi/epi_harmony_33_26')
+dir.create('Analysis/data/00_annotation_process/epi/epi_harmony_33_26')
 epi <- resolutions(epi,
-                   workingdir = 'Analysis/00_annotation_process/epi/epi_harmony_33_26',
+                   workingdir = 'Analysis/data/00_annotation_process/epi/epi_harmony_33_26',
                    title = 'epi_harmony_33_26')
 
-saveRDS(epi, file = 'Analysis/00_annotation_process/epi/epi_harmony_33_26/epi_filtered_33_26.RDS')
+saveRDS(epi, file = 'Analysis/data/00_annotation_process/epi/epi_harmony_33_26/epi_filtered_33_26.RDS')
 
 #
 # Extra cleaning after analysis ------------------------------------------------
@@ -150,7 +150,7 @@ saveRDS(epi, file = 'Analysis/00_annotation_process/epi/epi_harmony_33_26/epi_fi
 #
 # 1rst
 #
-epi <- readRDS('Analysis/00_annotation_process/epi/epi_harmony_33_26/epi_filtered_33_26.RDS')
+epi <- readRDS('Analysis/data/00_annotation_process/epi/epi_harmony_33_26/epi_filtered_33_26.RDS')
 DimPlot(epi, label=T)
 epi <- epi[,!(epi$RNA_snn_res.1.5 %in% c(27, 26, 28, 31))]
 
@@ -196,19 +196,19 @@ epi<-RunUMAP(epi, dims=1:36, reduction= "harmony")
 
 DimPlot(epi, group.by = 'sample') + labs(title = 'epi - Harmony 33_36')
 
-setwd('Analysis/00_annotation_process/epi/')
+setwd('Analysis/data/00_annotation_process/epi/')
 dir.create('epi_reanalysis_harmony_33_36')
 epi <- resolutions(epi,
                    workingdir = 'epi_reanalysis_harmony_33_36',
                    title = 'epi_reanalysis_harmony_33_36')
 saveRDS(epi, file = 'epi_reanalysis_harmony_33_36/epi_reanalysis_33_36.RDS')
-epi <- readRDS('Analysis/00_annotation_process/epi/epi_reanalysis_harmony_33_36/epi_reanalysis_33_36.RDS')
+epi <- readRDS('Analysis/data/00_annotation_process/epi/epi_reanalysis_harmony_33_36/epi_reanalysis_33_36.RDS')
 
 
 #
 # 2nd time
 #
-epi <- readRDS('Analysis/00_annotation_process/epi/epi_reanalysis_harmony_33_36/epi_reanalysis_33_36.RDS')
+epi <- readRDS('Analysis/data/00_annotation_process/epi/epi_reanalysis_harmony_33_36/epi_reanalysis_33_36.RDS')
 DimPlot(epi, label=T)
 epi <- epi[,!(epi$RNA_snn_res.1.5 %in% c(21, 23, 24, 25, 27))] #
 
@@ -254,7 +254,7 @@ epi<-RunUMAP(epi, dims=1:35, reduction= "harmony")
 
 DimPlot(epi, group.by = 'sample') + labs(title = 'epi - Harmony 50_35')
 
-setwd('Analysis/00_annotation_process/epi/')
+setwd('Analysis/data/00_annotation_process/epi/')
 dir.create('epi_reanalysis_2_harmony_50_35')
 epi <- resolutions(epi,
                    workingdir = 'epi_reanalysis_2_harmony_50_35',
@@ -264,7 +264,7 @@ saveRDS(epi, file = 'epi_reanalysis_2_harmony_50_35/epi_reanalysis_2_50_35.RDS')
 #
 # 3rd time
 #
-epi <- readRDS('Analysis/00_annotation_process/epi/epi_reanalysis_2_harmony_50_35/epi_reanalysis_2_50_35.RDS')
+epi <- readRDS('Analysis/data/00_annotation_process/epi/epi_reanalysis_2_harmony_50_35/epi_reanalysis_2_50_35.RDS')
 DimPlot(epi, label=T)
 epi <- epi[,!(epi$RNA_snn_res.1.5 %in% c(27))] #
 
@@ -310,20 +310,20 @@ epi<-RunUMAP(epi, dims=1:34, reduction= "harmony")
 
 DimPlot(epi, group.by = 'sample') + labs(title = 'epi - Harmony 50_34')
 
-setwd('Analysis/00_annotation_process/epi/')
+setwd('Analysis/data/00_annotation_process/epi/')
 dir.create('epi_reanalysis_3_harmony_50_34')
 epi <- resolutions(epi,
                    workingdir = 'epi_reanalysis_3_harmony_50_34',
                    title = 'epi_reanalysis_3_harmony_50_34')
 saveRDS(epi, file = 'epi_reanalysis_3_harmony_50_34/epi_reanalysis_3_50_34.RDS')
-epi <- readRDS('Analysis/00_annotation_process/epi/epi_reanalysis_3_harmony_50_34/epi_reanalysis_3_50_34.RDS')
+epi <- readRDS('Analysis/data/00_annotation_process/epi/epi_reanalysis_3_harmony_50_34/epi_reanalysis_3_50_34.RDS')
 FeaturePlot(epi, features = c('KRT34', 'COL3A1', 'VWF', 'CHI3L1'), order =T, cols = c('lightgray', 'red'), )
 FeaturePlot(epi, features = c('COL3A1'), order =T, cols = c('lightgray', 'red'), pt.size = 3 )
 
 #
 # 4th time
 #
-epi <- readRDS('Analysis/00_annotation_process/epi/epi_reanalysis_3_harmony_50_34/epi_reanalysis_3_50_34.RDS')
+epi <- readRDS('Analysis/data/00_annotation_process/epi/epi_reanalysis_3_harmony_50_34/epi_reanalysis_3_50_34.RDS')
 epi <- epi[,!(epi$RNA_snn_res.1.5 %in% c(25))]
 
 counts <- epi@assays$RNA@counts
@@ -368,13 +368,13 @@ epi<-RunUMAP(epi, dims=1:25, reduction= "harmony")
 
 DimPlot(epi, group.by = 'sample') + labs(title = 'epi - Harmony 50_25')
 
-setwd('Analysis/00_annotation_process/epi/')
+setwd('Analysis/data/00_annotation_process/epi/')
 dir.create('epi_reanalysis_4_harmony_50_25')
 epi <- resolutions(epi,
                    workingdir = 'epi_reanalysis_4_harmony_50_25',
                    title = 'epi_reanalysis_4_harmony_50_25')
 saveRDS(epi, file = 'epi_reanalysis_4_harmony_50_25/epi_reanalysis_4_50_25.RDS')
-epi <- readRDS('Analysis/00_annotation_process/epi/epi_reanalysis_4_harmony_50_25/epi_reanalysis_4_50_25.RDS')
+epi <- readRDS('Analysis/data/00_annotation_process/epi/epi_reanalysis_4_harmony_50_25/epi_reanalysis_4_50_25.RDS')
 FeaturePlot(epi, features = c('KRT25', 'COL3A1', 'VWF', 'CHI3L1'), order =T, cols = c('lightgray', 'red'), )
 FeaturePlot(epi, features = c('COL3A1'), order =T, cols = c('lightgray', 'red'), pt.size = 3 )
 
@@ -383,7 +383,7 @@ FeaturePlot(epi, features = c('COL3A1'), order =T, cols = c('lightgray', 'red'),
 # 5th time
 #
 
-epi <- readRDS('Analysis/00_annotation_process/epi/epi_reanalysis_4_harmony_50_25/epi_reanalysis_4_50_25.RDS')
+epi <- readRDS('Analysis/data/00_annotation_process/epi/epi_reanalysis_4_harmony_50_25/epi_reanalysis_4_50_25.RDS')
 DimPlot(epi, label=T)
 epi <- epi[,!(epi$RNA_snn_res.1.5 %in% c(25))] #
 
@@ -429,7 +429,7 @@ epi<-RunUMAP(epi, dims=1:25, reduction= "harmony")
 
 DimPlot(epi, group.by = 'sample') + labs(title = 'epi - Harmony 28_25')
 
-setwd('Analysis/00_annotation_process/epi/')
+setwd('Analysis/data/00_annotation_process/epi/')
 dir.create('epi_reanalysis_5_harmony_28_25')
 epi <- resolutions(epi,
                    workingdir = 'epi_reanalysis_5_harmony_28_25',

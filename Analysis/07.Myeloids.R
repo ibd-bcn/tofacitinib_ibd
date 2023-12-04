@@ -91,12 +91,12 @@ DimPlot(myeloids, group.by = 'sample') + labs(title = 'Tofacitinib 23 samples - 
 #
 # Louvain clustering without batch correction ----------------------------------
 #
-dir.create('Analysis/00_annotation_process/myeloids')
-dir.create('Analysis/00_annotation_process/myeloids/myeloids_no_harmony')
+dir.create('Analysis/data/00_annotation_process/myeloids')
+dir.create('Analysis/data/00_annotation_process/myeloids/myeloids_no_harmony')
 myeloids <- resolutions(myeloids,
-                        workingdir = 'Analysis/00_annotation_process/myeloids/myeloids_no_harmony',
+                        workingdir = 'Analysis/data/00_annotation_process/myeloids/myeloids_no_harmony',
                         title = 'myeloids_no_harmony')
-saveRDS(myeloids, file = 'Analysis/00_annotation_process/myeloids/myeloids_no_harmony/myeloids_filtered_30.RDS')
+saveRDS(myeloids, file = 'Analysis/data/00_annotation_process/myeloids/myeloids_no_harmony/myeloids_filtered_30.RDS')
 
 
 #
@@ -111,8 +111,8 @@ myeloids<-RunUMAP(myeloids, dims=1:25, reduction= "harmony")
 
 DimPlot(myeloids, group.by = 'sample') + labs(title = 'Tofacitinib 23 samples - myeloids - Harmony 25-25')
 
-dir.create('Analysis/00_annotation_process/myeloids/myeloids_harmony_25_25')
+dir.create('Analysis/data/00_annotation_process/myeloids/myeloids_harmony_25_25')
 myeloids <- resolutions(myeloids,
-                        workingdir = 'Analysis/00_annotation_process/myeloids/myeloids_harmony_25_25',
+                        workingdir = 'Analysis/data/00_annotation_process/myeloids/myeloids_harmony_25_25',
                         title = 'Togehter_myeloids_filt25_25_25')
-saveRDS(myeloids, file = 'Analysis/00_annotation_process/myeloids/myeloids_harmony_25_25/myeloids_filtered_25_25.RDS')
+saveRDS(myeloids, file = 'Analysis/data/00_annotation_process/myeloids/myeloids_harmony_25_25/myeloids_filtered_25_25.RDS')

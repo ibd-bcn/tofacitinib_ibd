@@ -83,14 +83,14 @@ DimPlot(plasmas, group.by = 'sample') + labs(title = 'Tofacitinib 23 samples - 4
 #
 # Louvain clustering without batch correction ----------------------------------
 #
-setwd('Analysis/00_annotation_process/')
+setwd('Analysis/data/00_annotation_process/')
 dir.create('plasmas')
 dir.create('plasmas/plasmas_no_harmony')
 
 plasmas <- resolutions(plasmas,
-                       workingdir = 'Analysis/00_annotation_process/plasmas/plasmas_no_harmony',
+                       workingdir = 'Analysis/data/00_annotation_process/plasmas/plasmas_no_harmony',
                        title = 'plasmas_no_harmony')
-saveRDS(plasmas, file = 'Analysis/00_annotation_process/plasmas/plasmas_no_harmony/plasmas_filtered_45.RDS')
+saveRDS(plasmas, file = 'Analysis/data/00_annotation_process/plasmas/plasmas_no_harmony/plasmas_filtered_45.RDS')
 
 #
 # Louvain clustering with batch correction -------------------------------------
@@ -103,16 +103,16 @@ plasmas<- FindNeighbors(plasmas, reduction = "harmony", dims = 1:27)
 plasmas<-RunUMAP(plasmas, dims=1:27, reduction= "harmony")
 
 
-dir.create('Analysis/00_annotation_process/plasmas/plasmas_harmony_45_27/')
+dir.create('Analysis/data/00_annotation_process/plasmas/plasmas_harmony_45_27/')
 plasmas <- resolutions(plasmas,
-                       workingdir = 'Analysis/00_annotation_process/plasmas/plasmas_harmony_45_27',
+                       workingdir = 'Analysis/data/00_annotation_process/plasmas/plasmas_harmony_45_27',
                        title = 'plasmas_harmony_45_27')
-saveRDS(plasmas, file = 'Analysis/00_annotation_process/plasmas/plasmas_harmony_45_27/plasmas_filtered_45_27.RDS')
+saveRDS(plasmas, file = 'Analysis/data/00_annotation_process/plasmas/plasmas_harmony_45_27/plasmas_filtered_45_27.RDS')
 
 #
 # Extra cleaning after analysis ------------------------------------------------
 #
-plasmas <- readRDS( 'Analysis/00_annotation_process/plasmas/plasmas_harmony_45_27/plasmas_filtered_45_27.RDS')
+plasmas <- readRDS( 'Analysis/data/00_annotation_process/plasmas/plasmas_harmony_45_27/plasmas_filtered_45_27.RDS')
 DimPlot(plasmas, label=T, group.by = 'RNA_snn_res.0.9')
 plasmas <- plasmas[,!(plasmas$RNA_snn_res.0.9 %in% c(14))]
 
@@ -161,10 +161,10 @@ plasmas<-RunUMAP(plasmas, dims=1:22, reduction= "harmony")
 
 DimPlot(plasmas, group.by = 'sample') + labs(title = 'plasmas - Harmony 25_22')
 
-dir.create('Analysis/00_annotation_process/plasmas/plasmas_reanalysis_harmony_25_22')
+dir.create('Analysis/data/00_annotation_process/plasmas/plasmas_reanalysis_harmony_25_22')
 plasmas <- resolutions(plasmas,
-                       workingdir = 'Analysis/00_annotation_process/plasmas/plasmas_reanalysis_harmony_25_22',
+                       workingdir = 'Analysis/data/00_annotation_process/plasmas/plasmas_reanalysis_harmony_25_22',
                        title = 'plasmas_reanalysis_harmony_25_22')
-saveRDS(plasmas, file = 'Analysis/00_annotation_process/plasmas/plasmas_reanalysis_harmony_25_22/plasmas_reanalysis_harmony_25_22.RDS')
+saveRDS(plasmas, file = 'Analysis/data/00_annotation_process/plasmas/plasmas_reanalysis_harmony_25_22/plasmas_reanalysis_harmony_25_22.RDS')
 
 

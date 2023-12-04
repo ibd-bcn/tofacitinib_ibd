@@ -13,7 +13,7 @@ source('Figures/functions_plots.R')
 ## Data ------------------------------------------------------------------------
 message('Loading data')
 
-all <- readRDS('/home/acorraliza/TOFA_data/20220222_TOFAS_23/00_annotation_process/00_anotadas/todas_2023.RDS')
+all <- readRDS('Analysis/data/00_annotation_process/todas_2023.RDS')
 all$pre_post <- plyr::mapvalues(all$week_3, from = c('W0', 'POST'), to = c('PRE', 'POST'))
 all$pre_post <- factor(all$pre_post, levels = c('PRE', 'POST'))
 all$response <- factor(all$response, levels = c('R', 'NR'))

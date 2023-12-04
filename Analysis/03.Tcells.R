@@ -94,8 +94,8 @@ DimPlot(tcells, group.by = 'sample') + labs(title = 'Tofacitinib 23 samples - 40
 #
 # Louvain clustering without batch correction ----------------------------------
 #
-dir.create('Analysis/00_annotation_process/tcells')
-setwd('Analysis/00_annotation_process/tcells')
+dir.create('Analysis/data/00_annotation_process/tcells')
+setwd('Analysis/data/00_annotation_process/tcells')
 dir.create('tcells_no_harmony')
 tcells <- resolutions(tcells,
                       workingdir = 'tcells_no_harmony',

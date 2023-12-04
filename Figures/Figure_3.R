@@ -11,7 +11,7 @@ source('Figures/functions_plots.R')
 ## Data ------------------------------------------------------------------------
 message('Loading data')
 
-myeloids <- readRDS('/home/acorraliza/TOFA_data/20220222_TOFAS_23/00_annotation_process/00_anotadas/myeloids.RDS')
+myeloids <- readRDS('Analysis/data/00_annotation_process/00_anotadas/myeloids.RDS')
 myeloids$pre_post <- plyr::mapvalues(myeloids$week_3, from = c('W0', 'POST'), to = c('PRE', 'POST'))
 myeloids$annotation_intermediate <- gsub('Macrophage NRG1', 'IDA macrophages', myeloids$annotation_intermediate)
 myeloids$pre_post <- factor(myeloids$pre_post, levels = c('PRE', 'POST'))
@@ -67,7 +67,7 @@ save_sizes(plot = fig3a_nl, filename = 'Figure_3A_no_legend', device = 'svg')
 save_sizes(plot = fig3a_nl, filename = 'Figure_3A_no_legend', device = 'pdf')
 
 ## Figure 3B -------------------------------------------------------------------
-de_data <- readRDS('/home/acorraliza/TOFA_data/20220222_TOFAS_23/01_DE/REPASO/new_complete.RDS')
+de_data <- readRDS('Analysis/01_DE/REPASO/new_complete.RDS')
 de_data$cluster <- gsub('Macrophage NRG1', 'IDA macrophages', de_data$cluster)
 # Volcano plots  myeloid cells
 

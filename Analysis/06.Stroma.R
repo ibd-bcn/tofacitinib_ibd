@@ -91,11 +91,11 @@ DimPlot(stroma, group.by = 'sample') + labs(title = 'Tofacitinib 23 samples - 42
 #
 # Louvain clustering without batch correction ----------------------------------
 #
-dir.create('Analysis/00_annotation_process/stroma/no_harmony')
+dir.create('Analysis/data/00_annotation_process/stroma/no_harmony')
 stroma <- resolutions(stroma,
-                      workingdir = 'Analysis/00_annotation_process/stroma/no_harmony',
+                      workingdir = 'Analysis/data/00_annotation_process/stroma/no_harmony',
                       title = 'stroma_no_h')
-saveRDS(stroma, file = 'Analysis/00_annotation_process/stroma/no_harmony/stroma.RDS')
+saveRDS(stroma, file = 'Analysis/data/00_annotation_process/stroma/no_harmony/stroma.RDS')
 
 #
 # Louvain clustering with batch correction -------------------------------------
@@ -110,11 +110,11 @@ stroma<-RunUMAP(stroma, dims=1:27, reduction= "harmony")
 DimPlot(stroma, group.by = 'sample') + labs(title = 'Stroma - Harmony 42_27')
 
 
-dir.create('Analysis/00_annotation_process/stroma/harmony_42_27')
+dir.create('Analysis/data/00_annotation_process/stroma/harmony_42_27')
 stroma <- resolutions(stroma,
-                      workingdir = 'Analysis/00_annotation_process/stroma/harmony_42_27',
+                      workingdir = 'Analysis/data/00_annotation_process/stroma/harmony_42_27',
                       title = 'Togehter_stroma_filt27_42_27')
-saveRDS(stroma, file = 'Analysis/00_annotation_process/stroma/harmony_42_27/stroma_filtered_42_27.RDS')
+saveRDS(stroma, file = 'Analysis/data/00_annotation_process/stroma/harmony_42_27/stroma_filtered_42_27.RDS')
 
 
 #
@@ -130,16 +130,16 @@ stroma<-RunUMAP(stroma, dims=1:27, reduction= "harmony")
 DimPlot(stroma, group.by = 'sample') + labs(title = 'Stroma - Harmony 25_27')
 
 
-dir.create('Analysis/00_annotation_process/stroma/harmony_25_27')
+dir.create('Analysis/data/00_annotation_process/stroma/harmony_25_27')
 stroma <- resolutions(stroma,
-                      workingdir = 'Analysis/00_annotation_process/stroma/harmony_25_27',
+                      workingdir = 'Analysis/data/00_annotation_process/stroma/harmony_25_27',
                       title = 'stroma_harmony_25_27')
-saveRDS(stroma, file = 'Analysis/00_annotation_process/stroma/harmony_25_27/stroma_harmony_25_27.RDS')
+saveRDS(stroma, file = 'Analysis/data/00_annotation_process/stroma/harmony_25_27/stroma_harmony_25_27.RDS')
 
 #
 # Extra cleaning after analysis ------------------------------------------------
 #
-stroma <- readRDS( 'Analysis/00_annotation_process/stroma/harmony_25_27/stroma_harmony_25_27.RDS')
+stroma <- readRDS( 'Analysis/data/00_annotation_process/stroma/harmony_25_27/stroma_harmony_25_27.RDS')
 
 stroma <- stroma[,!(stroma$RNA_snn_res.1.5 %in% c(16))]
 
@@ -192,9 +192,9 @@ stroma <- RunUMAP(stroma, dims=1:27, reduction= "harmony")
 
 DimPlot(stroma, group.by = 'sample') + labs(title = 'Stroma - Harmony 41_27')
 
-dir.create('Analysis/00_annotation_process/stroma/clean_harmony_41_27')
+dir.create('Analysis/data/00_annotation_process/stroma/clean_harmony_41_27')
 stroma <- resolutions(stroma,
-                      workingdir = 'Analysis/00_annotation_process/stroma/clean_harmony_41_27',
+                      workingdir = 'Analysis/data/00_annotation_process/stroma/clean_harmony_41_27',
                       title = 'clean_harmony_41_27')
-saveRDS(stroma, file = 'Analysis/00_annotation_process/stroma/clean_harmony_41_27/clean_harmony_41_27.RDS')
+saveRDS(stroma, file = 'Analysis/data/00_annotation_process/stroma/clean_harmony_41_27/clean_harmony_41_27.RDS')
 

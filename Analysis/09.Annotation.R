@@ -99,12 +99,12 @@ annotation <- data.frame(
                                                  NA,NA,NA,NA)
 )
 
-myeloids <- readRDS( 'Analysis/00_annotation_process/myeloids/myeloids_harmony_30_25/myeloids_filtered_30_25.RDS')
-plasmas <- readRDS( 'Analysis/00_annotation_process/plasmas/plasmas_reanalysis_harmony_25_22/plasmas_reanalysis_harmony_25_22.RDS')
-stroma <- readRDS( 'Analysis/00_annotation_process/stroma/clean_harmony_41_27/clean_harmony_41_27.RDS')
-epi <- readRDS( 'Analysis/00_annotation_process/epi/epi_reanalysis_5_harmony_28_25/epi_reanalysis_5_28_25.RDS')
-tcells <- readRDS( 'Analysis/00_annotation_process/tcells/tcells_harmony_40_32/tcells_filtered_40_32.RDS')
-cycling <- readRDS( 'Analysis/00_annotation_process/cycling/cycling_harmony_20_23/cycling_filtered_20_23.RDS')
+myeloids <- readRDS( 'Analysis/data/00_annotation_process/myeloids/myeloids_harmony_30_25/myeloids_filtered_30_25.RDS')
+plasmas <- readRDS( 'Analysis/data/00_annotation_process/plasmas/plasmas_reanalysis_harmony_25_22/plasmas_reanalysis_harmony_25_22.RDS')
+stroma <- readRDS( 'Analysis/data/00_annotation_process/stroma/clean_harmony_41_27/clean_harmony_41_27.RDS')
+epi <- readRDS( 'Analysis/data/00_annotation_process/epi/epi_reanalysis_5_harmony_28_25/epi_reanalysis_5_28_25.RDS')
+tcells <- readRDS( 'Analysis/data/00_annotation_process/tcells/tcells_harmony_40_32/tcells_filtered_40_32.RDS')
+cycling <- readRDS( 'Analysis/data/00_annotation_process/cycling/cycling_harmony_20_23/cycling_filtered_20_23.RDS')
 
 #
 # Data annotation --------------------------------------------------------------
@@ -132,10 +132,10 @@ cycling$annotation_intermediate <- mapvalues(x = cycling$RNA_snn_res.0.3,
 # Data saving ------------------------------------------------------------------
 #
 
-dir.create('Analysis/00_annotation_process/00_anotadas')
-saveRDS(plasmas, file = 'Analysis/00_annotation_process/00_anotadas/plasmas.RDS')
-saveRDS(tcells, file = 'Analysis/00_annotation_process/00_anotadas/tcells.RDS')
-saveRDS(epi, file = 'Analysis/00_annotation_process/00_anotadas/epi.RDS')
-saveRDS(myeloids, file = 'Analysis/00_annotation_process/00_anotadas/myeloids.RDS')
-saveRDS(stroma, file = 'Analysis/00_annotation_process/00_anotadas/stroma.RDS')
-saveRDS(cycling, file = 'Analysis/00_annotation_process/00_anotadas/cycling.RDS')
+dir.create('Analysis/data/00_annotation_process/00_anotadas')
+saveRDS(plasmas, file = 'Analysis/data/00_annotation_process/00_anotadas/plasmas.RDS')
+saveRDS(tcells, file = 'Analysis/data/00_annotation_process/00_anotadas/tcells.RDS')
+saveRDS(epi, file = 'Analysis/data/00_annotation_process/00_anotadas/epi.RDS')
+saveRDS(myeloids, file = 'Analysis/data/00_annotation_process/00_anotadas/myeloids.RDS')
+saveRDS(stroma, file = 'Analysis/data/00_annotation_process/00_anotadas/stroma.RDS')
+saveRDS(cycling, file = 'Analysis/data/00_annotation_process/00_anotadas/cycling.RDS')

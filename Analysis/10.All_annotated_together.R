@@ -23,12 +23,12 @@ colors_subset <- c('epi' = '#332f6f',
 #
 # Data loading -----------------------------------------------------------------
 #
-plasmas <- readRDS(file = 'Analysis/00_annotation_process/00_anotadas/plasmas.RDS')
-tcells <- readRDS(file = 'Analysis/00_annotation_process/00_anotadas/tcells.RDS')
-epi <- readRDS(file = 'Analysis/00_annotation_process/00_anotadas/epi.RDS')
-myeloids <- readRDS(file = 'Analysis/00_annotation_process/00_anotadas/myeloids.RDS')
-stroma <- readRDS(file = 'Analysis/00_annotation_process/00_anotadas/stroma.RDS')
-cycling <- readRDS(file = 'Analysis/00_annotation_process/00_anotadas/cycling.RDS')
+plasmas <- readRDS(file = 'Analysis/data/00_annotation_process/00_anotadas/plasmas.RDS')
+tcells <- readRDS(file = 'Analysis/data/00_annotation_process/00_anotadas/tcells.RDS')
+epi <- readRDS(file = 'Analysis/data/00_annotation_process/00_anotadas/epi.RDS')
+myeloids <- readRDS(file = 'Analysis/data/00_annotation_process/00_anotadas/myeloids.RDS')
+stroma <- readRDS(file = 'Analysis/data/00_annotation_process/00_anotadas/stroma.RDS')
+cycling <- readRDS(file = 'Analysis/data/00_annotation_process/00_anotadas/cycling.RDS')
 
 #
 # Data cleaning ----------------------------------------------------------------
@@ -58,12 +58,12 @@ cycling$subset <- 'cycling'
 #
 # Subset data saving -----------------------------------------------------------
 #
-saveRDS(plasmas, file = 'Analysis/00_annotation_process/00_anotadas/plasmas.RDS')
-saveRDS(tcells, file = 'Analysis/00_annotation_process/00_anotadas/tcells.RDS')
-saveRDS(epi, file = 'Analysis/00_annotation_process/00_anotadas/epi.RDS')
-saveRDS(myeloids, file = 'Analysis/00_annotation_process/00_anotadas/myeloids.RDS')
-saveRDS(stroma, file = 'Analysis/00_annotation_process/00_anotadas/stroma.RDS')
-saveRDS(cycling, file = 'Analysis/00_annotation_process/00_anotadas/cycling.RDS')
+saveRDS(plasmas, file = 'Analysis/data/00_annotation_process/00_anotadas/plasmas.RDS')
+saveRDS(tcells, file = 'Analysis/data/00_annotation_process/00_anotadas/tcells.RDS')
+saveRDS(epi, file = 'Analysis/data/00_annotation_process/00_anotadas/epi.RDS')
+saveRDS(myeloids, file = 'Analysis/data/00_annotation_process/00_anotadas/myeloids.RDS')
+saveRDS(stroma, file = 'Analysis/data/00_annotation_process/00_anotadas/stroma.RDS')
+saveRDS(cycling, file = 'Analysis/data/00_annotation_process/00_anotadas/cycling.RDS')
 
 
 #
@@ -111,4 +111,4 @@ todas <- RunUMAP(todas, dims=1:35, reduction= "harmony")
 DimPlot(todas, group.by = 'subset', label=T,shuffle = T, cols = colors_subset)+
   labs(title='All 69813 cells - Harmony')
 
-saveRDS(todas, file = 'Analysis/00_annotation_process/00_anotadas/todas.RDS')
+saveRDS(todas, file = 'Analysis/data/00_annotation_process/00_anotadas/todas.RDS')
