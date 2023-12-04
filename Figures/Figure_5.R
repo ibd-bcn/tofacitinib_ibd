@@ -9,7 +9,7 @@ source('Figures/functions_plots.R')
 
 ## Scatter plots of our DE data and __ paper
 setwd('Analysis/')
-de_data <- readRDS('01_DE/REPASO/new_complete.RDS')
+de_data <- readRDS('data/01_DE/REPASO/new_complete.RDS')
 
 # Obtaining data of upp-regulated genes and down-regulated ones from both Responders (R) and Non-responders (NR) from the M2 population
 de_data2 <- de_data[de_data$cluster == 'M2' &
