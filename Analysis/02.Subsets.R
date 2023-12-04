@@ -17,7 +17,7 @@ source('Analysis/extra_functions/functions_rnaseq.R')
 # Data processing --------------------------------------------------------------
 #
 message('Data processing')
-seudata_f <- readRDS('~/TOFA_data/TOFAS_21_SAMPLES/seudata_f.RDS')
+seudata_f <- readRDS('Analysis/data/seudata_f.RDS')
 seudata_f <- seurat_to_pca(seudata_f)
 
 PCS <- select_pcs(seudata_f, 2)
@@ -51,12 +51,12 @@ saveRDS(seudata_f,'Analysis/data/seudata_f.RDS')
 # Louvain clustering -----------------------------------------------------------
 #
 message('Louvain clustering')
-if(!exists('seudata_f')){seudata_f <- readRDS('data/seudata_f.RDS')}
+if(!exists('seudata_f')){seudata_f <- readRDS('Analysis/data/seudata_f.RDS')}
 
 dir.create('Analysis/data/00_annotation_process')
 dir.create('Analysis/data/00_annotation_process/together_filter50')
 seudata_f <- resolutions(seudata_f, resolutions = c(0.1,0.3,0.5),
-                         workingdir = 'data/00_annotation_process/together_filter50/',
+                         workingdir = 'Analysis/data/00_annotation_process/together_filter50/',
                          title = '23 samples filt50')
 
 DimPlot(seudata_f, label=T, group.by = 'RNA_snn_res.0.5')
