@@ -53,6 +53,9 @@ VlnPlot(tcells, features = 'percent.mt')
 tcells <- tcells[,tcells$percent.mt < 25]
 # 28185 features across 15256 samples within 1 assay
 
+#
+# genes with no expression out
+#
 counts <- tcells@assays$RNA@counts
 pp <- which(Matrix::rowSums(counts)==0)
 length(pp) #6406
