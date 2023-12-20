@@ -512,7 +512,7 @@ heatmap_plot <- function(input_hm, df) {
 
   #Group rows
   row_groups <- factor(
-    c(rep("IFNg", 6), rep("Inflammatory cytokines", 6), rep("JAK dependent", 3), rep("M2", 2), rep("M1", 4))
+    c(rep("IFNg", 6), rep("Inflammatory cytokines", 5), rep("JAK dependent", 3), rep("M2", 2), rep("M1", 4))
   )
 
   #Colnames
@@ -577,6 +577,9 @@ heatmap_plot <- function(input_hm, df) {
   t_df <- rbind(LPS,TNFa,IFNG)
   t_df <- t_df[gene_vector]
   t_df <- t(t_df)
+
+  #Eliminate CXCL5
+  t_df <- t_df[rownames(t_df) != 'CXCL5',]
 
   desired_order <- c("LPS1","LPS2","LPS3","LPS4","TNF1","TNF2","TNF3","TNF4","IFNG1","IFNG2","IFNG3","IFNG4")
   ## Obtain database
