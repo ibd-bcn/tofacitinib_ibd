@@ -640,3 +640,69 @@ heatmap_lgd <- function(input_hm) {
 
   dev.off()
 }
+
+#Boxplot analitics function
+
+boxplot_analitica <- function(df, cp) {
+  #Dictionary to grab column
+  figures <- c(
+    "neutros" = 4,
+    "linfos" = 7,
+    "mono" = 8,
+    "leuco" = 9
+  )
+  #Grab columns
+  fig_cell <- df[, c(1, 2, 3, figures[[cp]])]
+  #Change colum name
+  colnames(fig_cell)[3] <- "WEEK_2"
+  #Convert week_2 column to factor
+  fig_cell$`WEEK_2` <-
+    factor(fig_cell$`WEEK_2`,
+           levels = c("Pre-tx", "Week 2", "Week 8 and later"))
+  #Change column name of the celltype
+  colnames(fig_cell)[4] <- cp
+  #Convert column response to factor
+  fig_cell$RESPONSE <-
+    factor(fig_cell$RESPONSE, levels = c("R", "NR"))
+  fig_cell$black <- "black"
+
+  #Grab Max value of datapoints
+  max <- max(fig_cell[, 4], na.rm = TRUE)
+
+  #Jitter width selection
+  if (cp == "mono") {
+    jw <- 0.5
+  } else{
+    jw <- 0.2
+  }
+
+  #Plot
+  p <- ggplot(na.omit(fig_cell), aes(x = WEEK_2, y = .data[[cp]])) +
+    geom_boxplot(
+      aes(fill = RESPONSE),
+      color = "black",
+      alpha = 0.9,
+      size = 0.5,
+      outlier.shape = NA
+    ) +
+    geom_jitter(
+      aes(color = black),
+      position = position_jitterdodge(dodge.width = 0.4, jitter.width = jw),
+      alpha = 1,
+      size = 1
+    ) +
+    facet_grid( ~ RESPONSE, scales = "free", space = "free") +
+    theme_bw(base_rect_size = 1, base_size = 20) +
+    theme(
+      legend.position = 'none',
+      axis.title.x = element_blank(),
+      axis.text.x = element_blank(),
+      axis.title.y = element_blank(),
+      strip.text.y = element_blank(),
+      plot.title = element_blank(),
+      axis.ticks = element_line(size = 0.5),
+      axis.ticks.length = unit(0.1, "cm")
+    ) + scale_fill_manual(values = c("#70ADE6", "#FF8E47")) + scale_color_manual(values = c("#000000")) + ylim(c(0, round(max)))
+
+}
+

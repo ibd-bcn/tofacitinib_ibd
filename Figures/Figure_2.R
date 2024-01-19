@@ -310,7 +310,7 @@ qpcr$facet_group <- factor(qpcr$Response)
 
 qpcr_r <- qpcr[qpcr$Response=="R",]
 qpcr_nr <- qpcr[qpcr$Response == "NR",]
-list_genes <- colnames(qpcr)[6:length(colnames(qpcr))-1]
+list_genes <- c("CDH1","DERL3","PDGFRA","CHI3L1","PROK2","CD3E")
 
 
 # Iterate over genes to obtain qPCR boxplots
@@ -325,3 +325,4 @@ for(gene in list_genes){
   save_sizes(plot = qpcr_plot, filename = paste0(gene,"_qpcr",sep = ""), device = 'pdf')
 
 }
+
