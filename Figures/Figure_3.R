@@ -200,7 +200,6 @@ volcano_plot <- function(cluster, comp, genes_up, genes_down, clec) {
 
     theme(
       plot.title = element_blank(),
-      # axis.text = element_blank(),
       axis.title.x = element_blank(),
       axis.title.y = element_blank(),
       axis.line = element_line(linewidth = 0.5),
