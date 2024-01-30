@@ -239,17 +239,17 @@ save_sizes(plot = leg, filename = 'legvolcano', device = 'pdf')
 ## Figure 3C -------------------------------------------------------------------
 
 fig3c <- feature_plot(myeloids,
-             feature = c('MT2A','CLEC5A','IDO1', 'MMP9', 'SPP1', 'IL7R'),
+             feature = c('CLEC5A','IDO1', 'MMP9', 'SPP1'),
              split.by = c('response','pre_post'),
              size = 0.1) +
   patchwork::plot_layout(ncol = 2) &
   theme_figure() &
   theme(
-    title = element_text(family = 'Helvetica', size = 10, colour = 'black', hjust = 0),
-    plot.title = element_text(family = 'Helvetica', size = 10, colour = 'black'),
-    axis.text = element_text(family = 'Helvetica', size = 6, colour = 'black'),
-    strip.text.x = element_text(family = 'Helvetica', size = 8, colour = "black"),
-    strip.text.y = element_text(family = 'Helvetica', size = 8, colour = "black"),
+    title = element_text(family = 'Helvetica', size = 12, colour = 'black', hjust = 0),
+    plot.title = element_text(family = 'Helvetica', size = 12, colour = 'black'),
+    axis.text = element_text(family = 'Helvetica', size = 9, colour = 'black'),
+    strip.text.x = element_text(family = 'Helvetica', size = 10, colour = "black"),
+    strip.text.y = element_text(family = 'Helvetica', size = 10, colour = "black"),
     legend.position = 'none',
     strip.background = element_blank()
   )
