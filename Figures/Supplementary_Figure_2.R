@@ -23,12 +23,12 @@ dotplot_myeloids <- DotPlot(myeloids, features = c("TOP2A", "PCLAF", "CLEC9A", "
                                "FCN1", "C1QB", "SELENOP", "SPP1", "INHBA", "CD209", "ATF3", "NRG1", "TPSB2", "TPSAB1",
                                "CMTM2", "PROK2", "GZMB", "LILRA4", "RPS19", "RPS18"),
         group.by = 'annotation_intermediate', cols = 'RdYlBu',
-        cluster.idents = F, dot.scale = 2) +
+        cluster.idents = F, dot.scale = 2.5) +
   theme(text = element_text(family = "Helvetica")) +
-  theme(axis.text.x = element_text(angle=90,  hjust = 1, vjust = 0.2, size = 6),
-        legend.title = element_text(size = 6),
-        legend.text = element_text(size = 6), legend.key.size = unit(0.25, 'cm')) +
-  theme(axis.text.y = element_text(angle=0, size = 6)) +
+  theme(axis.text.x = element_text(angle=90,  hjust = 1, vjust = 0.2, size = 9),
+        legend.title = element_text(size = 9),
+        legend.text = element_text(size = 9), legend.key.size = unit(0.25, 'cm')) +
+  theme(axis.text.y = element_text(angle=0, size = 9)) +
   theme(axis.title = element_blank()) +
   guides(color=guide_legend(title="Exp"),
          size = guide_legend(title = '%'))
@@ -38,9 +38,9 @@ dotplot_myeloids <- DotPlot(myeloids, features = c("TOP2A", "PCLAF", "CLEC9A", "
 umap_myeloids <- DimPlot(myeloids, group.by = "annotation_intermediate", pt.size = 0.1) +
   theme_void() +
   theme(legend.position = "left",
-        text = element_text(family = "Helvetica"),
+        text = element_text(family = "Helvetica", size = 12),
         legend.spacing.y = unit(0.2, "cm"),
-        legend.key.size = unit(0.5, "lines")) +
+        legend.key.size = unit(0.25, "lines")) +
   guides(color = guide_legend(override.aes = list(size = 2))) +
   ggtitle(NULL)
 
@@ -75,12 +75,12 @@ dotplot_stroma <- DotPlot(stroma, features = c("TOP2A", "PCLAF", "PLVAP", "VWF",
                                           "IL11", "MT-ND3", "MT-CO2", "ACTG2", "MYH11", "NOTCH3", "COX4I2", "ADAMDEC1", "DCN", "SOX6",
                                           "F3", "OGN", "GREM1"),
                    group.by = 'annotation_intermediate', cols = 'RdYlBu',
-                   cluster.idents = F, dot.scale = 2) +
+                   cluster.idents = F, dot.scale = 2.5) +
   theme(text = element_text(family = "Helvetica")) +
-  theme(axis.text.x = element_text(angle=90,  hjust = 1, vjust = 0.2, size = 6),
-        legend.title = element_text(size = 6),
-        legend.text = element_text(size = 6), legend.key.size = unit(0.25, 'cm')) +
-  theme(axis.text.y = element_text(angle=0, size = 6)) +
+  theme(axis.text.x = element_text(angle=90,  hjust = 1, vjust = 0.2, size = 9),
+        legend.title = element_text(size = 9),
+        legend.text = element_text(size = 9), legend.key.size = unit(0.25, 'cm')) +
+  theme(axis.text.y = element_text(angle=0, size = 9)) +
   theme(axis.title = element_blank()) +
   guides(color=guide_legend(title="Exp"),
          size = guide_legend(title = '%'))
@@ -89,11 +89,12 @@ dotplot_stroma <- DotPlot(stroma, features = c("TOP2A", "PCLAF", "PLVAP", "VWF",
 umap_stroma <- DimPlot(stroma, group.by = "annotation_intermediate", pt.size = 0.1) +
   theme_void() +
   theme(legend.position = "left",
-        text = element_text(family = "Helvetica"),
+        text = element_text(family = "Helvetica", size = 12),
         legend.spacing.y = unit(0.2, "cm"),
-        legend.key.size = unit(0.5, "lines")) +
+        legend.key.size = unit(0.25, "lines")) +
   guides(color = guide_legend(override.aes = list(size = 2))) +
   ggtitle(NULL)
+
 
 
 
@@ -128,12 +129,12 @@ dotplot_tcells <- DotPlot(tcells, features = c("ANXA1", "IL7R", "IFIT3", "IFIT1"
                                         "RPS4X", "RPS18", "CCL20", "IL17A", "CXCL13", "MAGEH1", "TNFRSF4",
                                         "FOXP3"),
                    group.by = 'annotation_intermediate', cols = 'RdYlBu',
-                   cluster.idents = F, dot.scale = 2) +
+                   cluster.idents = F, dot.scale = 2.5) +
   theme(text = element_text(family = "Helvetica")) +
-  theme(axis.text.x = element_text(angle=90,  hjust = 1, vjust = 0.2, size = 6),
-        legend.title = element_text(size = 6),
-        legend.text = element_text(size = 6), legend.key.size = unit(0.25, 'cm')) +
-  theme(axis.text.y = element_text(angle=0, size = 6)) +
+  theme(axis.text.x = element_text(angle=90,  hjust = 1, vjust = 0.2, size = 9),
+        legend.title = element_text(size = 9),
+        legend.text = element_text(size = 9), legend.key.size = unit(0.25, 'cm')) +
+  theme(axis.text.y = element_text(angle=0, size = 9)) +
   theme(axis.title = element_blank()) +
   guides(color=guide_legend(title="Exp"),
          size = guide_legend(title = '%'))
@@ -142,11 +143,12 @@ dotplot_tcells <- DotPlot(tcells, features = c("ANXA1", "IL7R", "IFIT3", "IFIT1"
 umap_tcells <- DimPlot(tcells, group.by = "annotation_intermediate", pt.size = 0.1) +
   theme_void() +
   theme(legend.position = "left",
-        text = element_text(family = "Helvetica"),
+        text = element_text(family = "Helvetica", size = 12),
         legend.spacing.y = unit(0.2, "cm"),
-        legend.key.size = unit(0.5, "lines")) +
+        legend.key.size = unit(0.25, "lines")) +
   guides(color = guide_legend(override.aes = list(size = 2))) +
   ggtitle(NULL)
+
 
 
 
@@ -175,12 +177,12 @@ dotplot_epi <- DotPlot(epi, features = c("APOA4", "APOA1", "GUCA2A", "CLCA4", "M
                                      "RPL41", "MUC2", "REP15", "PLCG2", "CSKMT", "FER1L6", "ZG16", "SPINK4", "TFF3",
                                      "LGR5", "SMOC2", "LRMP", "TRPM5", "MRPL11", "TOMM22"),
                    group.by = 'annotation_intermediate', cols = 'RdYlBu',
-                   cluster.idents = F, dot.scale = 2) +
+                   cluster.idents = F, dot.scale = 2.5) +
   theme(text = element_text(family = "Helvetica")) +
-  theme(axis.text.x = element_text(angle=90,  hjust = 1, vjust = 0.2, size = 6),
-        legend.title = element_text(size = 6),
-        legend.text = element_text(size = 6), legend.key.size = unit(0.25, 'cm')) +
-  theme(axis.text.y = element_text(angle=0, size = 6)) +
+  theme(axis.text.x = element_text(angle=90,  hjust = 1, vjust = 0.2, size = 9),
+        legend.title = element_text(size = 9),
+        legend.text = element_text(size = 9), legend.key.size = unit(0.25, 'cm')) +
+  theme(axis.text.y = element_text(angle=0, size = 9)) +
   theme(axis.title = element_blank()) +
   guides(color=guide_legend(title="Exp"),
          size = guide_legend(title = '%'))
@@ -189,11 +191,12 @@ dotplot_epi <- DotPlot(epi, features = c("APOA4", "APOA1", "GUCA2A", "CLCA4", "M
 umap_epi <- DimPlot(epi, group.by = "annotation_intermediate", pt.size = 0.1) +
   theme_void() +
   theme(legend.position = "left",
-        text = element_text(family = "Helvetica"),
+        text = element_text(family = "Helvetica", size = 12),
         legend.spacing.y = unit(0.2, "cm"),
-        legend.key.size = unit(0.5, "lines")) +
+        legend.key.size = unit(0.25, "lines")) +
   guides(color = guide_legend(override.aes = list(size = 2))) +
   ggtitle(NULL)
+
 
 
 
@@ -222,12 +225,12 @@ dotplot_plasmas <- DotPlot(plasmas, features = c("MS4A1", "CXCR4", "TMSB4X", "AC
                                          "IGHA1", "IGHGP", "IGHG4", "IGLL5", "NEAT1", "IGLC3", "IGLC2", "PSAT1", "CHAC1", "JCHAIN", "IGHG1",
                                          "IGHG3", "IGKC", "MZB1"),
                    group.by = 'annotation_intermediate', cols = 'RdYlBu',
-                   cluster.idents = F, dot.scale = 2) +
+                   cluster.idents = F, dot.scale = 2.5) +
   theme(text = element_text(family = "Helvetica")) +
-  theme(axis.text.x = element_text(angle=90,  hjust = 1, vjust = 0.2, size = 6),
-        legend.title = element_text(size = 6),
-        legend.text = element_text(size = 6), legend.key.size = unit(0.25, 'cm')) +
-  theme(axis.text.y = element_text(angle=0, size = 6)) +
+  theme(axis.text.x = element_text(angle=90,  hjust = 1, vjust = 0.2, size = 9),
+        legend.title = element_text(size = 9),
+        legend.text = element_text(size = 9), legend.key.size = unit(0.25, 'cm')) +
+  theme(axis.text.y = element_text(angle=0, size = 9)) +
   theme(axis.title = element_blank()) +
   guides(color=guide_legend(title="Exp"),
          size = guide_legend(title = '%'))
@@ -236,11 +239,12 @@ dotplot_plasmas <- DotPlot(plasmas, features = c("MS4A1", "CXCR4", "TMSB4X", "AC
 umap_plasmas <- DimPlot(plasmas, group.by = "annotation_intermediate", pt.size = 0.1) +
   theme_void() +
   theme(legend.position = "left",
-        text = element_text(family = "Helvetica"),
+        text = element_text(family = "Helvetica", size = 12),
         legend.spacing.y = unit(0.2, "cm"),
-        legend.key.size = unit(0.5, "lines")) +
+        legend.key.size = unit(0.25, "lines")) +
   guides(color = guide_legend(override.aes = list(size = 2))) +
   ggtitle(NULL)
+
 
 
 
@@ -264,25 +268,25 @@ cycling$annotation_intermediate <- factor(cycling$annotation_intermediate,
 
 dotplot_cycling <- DotPlot(cycling, features = c("RPL28", "MS4A1", "AIF1", "LYZ", "MZB1", "DERL3", "IL32", "CD3D"),
                    group.by = 'annotation_intermediate', cols = 'RdYlBu',
-                   cluster.idents = F, dot.scale = 2) +
+                   cluster.idents = F, dot.scale = 2.5) +
   theme(text = element_text(family = "Helvetica")) +
-  theme(axis.text.x = element_text(angle=90,  hjust = 1, vjust = 0.2, size = 6),
-        legend.title = element_text(size = 6),
-        legend.text = element_text(size = 6), legend.key.size = unit(0.25, 'cm')) +
-  theme(axis.text.y = element_text(angle=0, size = 6)) +
+  theme(axis.text.x = element_text(angle=90,  hjust = 1, vjust = 0.2, size = 9),
+        legend.title = element_text(size = 9),
+        legend.text = element_text(size = 9), legend.key.size = unit(0.25, 'cm')) +
+  theme(axis.text.y = element_text(angle=0, size = 9)) +
   theme(axis.title = element_blank()) +
   guides(color=guide_legend(title="Exp"),
          size = guide_legend(title = '%'))
 
-
 umap_cycling <- DimPlot(cycling, group.by = "annotation_intermediate", pt.size = 0.1) +
   theme_void() +
   theme(legend.position = "left",
-        text = element_text(family = "Helvetica"),
+        text = element_text(family = "Helvetica", size = 12),
         legend.spacing.y = unit(0.2, "cm"),
-        legend.key.size = unit(0.5, "lines")) +
+        legend.key.size = unit(0.25, "lines")) +
   guides(color = guide_legend(override.aes = list(size = 2))) +
   ggtitle(NULL)
+
 
 
 
@@ -296,3 +300,4 @@ save_sizes(plot = umap_cycling, filename = 'sup_2umap_cycling', device = 'pdf')
 save_sizes(plot = umap_cycling, filename = 'sup_2umap_cycling', device = 'jpeg')
 save_sizes(plot = umap_cycling, filename = 'sup_2umap_cycling', device = 'tiff')
 save_sizes(plot = umap_cycling, filename = 'sup_2umap_cycling', device = 'svg')
+
