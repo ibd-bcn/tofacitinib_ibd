@@ -18,11 +18,12 @@ todas$subset  <- gsub('epi', 'Epithelium', todas$subset)
 todas$subset  <- gsub('tcells', 'T cells', todas$subset)
 todas$subset  <- gsub('plasmas', 'Plasma and B cells', todas$subset)
 todas$subset  <- gsub('cycling', 'Cycling', todas$subset)
-todas$subset <- factor(todas$subset, levels = rev(c("Myeloids", "Stroma", "Epithelium", "T cells", "Plasma and B cells", "Cycling")))
+todas$subset <- factor(todas$subset, levels = c("Myeloids", "Stroma", "Epithelium", "T cells", "Plasma and B cells", "Cycling"))
 
-DotPlot(todas, features = c("CD2", "CD3E", "TRBC2", "CD7", "KLRB1", "PCLAF", "PTTG1", "TOP2A", "CDKN3", "MKI67", "KRT8", "PIGR",
-                             "EPCAM", "MUC12", "TFF3", "TYROBP", "FCER1G", "S100A8", "PLAUR", "LYZ", "IGHA1", "CD79A", "MZB1", "DERL3",
-                             "IGHG1", "NNMT", "COL3A1", "COL1A1", "DCN", "LUM"),
+
+dotplot_together <- DotPlot(todas, features = c("TYROBP", "FCER1G", "S100A8", "PLAUR", "LYZ","NNMT", "COL3A1", "COL1A1", "DCN", "LUM","KRT8", "PIGR",
+                            "EPCAM", "MUC12", "TFF3","CD2", "CD3E", "TRBC2", "CD7", "KLRB1",  "IGHA1", "CD79A", "MZB1", "DERL3",
+                            "IGHG1", "PCLAF", "PTTG1", "TOP2A", "CDKN3", "MKI67"),
         group.by = 'subset', cols = 'RdYlBu',
         cluster.idents = F, dot.scale = 2.5) +
   theme(text = element_text(family = "Helvetica")) +
@@ -35,7 +36,10 @@ DotPlot(todas, features = c("CD2", "CD3E", "TRBC2", "CD7", "KLRB1", "PCLAF", "PT
          size = guide_legend(title = '%'))
 
 
-
+save_sizes(plot = dotplot_together, filename = 'sup2_dotplot_together', device = 'jpeg')
+save_sizes(plot = dotplot_together, filename = 'sup2_dotplot_together', device = 'tiff')
+save_sizes(plot = dotplot_together, filename = 'sup2_dotplot_together', device = 'svg')
+save_sizes(plot = dotplot_together, filename = 'sup2_dotplot_together', device = 'pdf')
 
 
 
