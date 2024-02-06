@@ -6,6 +6,40 @@ library(Seurat)
 library(ggplot2)
 library(patchwork)
 library(grid)
+
+
+
+# All annotated together
+
+todas <- readRDS('Analysis/data//00_annotation_process/00_anotadas/todas.RDS')
+todas$subset  <- gsub('myeloids', 'Myeloids', todas$subset)
+todas$subset  <- gsub('stroma', 'Stroma', todas$subset)
+todas$subset  <- gsub('epi', 'Epithelium', todas$subset)
+todas$subset  <- gsub('tcells', 'T cells', todas$subset)
+todas$subset  <- gsub('plasmas', 'Plasma and B cells', todas$subset)
+todas$subset  <- gsub('cycling', 'Cycling', todas$subset)
+todas$subset <- factor(todas$subset, levels = rev(c("Myeloids", "Stroma", "Epithelium", "T cells", "Plasma and B cells", "Cycling")))
+
+DotPlot(todas, features = c("CD2", "CD3E", "TRBC2", "CD7", "KLRB1", "PCLAF", "PTTG1", "TOP2A", "CDKN3", "MKI67", "KRT8", "PIGR",
+                             "EPCAM", "MUC12", "TFF3", "TYROBP", "FCER1G", "S100A8", "PLAUR", "LYZ", "IGHA1", "CD79A", "MZB1", "DERL3",
+                             "IGHG1", "NNMT", "COL3A1", "COL1A1", "DCN", "LUM"),
+        group.by = 'subset', cols = 'RdYlBu',
+        cluster.idents = F, dot.scale = 2.5) +
+  theme(text = element_text(family = "Helvetica")) +
+  theme(axis.text.x = element_text(angle=90,  hjust = 1, vjust = 0.2, size = 9),
+        legend.title = element_text(size = 9),
+        legend.text = element_text(size = 9), legend.key.size = unit(0.25, 'cm')) +
+  theme(axis.text.y = element_text(angle=0, size = 9)) +
+  theme(axis.title = element_blank()) +
+  guides(color=guide_legend(title="Exp"),
+         size = guide_legend(title = '%'))
+
+
+
+
+
+
+
 # Myeloid
 
 myeloids <- readRDS('Analysis/data/00_annotation_process/00_anotadas/myeloids.RDS')
