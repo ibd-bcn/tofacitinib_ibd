@@ -1,38 +1,6 @@
-# cellinfo <- data.frame(
-#   stringsAsFactors = FALSE,
-#        RECEPTOR_NR = c("Cycling myeloids",
-#                        "Cycling myeloids","IDA macrophages","DN EOMES","DN EOMES",
-#                        "DN EOMES","DN EOMES","DN EOMES","IDA macrophages",
-#                        "Cycling myeloids","M2","M2",NA,NA,NA,NA,NA,NA,NA,NA,
-#                        NA,NA,NA,NA, 'M2'),
-#         RECEPTOR_R = c(NA,NA,NA,NA,NA,NA,NA,NA,
-#                        NA,NA,NA,NA,"Cycling myeloids","Cycling myeloids",
-#                        "IDA macrophages","DN EOMES","DN EOMES","DN EOMES",
-#                        "DN EOMES","DN EOMES","IDA macrophages",
-#                        "Cycling myeloids","M2","M2", 'M2'),
-#             SENDER = c("M1","Inflammatory monocytes",
-#                        "Inflammatory monocytes","Inflammatory monocytes","M1",
-#                        "IDA macrophages","DN EOMES",
-#                        "Inflammatory fibroblasts","IDA macrophages","IDA macrophages","M1",
-#                        "DN EOMES","M1","Inflammatory monocytes",
-#                        "Inflammatory monocytes","Inflammatory monocytes","M1","IDA macrophages",
-#                        "DN EOMES","Inflammatory fibroblasts","IDA macrophages",
-#                        "IDA macrophages","M1","DN EOMES", 'M2'),
-#               MEAN = c(1.136,0.373,0.349,
-#                        0.419,1.182,0.435,0.372,0.278,0.365,0.388,
-#                        0.419,0.45,0,0,0,0,0,0,0,0,
-#                        0,0,0,0, 0),
-#                 TX = c("PRE","PRE","PRE","PRE",
-#                        "PRE","PRE","PRE","PRE","PRE","PRE","POST","POST",
-#                        "PRE","PRE","PRE","PRE","PRE","PRE","PRE","PRE",
-#                        "PRE","PRE","POST","POST", 'PRE'),
-#         INDIVIDUAL = c(1L,2L,3L,4L,5L,6L,7L,8L,
-#                        9L,10L,11L,12L,13L,14L,15L,16L,17L,18L,19L,
-#                        20L,21L,22L,23L,24L, 25L),
-#               PROP = c(rep(1,25))
-# )
 
 cellinfo <- read.csv('Figures/extra_data/cellinfo.csv')
+
 library(tidyr)
 
 cellinfo2 <- pivot_longer(cellinfo[cellinfo$TX == 'PRE',],
@@ -90,7 +58,7 @@ pre <- ggplot(cellinfo2,
                  # "#ABC57B", # Infl fibro
                  # "#F8C05F", # IDA macro
                  # "#A28ED5", # DN
-                 # 'gray',
+                 # 'gray', #M2
                  # "#F8C05F", # IDA macrophages
                  # "#A28ED5", # DN
                  # "#FEF1CA" # cy my
