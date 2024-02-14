@@ -1,0 +1,48 @@
+"RECEPTOR_NR","RECEPTOR_R","SENDER","MEAN","TX","INDIVIDUAL","PROP"
+"Cycling myeloids",NA,"M1",1.136,"PRE",1,1
+"Cycling myeloids",NA,"Inflammatory monocytes",0.373,"PRE",2,1
+"IDA macrophages",NA,"Inflammatory monocytes",0.349,"PRE",3,1
+"DN EOMES",NA,"Inflammatory monocytes",0.419,"PRE",4,1
+"DN EOMES",NA,"M1",1.182,"PRE",5,1
+"DN EOMES",NA,"IDA macrophages",0.435,"PRE",6,1
+"DN EOMES",NA,"DN EOMES",0.372,"PRE",7,1
+"DN EOMES",NA,"Inflammatory fibroblasts",0.278,"PRE",8,1
+"IDA macrophages",NA,"IDA macrophages",0.365,"PRE",9,1
+"Cycling myeloids",NA,"IDA macrophages",0.388,"PRE",10,1
+NA,"Cycling myeloids","M1",0,"PRE",13,1
+NA,"Cycling myeloids","Inflammatory monocytes",0,"PRE",14,1
+NA,"IDA macrophages","Inflammatory monocytes",0,"PRE",15,1
+NA,"DN EOMES","Inflammatory monocytes",0,"PRE",16,1
+NA,"DN EOMES","M1",0,"PRE",17,1
+NA,"DN EOMES","IDA macrophages",0,"PRE",18,1
+NA,"DN EOMES","DN EOMES",0,"PRE",19,1
+NA,"DN EOMES","Inflammatory fibroblasts",0,"PRE",20,1
+NA,"IDA macrophages","IDA macrophages",0,"PRE",21,1
+NA,"Cycling myeloids","IDA macrophages",0,"PRE",22,1
+NA,"M2","M1",0,"POST",23,1
+NA,"M2","DN EOMES",0,"POST",24,1
+"M2",NA,"M1",0.419,"POST",11,1
+"M2",NA,"DN EOMES",0.45,"POST",12,1
+"M2","M2","M2",0,"PRE",25,1
+"M2","M2","M2",0,"PRE",26,1
+NA,"M2",NA,0,"POST",25,1
+"Cycling myeloids",NA,"M1",0,"POST",1,1
+"Cycling myeloids",NA,"Inflammatory monocytes",0,"POST",2,1
+"IDA macrophages",NA,"Inflammatory monocytes",0,"POST",3,1
+"DN EOMES",NA,"Inflammatory monocytes",0,"POST",4,1
+"DN EOMES",NA,"M1",0,"POST",5,1
+"DN EOMES",NA,"IDA macrophages",0,"POST",6,1
+"DN EOMES",NA,"DN EOMES",0,"POST",7,1
+"DN EOMES",NA,"Inflammatory fibroblasts",0,"POST",8,1
+"IDA macrophages",NA,"IDA macrophages",0,"POST",9,1
+"Cycling myeloids",NA,"IDA macrophages",0,"POST",10,1
+NA,"Cycling myeloids","M1",0,"POST",13,1
+NA,"Cycling myeloids","Inflammatory monocytes",0,"POST",14,1
+NA,"IDA macrophages","Inflammatory monocytes",0,"POST",15,1
+NA,"DN EOMES","Inflammatory monocytes",0,"POST",16,1
+NA,"DN EOMES","M1",0,"POST",17,1
+NA,"DN EOMES","IDA macrophages",0,"POST",18,1
+NA,"DN EOMES","DN EOMES",0,"POST",19,1
+NA,"DN EOMES","Inflammatory fibroblasts",0,"POST",20,1
+NA,"IDA macrophages","IDA macrophages",0,"POST",21,1
+NA,"Cycling myeloids","IDA macrophages",0,"POST",22,1
