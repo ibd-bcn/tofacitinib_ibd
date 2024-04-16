@@ -57,52 +57,6 @@ system(
   "taskset -c 0-20 CytoSig/CytoSig/CytoSig_run.py -i /tofacitinib_ibd/Analysis/Cytosig/10xcounts/todas_w0_NR/ -o /tofacitinib_ibd/Analysis/Cytosig/results/todas_w0_NR.xlsx -r 1000 -a 10000  -e 1  -s 1 -c 1000 -z 0.95"
 )
 
-
-#w8_R
-todas_w8_R <-
-  todas[, todas$week_3 == "POST" & todas$response == "R"]
-#Obtain COUNT MATRIX
-counts <- todas_w8_R@assays$RNA@counts
-# Calculate TPM
-TPM <- counts / Matrix::colSums(counts) * 1e6
-# Perform the log2(TPM/10 + 1) transformation
-log_TPM <- log2(TPM / 10 + 1)
-# You can add this as a new assay to your Seurat object
-todas_w8_R[["log_TPM"]] <- CreateAssayObject(counts = log_TPM)
-#Write 10x Counts
-print("TODAS_w8_R: Writting 10x Counts")
-write10xCounts(x = todas_w8_R@assays$log_TPM@data,
-               path = "/tofacitinib_ibd/Analysis/Cytosig/10xcounts/todas_w8_R",
-               version = "3")
-#Run Cytosig
-print("TODAS_w8_R Run Cytosig")
-system(
-  "taskset -c 0-20 CytoSig/CytoSig/CytoSig_run.py -i /tofacitinib_ibd/Analysis/Cytosig/10xcounts/todas_w8_R/ -o /tofacitinib_ibd/Analysis/Cytosig/results/todas_w8_R.xlsx -r 1000 -a 10000  -e 1  -s 1 -c 1000 -z 0.95"
-)
-
-#w8_NR
-todas_w8_NR <-
-  todas[, todas$week_3 == "POST" & todas$response == "NR"]
-#Obtain COUNT MATRIX
-counts <- todas_w8_NR@assays$RNA@counts
-# Calculate TPM
-TPM <- counts / Matrix::colSums(counts) * 1e6
-# Perform the log2(TPM/10 + 1) transformation
-log_TPM <- log2(TPM / 10 + 1)
-# You can add this as a new assay to your Seurat object
-todas_w8_NR[["log_TPM"]] <- CreateAssayObject(counts = log_TPM)
-#Write 10x Counts
-print("TODAS_w8_NR: Writting 10x Counts")
-write10xCounts(x = todas_w8_NR@assays$log_TPM@data,
-               path = "/tofacitinib_ibd/Analysis/Cytosig/10xcounts/todas_w8_NR",
-               version = "3")
-#Run Cytosig
-print("TODAS_w8_NR Run Cytosig")
-system(
-  "taskset -c 0-20 CytoSig/CytoSig/CytoSig_run.py -i /tofacitinib_ibd/Analysis/Cytosig/10xcounts/todas_w8_NR/ -o /tofacitinib_ibd/Analysis/Cytosig/results/todas_w8_NR.xlsx -r 1000 -a 10000  -e 1  -s 1 -c 1000 -z 0.95"
-)
-
-
 #Second part:Convert Cytosig output TO EXCELL-----------------------------------
 print("TODAS: Converting OUTPUT")
 system("python3 convertoexcel.py")
