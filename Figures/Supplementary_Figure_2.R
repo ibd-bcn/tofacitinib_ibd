@@ -1,14 +1,11 @@
-
-
-# Dotplot figure by subset
-
+options(stringsAsFactors = FALSE,bitmapType = "cairo")
 library(Seurat)
 library(ggplot2)
 library(patchwork)
 library(grid)
 
 
-
+## Supplementary Figure 2A: Dotplot -------------------------------------------
 # All annotated together
 
 todas <- readRDS('Analysis/data//00_annotation_process/00_anotadas/todas.RDS')
@@ -43,7 +40,7 @@ save_sizes(plot = dotplot_together, filename = 'sup2_dotplot_together', device =
 
 
 
-
+## Supplementary Figure 2B: Dotplot per subset----------------------------------
 # Myeloid
 
 myeloids <- readRDS('Analysis/data/00_annotation_process/00_anotadas/myeloids.RDS')

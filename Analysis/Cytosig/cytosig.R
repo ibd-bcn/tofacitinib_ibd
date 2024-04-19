@@ -27,12 +27,12 @@ todas_w0_R[["log_TPM"]] <- CreateAssayObject(counts = log_TPM)
 #Write 10x Counts
 print("TODAS_w0_R: Writting 10x Counts")
 write10xCounts(x = todas_w0_R@assays$log_TPM@data,
-               path = "/tofacitinib_ibd/Analysis/Cytosig/10xcounts/todas_w0_R",
+               path = "Analysis/Cytosig/10xcounts/todas_w0_R",
                version = "3")
 #Run Cytosig
 print("TODAS: Run Cytosig")
 system(
-  "taskset -c 0-20 CytoSig/CytoSig/CytoSig_run.py -i /tofacitinib_ibd/Analysis/Cytosig/10xcounts/todas_w0_R/ -o /tofacitinib_ibd/Analysis/Cytosig/results/todas_w0_R.xlsx -r 1000 -a 10000  -e 1  -s 1 -c 1000 -z 0.95"
+  "taskset -c 0-20 CytoSig/CytoSig/CytoSig_run.py -i Analysis/Cytosig/10xcounts/todas_w0_R/ -o Analysis/Cytosig/results/todas_w0_R.xlsx -r 1000 -a 10000  -e 1  -s 1 -c 1000 -z 0.95"
 )
 
 #w0_NR
@@ -49,12 +49,12 @@ todas_w0_NR[["log_TPM"]] <- CreateAssayObject(counts = log_TPM)
 #Write 10x Counts
 print("TODAS_w0_NR: Writting 10x Counts")
 write10xCounts(x = todas_w0_NR@assays$log_TPM@data,
-               path = "/tofacitinib_ibd/Analysis/Cytosig/10xcounts/todas_w0_NR",
+               path = "Analysis/Cytosig/10xcounts/todas_w0_NR",
                version = "3")
 #Run Cytosig
 print("TODAS_w0_NR Run Cytosig")
 system(
-  "taskset -c 0-20 CytoSig/CytoSig/CytoSig_run.py -i /tofacitinib_ibd/Analysis/Cytosig/10xcounts/todas_w0_NR/ -o /tofacitinib_ibd/Analysis/Cytosig/results/todas_w0_NR.xlsx -r 1000 -a 10000  -e 1  -s 1 -c 1000 -z 0.95"
+  "taskset -c 0-20 CytoSig/CytoSig/CytoSig_run.py -i Analysis/Cytosig/10xcounts/todas_w0_NR/ -o Analysis/Cytosig/results/todas_w0_NR.xlsx -r 1000 -a 10000  -e 1  -s 1 -c 1000 -z 0.95"
 )
 
 #Second part:Convert Cytosig output TO EXCELL-----------------------------------
@@ -64,7 +64,7 @@ system("python3 convertoexcel.py")
 #Third part:Calculate statistical analysis -------------------------------------
 print("TODAS: Statistical analysis")
 anotacio_cytosig <-
-  read_csv("/tofacitinib_ibd/Analysis/Cytosig/anot.csv")
+  read_csv("Analysis/Cytosig/anot.csv")
 
 #Modify TODAS and ADD column for annotation_cyt // cell names // condition
 todas$cell_name <- colnames(todas)
@@ -90,19 +90,19 @@ annotation <-
 
 #Read cytosig data
 cyt_data1 <-
-  read_csv("/tofacitinib_ibd/Analysis/Cytosig/results/todas_w8_R_converted.csv")
+  read_csv("Analysis/Cytosig/results/todas_w8_R_converted.csv")
 colnames(cyt_data1)[which(names(cyt_data1) == "...1")] <- "cytokine"
 
 cyt_data2 <-
-  read_csv("/tofacitinib_ibd/Analysis/Cytosig/results/todas_w8_NR_converted.csv")
+  read_csv("Analysis/Cytosig/results/todas_w8_NR_converted.csv")
 cyt_data2 <- cyt_data2[, 2:ncol(cyt_data2)]
 
 cyt_data3 <-
-  read_csv("/tofacitinib_ibd/Analysis/Cytosig/results/todas_w0_R_converted.csv")
+  read_csv("Analysis/Cytosig/results/todas_w0_R_converted.csv")
 cyt_data3 <- cyt_data3[, 2:ncol(cyt_data3)]
 
 cyt_data4 <-
-  read_csv("/tofacitinib_ibd/Analysis/Cytosig/results/todas_w0_NR_converted.csv")
+  read_csv("Analysis/Cytosig/results/todas_w0_NR_converted.csv")
 cyt_data4 <- cyt_data4[, 2:ncol(cyt_data4)]
 
 cyt_data <- cbind(cyt_data1, cyt_data2, cyt_data3, cyt_data4)
@@ -186,7 +186,7 @@ for (com in 1:6) {
     openxlsx::write.xlsx(
       x = results,
       file = paste0(
-        "/tofacitinib_ibd/Analysis/Cytosig/comparisons_results/todas_",
+        "Analysis/Cytosig/comparisons_results/todas_",
         cond1,
         "_vs_",
         cond2,

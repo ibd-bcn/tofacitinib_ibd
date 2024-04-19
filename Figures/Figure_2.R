@@ -1,4 +1,4 @@
-options(stringsAsFactors = FALSE)
+options(stringsAsFactors = FALSE,bitmapType = "cairo")
 library(Seurat)
 library(patchwork)
 library(ggplot2)

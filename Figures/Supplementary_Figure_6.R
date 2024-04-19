@@ -1,12 +1,15 @@
-## Figure ----------------------------------------------------------------------
+options(stringsAsFactors = FALSE,bitmapType = "cairo")
 
-
-
+library(ggplot2)
 library(readxl)
-pathway_RESP_DWW_enrichGO_BP_fig4 <- read_excel("/home/asanzo/Elisa/pathway_RESP_DWW_enrichGO_BP_fig4.xlsx")
+source('Figures/functions_plots.R')
 
+## Data ------------------------------------------------------------------------
 
-## 2,5,8,9,10, 12. 14, 17 , 22, 28, 32, 48 hay que quitarle 1 porque es excel
+pathway_RESP_DWW_enrichGO_BP_fig4 <- read_excel("Figures/extra_data/pathway_RESP_DWW_enrichGO_BP_fig4.xlsx")
+
+## Supplementary Figure 6-------------------------------------------------------
+
 filas_seleccionadas <- c(1,4,7,8,9,11,13,16,21,27,31,47)
 
 pathway <- pathway_RESP_DWW_enrichGO_BP_fig4[filas_seleccionadas,]

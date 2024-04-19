@@ -1,19 +1,18 @@
-options(stringsAsFactors = FALSE)
-
+options(stringsAsFactors = FALSE,bitmapType = "cairo")
 library(ggplot2)
 library(readxl)
 source('Figures/functions_plots.R')
 
 
 ## Data ------------------------------------------------------------------------
-fig1<- read_excel("Figures/extra_data/Analiticas_sup_fig1.xlsx",
+fig1<- read_excel("Figures/extra_data/## Supplementary Figure 2A: Dotplot -------------------------------------------Analiticas_sup_fig1.xlsx",
                    col_types = c("text", "text", "text",
                                  "numeric", "numeric", "numeric",
                                  "numeric", "numeric", "numeric"))
 
 
 
-## Supplementary Figure 1: Boxplots --------------------------------------------
+## Supplementary Figure 1A: Boxplots -------------------------------------------
 
 cells <- c("neutros","linfos","mono","leuco")
 
@@ -29,3 +28,4 @@ for(c in cells){
 
 }
 
+## Supplementary Figure 1B: Correlations ---------------------------------------

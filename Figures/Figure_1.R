@@ -1,4 +1,4 @@
-options(stringsAsFactors = FALSE)
+options(stringsAsFactors = FALSE,bitmapType = "cairo")
 library(openxlsx)
 library(ggplot2)
 library(readr)
@@ -6,7 +6,7 @@ library(nlcor)
 library(ggpubr)
 library(patchwork)
 
-## Figure 1 C: Severity Index---------------------------------------------------
+## Figure 1 B: Severity Index---------------------------------------------------
 
 #Colors R & NR
 colors_response <- c('R' = '#70ADE6',
