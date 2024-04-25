@@ -45,9 +45,11 @@ save_sizes(plot = dotplot_together, filename = 'sup2_dotplot_together', device =
 
 myeloids <- readRDS('Analysis/data/00_annotation_process/00_anotadas/myeloids.RDS')
 myeloids$annotation_intermediate  <- gsub('Macrophage NRG1', 'IDA macrophages', myeloids$annotation_intermediate)
+myeloids$annotation_intermediate  <- gsub('M2', 'FOLR2+ macrophages', myeloids$annotation_intermediate)
+myeloids$annotation_intermediate  <- gsub('M1', 'INHBA+ macrophages', myeloids$annotation_intermediate)
 myeloids$annotation_intermediate <- factor(myeloids$annotation_intermediate,
                                            levels = c("Cycling myeloids", "DCs", "Eosinophils", "HS",
-                                                      "Inflammatory monocytes", "M0", "M1", "M2",
+                                                      "Inflammatory monocytes", "M0", "INHBA+ macrophages", "FOLR2+ macrophages",
                                                       "IDA macrophages", "Mast", "Neutrophils", "pDC",
                                                       "Rib hi myeloids"))
 

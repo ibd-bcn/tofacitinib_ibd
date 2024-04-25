@@ -3,6 +3,8 @@ library(ggplot2)
 library(readxl)
 source('Figures/functions_plots.R')
 
+# Correlations found in Analysis folder
+
 
 ## Data ------------------------------------------------------------------------
 fig1<- read_excel("Figures/extra_data/## Supplementary Figure 2A: Dotplot -------------------------------------------Analiticas_sup_fig1.xlsx",

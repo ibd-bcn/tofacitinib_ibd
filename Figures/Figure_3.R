@@ -270,10 +270,6 @@ m1_ok <- m1[!(m1 %in% m2)]
 
 gene_lists <- read_delim("~/TOFA_data/20220222_TOFAS_23/03_M1_M2_W0_POST/gene_lists_M2.csv",
                          delim = ";", escape_double = FALSE, trim_ws = TRUE)
-# DE entre los clusters de Elisa. Genes UP en NRR que no son UPP en R i viceversa
-# los queremos comparar con los marcadores M1 de tofa i los M2 de HC
-# i Jaccard entre todo.
-
 
 # W0 vs POST
 
@@ -533,3 +529,91 @@ save_sizes(plot = fig4c_S1NR, filename = 'fig4c_S1NR', device = 'svg')
 save_sizes(plot = fig4c_S1NR, filename = 'fig4c_S1NR', device = 'pdf')
 
 # Figure 3F  -------------------------------------------------------------------
+
+# healthy stroma from Garrido-Trigo et al.
+stroma_HC <- readRDS("~/data_Albas/HC_13122021/01_piezas_anotadas/stroma.RDS")
+
+#
+# get markers from this project and Garrido-Trigo et al.
+#
+stroma@active.ident <- stroma$annotation_refined
+stroma_mk <- FindAllMarkers(stroma,  only.pos = TRUE,
+                              min.pct = 0.25, thresh.use = 0.25)
+
+stroma_HC@active.ident <- stroma_HC$annotation_refined
+stroma_HC_mk <- FindAllMarkers(stroma_HC,  only.pos = TRUE,
+                                 min.pct = 0.25, thresh.use = 0.25)
+
+#
+# Get M1 and M2 markers
+#
+S1<- stroma_HC_mk[stroma_HC_mk$cluster == 'S1' & stroma_HC_mk$p_val_adj < 0.001,'gene']
+IF <- stroma_mk[stroma_mk$cluster == 'Inflammatory fibroblasts' & stroma_mk$p_val_adj < 0.05,'gene']
+
+
+
+gene_lists <- read_delim("~/TOFA_data/20220222_TOFAS_23/new_complete.csv",
+                         delim = ";", escape_double = FALSE, trim_ws = TRUE)
+
+# W0 vs POST
+
+rlist <- gene_lists$ALL_w0R_vs_POSTR[gene_lists$ALL_w0R_vs_POSTR_UPP_DWW == 'UPP']
+nrlist <- gene_lists$ALL_w0NR_vs_POSTNR[gene_lists$ALL_w0NR_vs_POSTNR_UPP_DWW == 'UPP']
+
+rlist_ok <- rlist[!(rlist %in% nrlist)]
+nrlist_ok <- nrlist[!(nrlist %in% rlist)]
+
+the_list <- vector(mode = 'list', length = 4)
+the_list[[1]] <- rlist_ok
+the_list[[2]] <- s1_ok
+the_list[[3]] <- if_ok
+the_list[[4]] <- nrlist_ok[!is.na(nrlist_ok)]
+names(the_list) <- c('UPP Post-tx\nRESPONDERS',
+                     'S1 markers',
+                     'IF markers',
+                     'UPP Post-tx\nNO RESPONDERS')
+
+#
+# jaccard
+#
+
+library(matchSCore2)
+ms <- matchSCore2(gene_cl.ref = the_list[2:3],gene_cl.obs = the_list[c(1,4)],
+                  ylab = "Markers", xlab = "DE genes")
+ms$ggplot +
+  theme_figure()
+
+df <- as.data.frame(ms$JI.mat)
+df$rownames <- rownames(df)
+matrix <- tidyr::pivot_longer(df, cols = 1:2)
+
+fig3d <- ggplot(matrix,
+                aes(x = name, y = rownames, fill= value)) +
+  geom_raster() +
+  geom_text(mapping = aes(label = round(value, digits = 2)),  size = 10/.pt) +
+  scale_fill_gradient(low  = 'white',
+                      high = 'red',
+                      limits = c(0,0.13),
+                      name="Jaccard\nIndex",
+                      breaks=c(0, 0.13),
+                      labels=c("Min", 'Max')) +
+  theme_figure() +
+  theme(text = element_text(family = 'Helvetica', size = 10),
+        legend.position = 'right',
+        legend.title = element_text(family = 'Helvetica', size = 9))
+
+save_sizes(plot = fig3d, filename = 'Figure_3D', device = 'jpeg')
+save_sizes(plot = fig3d, filename = 'Figure_3D', device = 'tiff')
+save_sizes(plot = fig3d, filename = 'Figure_3D', device = 'svg')
+save_sizes(plot = fig3d, filename = 'Figure_3D', device = 'pdf')
+
+fig3d_nt <- fig3d +
+  theme(
+    text = element_text(color = 'white'),
+    axis.text = element_text(color = 'white'))
+
+
+save_sizes(plot = fig3d_nt, filename = 'Figure_3D_no_text', device = 'jpeg')
+save_sizes(plot = fig3d_nt, filename = 'Figure_3D_no_text', device = 'tiff')
+save_sizes(plot = fig3d_nt, filename = 'Figure_3D_no_text', device = 'svg')
+save_sizes(plot = fig3d_nt, filename = 'Figure_3D_no_text', device = 'pdf')

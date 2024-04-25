@@ -107,7 +107,7 @@ write.csv(ego3, file = 'Analysis/pathway_NRESP_GSE_BP.csv')
 
 
 library(readxl)
-pathway_RESP_DWW_enrichGO_BP_fig4 <- read_excel("/home/asanzo/Elisa/pathway_RESP_DWW_enrichGO_BP_fig4.xlsx")
+pathway_RESP_DWW_enrichGO_BP_fig4 <- read_excel("Figures/extra_data/pathway_RESP_DWW_enrichGO_BP_fig4.xlsx")
 
 
 ## 2,5,8,9,10, 12. 14, 17 , 22, 28, 32, 48 hay que quitarle 1 porque es excel
