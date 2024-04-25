@@ -545,34 +545,61 @@ stroma_HC_mk <- FindAllMarkers(stroma_HC,  only.pos = TRUE,
                                  min.pct = 0.25, thresh.use = 0.25)
 
 #
-# Get M1 and M2 markers
+# Get S1 and IF markers
 #
-S1<- stroma_HC_mk[stroma_HC_mk$cluster == 'S1' & stroma_HC_mk$p_val_adj < 0.001,'gene']
-IF <- stroma_mk[stroma_mk$cluster == 'Inflammatory fibroblasts' & stroma_mk$p_val_adj < 0.05,'gene']
+S1_UC <- stroma_HC_mk[stroma_HC_mk$cluster == 'S1' & stroma_HC_mk$p_val_adj < 0.001,'gene']
+IF_UC <- stroma_mk[stroma_mk$cluster == 'Inflammatory fibroblasts' & stroma_mk$p_val_adj < 0.05,'gene']
 
 
 
-gene_lists <- read_delim("~/TOFA_data/20220222_TOFAS_23/new_complete.csv",
-                         delim = ";", escape_double = FALSE, trim_ws = TRUE)
+
 
 # W0 vs POST
+de_data <- readRDS('/home/acorraliza/TOFA_data/20220222_TOFAS_23/01_DE/REPASO/new_complete.RDS')
+de <- de_data[de_data$cluster == 'S1' &
+                de_data$annotation == 'annotation_refined' &
+                de_data$comp %in% c('w0R_vs_POSTR', 'w0NR_vs_POSTNR', 'RPOST_NRPOST') &
+                de_data$sign %in% c('UPP', 'DWW', 'UP', 'DW'),]
+x <- list(w0R_vs_POSTR = de$gene[de$comp == 'w0R_vs_POSTR'],
+          w0NR_vs_POSTNR = de$gene[de$comp == 'w0NR_vs_POSTNR'],
+          RPOST_NRPOST = de$gene[de$comp == 'RPOST_NRPOST']
+)
 
-rlist <- gene_lists$ALL_w0R_vs_POSTR[gene_lists$ALL_w0R_vs_POSTR_UPP_DWW == 'UPP']
-nrlist <- gene_lists$ALL_w0NR_vs_POSTNR[gene_lists$ALL_w0NR_vs_POSTNR_UPP_DWW == 'UPP']
+gene_list <- list()
+gene_list$ALL_w0R_vs_POSTR <- de$gene[de$comp == 'w0R_vs_POSTR']
+gene_list$ALL_w0R_vs_POSTR_UPP_DWW <- de$sign[de$comp == 'w0R_vs_POSTR']
+gene_list$ALL_w0NR_vs_POSTNR <- de$gene[de$comp == 'w0NR_vs_POSTNR']
+gene_list$ALL_w0NR_vs_POSTNR_UPP_DWW <- de$sign[de$comp == 'w0NR_vs_POSTNR']
+gene_list$ALL_RPOST_NRPOST <- de$gene[de$comp == 'RPOST_NRPOST']
+gene_list$ALL_RPOST_NRPOST_UPP_DWW <- de$sign[de$comp == 'RPOST_NRPOST']
+gene_list$INTERSECT_w0R_vs_POSTR__RPOST_NRPOST <- intersect(de$gene[de$comp == 'RPOST_NRPOST'],
+                                                            de$gene[de$comp == 'w0R_vs_POSTR'])
+gene_list$INTERSECT_w0NR_vs_POSTNR__RPOST_NRPOST <- intersect(de$gene[de$comp == 'RPOST_NRPOST'],
+                                                              de$gene[de$comp == 'w0NR_vs_POSTNR'])
+gene_list$INTERSECT_w0R_vs_POSTR__w0NR_vs_POSTNR <- intersect(de$gene[de$comp == 'w0NR_vs_POSTNR'],
+                                                              de$gene[de$comp == 'w0R_vs_POSTR'])
+gene_list$INTERSECT_ALL <- intersect(intersect(de$gene[de$comp == 'w0NR_vs_POSTNR'],
+                                               de$gene[de$comp == 'w0R_vs_POSTR']),
+                                     de$gene[de$comp == 'RPOST_NRPOST'])
+df <- data.frame(Reduce(cbind, gene_list))
+colnames(df) <- names(gene_list)
+for(i in c(1,3,5,7:10)){
+  df[,i][duplicated(df[,i])] <- NA
+}
+head(df)
 
-rlist_ok <- rlist[!(rlist %in% nrlist)]
-nrlist_ok <- nrlist[!(nrlist %in% rlist)]
+S1_1list <- gene_list$ALL_w0R_vs_POSTR[gene_list$ALL_w0R_vs_POSTR_UPP_DWW == 'UPP' | gene_list$ALL_w0R_vs_POSTR_UPP_DWW == 'UP' ]
+S1_2list <- gene_list$ALL_w0NR_vs_POSTNR[gene_list$ALL_w0NR_vs_POSTNR_UPP_DWW == 'UPP' | gene_list$ALL_w0NR_vs_POSTNR_UPP_DWW == 'UP' ]
 
 the_list <- vector(mode = 'list', length = 4)
-the_list[[1]] <- rlist_ok
-the_list[[2]] <- s1_ok
-the_list[[3]] <- if_ok
-the_list[[4]] <- nrlist_ok[!is.na(nrlist_ok)]
-names(the_list) <- c('UPP Post-tx\nRESPONDERS',
-                     'S1 markers',
-                     'IF markers',
-                     'UPP Post-tx\nNO RESPONDERS')
-
+the_list[[1]] <- S1_1list
+the_list[[2]] <- S1_2list
+the_list[[3]] <- S1_UC
+the_list[[4]] <- IF_UC
+names(the_list) <- c('S1_W0R_POSTR_UP',
+                     'S1_W0NR_POSTNR_UP',
+                     'S1_markers',
+                     'IF_markers')
 #
 # jaccard
 #
