@@ -12,7 +12,7 @@ library(readr)
 #Object TODAS
 todas <- readRDS("/path/to/single_cell_object")
 
-#First part: Prepare INPUT cytosig and RUN; ------------------------------------
+#First part: Prepare INPUT cytosig and RUN; -----------------------------------
 
 #w0_R
 todas_w0_R <- todas[, todas$week_3 == "W0" & todas$response == "R"]
