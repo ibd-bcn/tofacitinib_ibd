@@ -518,7 +518,7 @@ boxplot_analitica <- function(df, cp) {
       alpha = 1,
       size = 1
     ) +
-    facet_grid( ~ RESPONSE, scales = "free", space = "free") +
+    facet_grid(~ RESPONSE, scales = "free", space = "free") +
     theme_bw(base_rect_size = 1, base_size = 20) +
     theme(
       legend.position = 'none',
@@ -535,22 +535,25 @@ boxplot_analitica <- function(df, cp) {
 
 #Heatmaps of progeny
 
-heatmap_progeny <- function(stimuli, anot = "reduced_anot"){
-
+heatmap_progeny <- function(stimuli, anot = "reduced_anot") {
   #Open dfs
-  todas_intermediate_w0_NR <- read_csv(paste0("~/tofacitinib_ibd/Analysis/PROGENy/data/todas_",anot,"_w0_NR.csv", sep = ""))
+  todas_intermediate_w0_NR <-
+    read_csv(paste0("Analysis/PROGENy/data/todas_", anot, "_w0_NR.csv", sep = ""))
   cn_w0_NR <- todas_intermediate_w0_NR$row_names
   jak_w0_NR <- todas_intermediate_w0_NR[[stimuli]]
 
-  todas_intermediate_w0_R <- read_csv(paste0("~/tofacitinib_ibd/Analysis/PROGENy/data/todas_",anot,"_w0_R.csv", sep = ""))
+  todas_intermediate_w0_R <-
+    read_csv(paste0("Analysis/PROGENy/data/todas_", anot, "_w0_R.csv", sep = ""))
   cn_w0_R <- todas_intermediate_w0_R$row_names
   jak_w0_R <- todas_intermediate_w0_R[[stimuli]]
 
-  todas_intermediate_w8_R <- read_csv(paste0("~/tofacitinib_ibd/Analysis/PROGENy/data/todas_",anot,"_w8_R.csv", sep = ""))
+  todas_intermediate_w8_R <-
+    read_csv(paste0("Analysis/PROGENy/data/todas_", anot, "_w8_R.csv", sep = ""))
   cn_w8_R <- todas_intermediate_w8_R$row_names
   jak_w8_R <- todas_intermediate_w8_R[[stimuli]]
 
-  todas_intermediate_w8_NR <- read_csv(paste0("~/tofacitinib_ibd/Analysis/PROGENy/data/todas_",anot,"_w8_NR.csv", sep = ""))
+  todas_intermediate_w8_NR <-
+    read_csv(paste0("Analysis/PROGENy/data/todas_", anot, "_w8_NR.csv", sep = ""))
   cn_w8_NR <- todas_intermediate_w8_NR$row_names
   jak_w8_NR <- todas_intermediate_w8_NR[[stimuli]]
 
@@ -568,31 +571,183 @@ heatmap_progeny <- function(stimuli, anot = "reduced_anot"){
   colnames(combined_df) <- c("cn", "w0_NR", "w0_R", "w8_R", "w8_NR")
   cells <- combined_df$cn
   rownames(combined_df) <- combined_df$cn
-  combined_df <- combined_df[,-c(1)]
+  combined_df <- combined_df[, -c(1)]
   data_t <- t(combined_df)
   colnames(data_t) <- cells
-  data_t <- data_t[c("w0_NR","w0_R","w8_NR","w8_R"),]
-  data <- data_t[,c("T cell","Plasma cell","B cell","Macrophages","Neutrophils","Mast cells","Inflammatory monocytes","DCs","Eosinophils","Fibroblasts","Endothelium","Glia","Epithelium")]
+  data_t <- data_t[c("w0_NR", "w0_R", "w8_NR", "w8_R"), ]
+  data <-
+    data_t[, c(
+      "T cell",
+      "Plasma cell",
+      "B cell",
+      "Macrophages",
+      "Neutrophils",
+      "Mast cells",
+      "Inflammatory monocytes",
+      "DCs",
+      "Eosinophils",
+      "Fibroblasts",
+      "Endothelium",
+      "Glia",
+      "Epithelium"
+    )]
   paletteLength = 100
-  myColor <- colorRamp2(range(na.omit(data)), hcl_palette = "Reds", reverse = TRUE)
-  data <- data[c("w8_NR", "w8_R", "w0_NR", "w0_R"),]
-  colnames(data) <- gsub(pattern = "Inflammatory monocytes",replacement = "Inf mono",x = colnames(data))
+  myColor <-
+    colorRamp2(range(na.omit(data)),
+               hcl_palette = "Reds",
+               reverse = TRUE)
+  data <- data[c("w8_NR", "w8_R", "w0_NR", "w0_R"), ]
+  colnames(data) <-
+    gsub(pattern = "Inflammatory monocytes",
+         replacement = "Inf mono",
+         x = colnames(data))
 
   #Heatmap
-  progeny_hmap <- Heatmap(data,
-                          name = "PROGENy (500)",
-                          col = myColor,
-                          show_row_names = TRUE,
-                          show_column_names = TRUE,
-                          cluster_rows = FALSE,
-                          cluster_columns = FALSE,
-                          rect_gp = gpar(col = NA),
-                          row_title = NULL,
-                          column_title = NULL,
-                          row_names_gp = gpar(fontsize = 12),
-                          column_names_gp = gpar(fontsize = 18)
+  progeny_hmap <- Heatmap(
+    data,
+    name = "PROGENy (500)",
+    col = myColor,
+    show_row_names = TRUE,
+    show_column_names = TRUE,
+    cluster_rows = FALSE,
+    cluster_columns = FALSE,
+    rect_gp = gpar(col = NA),
+    row_title = NULL,
+    column_title = NULL,
+    row_names_gp = gpar(fontsize = 12),
+    column_names_gp = gpar(fontsize = 18)
   )
 
   # Draw the heatmap
-  draw(progeny_hmap, heatmap_legend_side = "right", annotation_legend_side = "left")
+  draw(
+    progeny_hmap,
+    heatmap_legend_side = "right",
+    annotation_legend_side = "left"
+  )
+}
+
+#Feature plot progeny
+feature_plot_progeny <- function(todas, feat, pt.size = 0.01) {
+  #Seurat object
+  todas@active.ident <- as.factor(todas$condition)
+
+  #Plots
+  p <- FeaturePlot(todas, features = c(feat))
+  feat <- gsub("-", ".", feat)
+  data_p <- p$data
+
+  # Set a common color scale limits for feat
+  color_limits <- range(data_p[[feat]], na.rm = TRUE)
+
+  # Plot for W0_R
+  p1 <-
+    ggplot(data_p[data_p$ident == "W0_R", ], aes(x = UMAP_1, y = UMAP_2, color = .data[[feat]])) +
+    geom_point(size = pt.size) +
+    labs(x = NULL, y = NULL, color = "Identity") +
+    scale_color_gradient(low = "#EBEBEB",
+                         high = "red",
+                         limits = color_limits) +
+    theme_minimal() +
+    theme(
+      axis.title = element_blank(),
+      axis.text = element_blank(),
+      axis.ticks = element_blank(),
+      panel.grid = element_blank(),
+      legend.position = "none"
+    )
+
+  # Plot for W0_NR
+  p2 <-
+    ggplot(data_p[data_p$ident == "W0_NR", ], aes(x = UMAP_1, y = UMAP_2, color = .data[[feat]])) +
+    geom_point(size = pt.size) +
+    labs(x = NULL, y = NULL, color = "Identity") +
+    scale_color_gradient(low = "#EBEBEB",
+                         high = "red",
+                         limits = color_limits) +
+    theme_minimal() +
+    theme(
+      axis.title = element_blank(),
+      axis.text = element_blank(),
+      axis.ticks = element_blank(),
+      panel.grid = element_blank(),
+      legend.position = "none"
+    )
+
+  # Plot for POST_R
+  p3 <-
+    ggplot(data_p[data_p$ident == "POST_R", ], aes(x = UMAP_1, y = UMAP_2, color =
+                                                     .data[[feat]])) +
+    geom_point(size = pt.size) +
+    labs(x = NULL, y = NULL, color = "Identity") +
+    scale_color_gradient(low = "#EBEBEB",
+                         high = "red",
+                         limits = color_limits) +
+    theme_minimal() +
+    theme(
+      axis.title = element_blank(),
+      axis.text = element_blank(),
+      axis.ticks = element_blank(),
+      panel.grid = element_blank(),
+      legend.position = "none"
+    )
+
+  # Plot for POST_NR
+  p4 <-
+    ggplot(data_p[data_p$ident == "POST_NR", ], aes(x = UMAP_1, y = UMAP_2, color = .data[[feat]])) +
+    geom_point(size = pt.size) +
+    labs(x = NULL, y = NULL, color = "Identity") +
+    scale_color_gradient(low = "#EBEBEB",
+                         high = "red",
+                         limits = color_limits) +
+    theme_minimal() +
+    theme(
+      axis.title = element_blank(),
+      axis.text = element_blank(),
+      axis.ticks = element_blank(),
+      panel.grid = element_blank(),
+      legend.position = "none"
+    )
+
+  # Extract the legend from one of the plots
+  legend <- get_legend(
+    ggplot(data_p, aes(
+      x = UMAP_1, y = UMAP_2, color = .data[[feat]]
+    )) +
+      geom_point() +
+      scale_color_gradient(
+        low = "#EBEBEB",
+        high = "red",
+        limits = color_limits
+      ) +
+      theme(legend.position = "right")
+  )
+
+  # Combine the plots and legend
+  combined_plot <- plot_grid(p1, p2, p3, p4, nrow = 2)
+
+  # Add the legend to the combined plot
+  final_plot <-
+    plot_grid(combined_plot,
+              legend,
+              ncol = 2,
+              rel_widths = c(1, 0.1))
+
+  # Add title
+  title <- ggdraw() +
+    draw_label(
+      feat,
+      fontface = 'bold',
+      x = 0.5,
+      hjust = 0.5,
+      size = 20
+    )
+
+  # Combine title and plot
+  plot_grid(title,
+            final_plot,
+            ncol = 1,
+            rel_heights = c(0.1, 1))
+
+
+
 }

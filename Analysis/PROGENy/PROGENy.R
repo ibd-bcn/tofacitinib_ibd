@@ -50,7 +50,7 @@ progeny_scores_df <-
 todas$condition <- paste(todas$week_3, "_", todas$response, sep = "")
 meta <- todas@meta.data
 meta$Cell <- rownames(meta)
-
+saveRDS(prog_sub,"Analysis/PROGENy/data/progeny.RDS")
 #New annotation
 cell_type_dictionary <- list(
   "Plasmablast_IGKC" = "Plasma cell",
@@ -154,7 +154,7 @@ summarized_pscores_w8_NR$row_names <-
 write_csv(
   summarized_pscores_w8_NR,
   paste0(
-    "~/tofacitinib_ibd/Analysis/PROGENy/data/todas_reduced_anot_w8_NR.csv",
+    "Analysis/PROGENy/data/todas_reduced_anot_w8_NR.csv",
     sep = ""
   )
 )
@@ -177,7 +177,7 @@ summarized_pscores_w8_R$row_names <-
 write_csv(
   summarized_pscores_w8_R,
   paste0(
-    "~/tofacitinib_ibd/Analysis/PROGENy/data/todas_reduced_anot_w8_R.csv",
+    "Analysis/PROGENy/data/todas_reduced_anot_w8_R.csv",
     sep = ""
   )
 )
@@ -200,7 +200,7 @@ summarized_pscores_w0_R$row_names <-
 write_csv(
   summarized_pscores_w0_R,
   paste0(
-    "~/tofacitinib_ibd/Analysis/PROGENy/data/todas_reduced_anot_w0_R.csv",
+    "Analysis/PROGENy/data/todas_reduced_anot_w0_R.csv",
     sep = ""
   )
 )
@@ -224,7 +224,7 @@ summarized_pscores_w0_NR$row_names <-
 write_csv(
   summarized_pscores_w0_NR,
   paste0(
-    "~/tofacitinib_ibd/Analysis/PROGENy/data/todas_reduced_anot_w0_NR.csv",
+    "Analysis/PROGENy/data/todas_reduced_anot_w0_NR.csv",
     sep = ""
   )
 )
@@ -290,7 +290,7 @@ for (com in 1:6) {
     openxlsx::write.xlsx(
       x = results,
       file = paste0(
-        "~/tofacitinib_ibd/Analysis/PROGENy/data/todas_",
+        "Analysis/PROGENy/data/todas_",
         cond1,
         "_vs_",
         cond2,

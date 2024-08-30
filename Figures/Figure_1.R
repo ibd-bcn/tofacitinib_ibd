@@ -10,7 +10,10 @@ library(ComplexHeatmap)
 library(dplyr)
 library(plyr)
 library(circlize)
-
+library(gridExtra)
+library(grid)
+library(cowplot)
+source('Figures/functions_plots.R')
 
 ## Figure 1 B: Severity Index---------------------------------------------------
 
@@ -118,12 +121,30 @@ dev.off()
 
 
 ## Figure 1 D: PROGENy UMAP-----------------------------------------------------
-
+prog_sub <- readRDS("Analysis/PROGENy/data/progeny.RDS")
+png(
+  filename = "output/NFkB.png",
+  width = 6,
+  height = 5,
+  units = "in",
+  res = 800
+)
+feature_plot_progeny(todas = prog_sub, feat = "NFkB")
+dev.off()
+png(
+  filename = "output//JAK.STAT.png",
+  width = 6,
+  height = 5,
+  units = "in",
+  res = 800
+)
+feature_plot_progeny(todas = prog_sub, feat = "JAK-STAT")
+dev.off()
 
 
 ## Figure 1 E: PROGENy Heatmap--------------------------------------------------
 png(
-  filename = "output//heatmap_NFkB.png",
+  filename = "output/heatmap_NFkB.png",
   width = 8,
   height = 4,
   units = "in",
