@@ -177,7 +177,7 @@ summarized_pscores_w8_R$row_names <-
 write_csv(
   summarized_pscores_w8_R,
   paste0(
-    "~/tofacitinib_ibd/Analysis/PROGENy/todas_reduced_anot_w8_R.csv",
+    "~/tofacitinib_ibd/Analysis/PROGENy/data/todas_reduced_anot_w8_R.csv",
     sep = ""
   )
 )
@@ -200,7 +200,7 @@ summarized_pscores_w0_R$row_names <-
 write_csv(
   summarized_pscores_w0_R,
   paste0(
-    "~/tofacitinib_ibd/Analysis/PROGENy/todas_reduced_anot_w0_R.csv",
+    "~/tofacitinib_ibd/Analysis/PROGENy/data/todas_reduced_anot_w0_R.csv",
     sep = ""
   )
 )
@@ -224,7 +224,7 @@ summarized_pscores_w0_NR$row_names <-
 write_csv(
   summarized_pscores_w0_NR,
   paste0(
-    "~/tofacitinib_ibd/Analysis/PROGENy/todas_reduced_anot_w0_NR.csv",
+    "~/tofacitinib_ibd/Analysis/PROGENy/data/todas_reduced_anot_w0_NR.csv",
     sep = ""
   )
 )

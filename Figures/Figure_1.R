@@ -5,6 +5,12 @@ library(readr)
 library(nlcor)
 library(ggpubr)
 library(patchwork)
+library(readr)
+library(ComplexHeatmap)
+library(dplyr)
+library(plyr)
+library(circlize)
+
 
 ## Figure 1 B: Severity Index---------------------------------------------------
 
@@ -107,37 +113,74 @@ ggplot(data, aes(
   scale_color_manual(values = colors_response)
 dev.off()
 
-## Figure 1 E: Correlation plot-------------------------------------------------
-corr_tofa <- read_delim("Figures/extra_data/corr_tofa_sangre.csv",
-                        delim = ";", escape_double = FALSE,
-                        locale = locale(decimal_mark = ",",
-                                        grouping_mark = "."),
-                        na = c("ND","n.d"), trim_ws = TRUE)
-
-SOCS1 <- ggplot(corr_tofa, aes(`Conc tofa (ng/ml)`, SOCS1)) +
-  geom_point(aes(color = Response)) +
-  geom_smooth(formula = y ~ log(x), method = 'lm') +
-  scale_color_manual(values = c('R' = '#70ADE6', 'NR' = '#FF8E47')) +
-  labs(x = 'Tofa conc (ng/ml)') +
-  theme_classic()+
-  theme(legend.position = 'top', text = element_text(family = 'Helvetica', size = 8))
-
-SOCS3 <- ggplot(corr_tofa, aes(`Conc tofa (ng/ml)`, SOCS3)) +
-  geom_point(aes(color = Response)) +
-  geom_smooth(formula = y ~ log(x), method = 'lm') +
-  scale_color_manual(values = c('R' = '#70ADE6', 'NR' = '#FF8E47')) +
-  labs(x = 'Tofa conc (ng/ml)') +
-  theme_classic()+
-  theme(legend.position = 'top', text = element_text(family = 'Helvetica', size = 8))
-
-IRF1 <- ggplot(corr_tofa, aes(`Conc tofa (ng/ml)`, IRF1)) +
-  geom_point(aes(color = Response)) +
-  geom_smooth(formula = y ~ log(x), method = 'lm') +
-  scale_color_manual(values = c('R' = '#70ADE6', 'NR' = '#FF8E47')) +
-  labs(x = 'Tofa conc (ng/ml)') +
-  theme_classic()+
-  theme(legend.position = 'top', text = element_text(family = 'Helvetica', size = 8))
+## Figure 1 C: Single-Cell UMAP-------------------------------------------------
 
 
-patchwork::wrap_plots(SOCS1, SOCS3, IRF1, guides = 'collect') &
-  theme(legend.position = 'top', axis.text = element_text(colour = 'black', size = 8))
+
+## Figure 1 D: PROGENy UMAP-----------------------------------------------------
+
+
+
+## Figure 1 E: PROGENy Heatmap--------------------------------------------------
+png(
+  filename = "output//heatmap_NFkB.png",
+  width = 8,
+  height = 4,
+  units = "in",
+  res = 800
+)
+heatmap_progeny(stimuli = "NFkB")
+dev.off()
+png(
+  filename = "output/heatmap_JAK.STAT.png",
+  width = 8,
+  height = 4,
+  units = "in",
+  res = 800
+)
+heatmap_progeny(stimuli = "JAK-STAT")
+dev.off()
+
+
+
+
+
+
+
+
+
+
+# ## Figure 1 E: Correlation plot-------------------------------------------------
+# corr_tofa <- read_delim("Figures/extra_data/corr_tofa_sangre.csv",
+#                         delim = ";", escape_double = FALSE,
+#                         locale = locale(decimal_mark = ",",
+#                                         grouping_mark = "."),
+#                         na = c("ND","n.d"), trim_ws = TRUE)
+#
+# SOCS1 <- ggplot(corr_tofa, aes(`Conc tofa (ng/ml)`, SOCS1)) +
+#   geom_point(aes(color = Response)) +
+#   geom_smooth(formula = y ~ log(x), method = 'lm') +
+#   scale_color_manual(values = c('R' = '#70ADE6', 'NR' = '#FF8E47')) +
+#   labs(x = 'Tofa conc (ng/ml)') +
+#   theme_classic()+
+#   theme(legend.position = 'top', text = element_text(family = 'Helvetica', size = 8))
+#
+# SOCS3 <- ggplot(corr_tofa, aes(`Conc tofa (ng/ml)`, SOCS3)) +
+#   geom_point(aes(color = Response)) +
+#   geom_smooth(formula = y ~ log(x), method = 'lm') +
+#   scale_color_manual(values = c('R' = '#70ADE6', 'NR' = '#FF8E47')) +
+#   labs(x = 'Tofa conc (ng/ml)') +
+#   theme_classic()+
+#   theme(legend.position = 'top', text = element_text(family = 'Helvetica', size = 8))
+#
+# IRF1 <- ggplot(corr_tofa, aes(`Conc tofa (ng/ml)`, IRF1)) +
+#   geom_point(aes(color = Response)) +
+#   geom_smooth(formula = y ~ log(x), method = 'lm') +
+#   scale_color_manual(values = c('R' = '#70ADE6', 'NR' = '#FF8E47')) +
+#   labs(x = 'Tofa conc (ng/ml)') +
+#   theme_classic()+
+#   theme(legend.position = 'top', text = element_text(family = 'Helvetica', size = 8))
+#
+#
+# patchwork::wrap_plots(SOCS1, SOCS3, IRF1, guides = 'collect') &
+#   theme(legend.position = 'top', axis.text = element_text(colour = 'black', size = 8))

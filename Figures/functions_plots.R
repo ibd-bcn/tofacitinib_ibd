@@ -533,3 +533,66 @@ boxplot_analitica <- function(df, cp) {
 
 }
 
+#Heatmaps of progeny
+
+heatmap_progeny <- function(stimuli, anot = "reduced_anot"){
+
+  #Open dfs
+  todas_intermediate_w0_NR <- read_csv(paste0("~/tofacitinib_ibd/Analysis/PROGENy/data/todas_",anot,"_w0_NR.csv", sep = ""))
+  cn_w0_NR <- todas_intermediate_w0_NR$row_names
+  jak_w0_NR <- todas_intermediate_w0_NR[[stimuli]]
+
+  todas_intermediate_w0_R <- read_csv(paste0("~/tofacitinib_ibd/Analysis/PROGENy/data/todas_",anot,"_w0_R.csv", sep = ""))
+  cn_w0_R <- todas_intermediate_w0_R$row_names
+  jak_w0_R <- todas_intermediate_w0_R[[stimuli]]
+
+  todas_intermediate_w8_R <- read_csv(paste0("~/tofacitinib_ibd/Analysis/PROGENy/data/todas_",anot,"_w8_R.csv", sep = ""))
+  cn_w8_R <- todas_intermediate_w8_R$row_names
+  jak_w8_R <- todas_intermediate_w8_R[[stimuli]]
+
+  todas_intermediate_w8_NR <- read_csv(paste0("~/tofacitinib_ibd/Analysis/PROGENy/data/todas_",anot,"_w8_NR.csv", sep = ""))
+  cn_w8_NR <- todas_intermediate_w8_NR$row_names
+  jak_w8_NR <- todas_intermediate_w8_NR[[stimuli]]
+
+  #Modify df
+  df_w0_NR <- data.frame(cn = cn_w0_NR, jak_w0_NR = jak_w0_NR)
+  df_w0_R <- data.frame(cn = cn_w0_R, jak_w0_R = jak_w0_R)
+  df_w8_R <- data.frame(cn = cn_w8_R, jak_w8_R = jak_w8_R)
+  df_w8_NR <- data.frame(cn = cn_w8_NR, jak_w8_NR = jak_w8_NR)
+
+  combined_df <- df_w0_NR %>%
+    full_join(df_w0_R, by = "cn") %>%
+    full_join(df_w8_R, by = "cn") %>%
+    full_join(df_w8_NR, by = "cn")
+
+  colnames(combined_df) <- c("cn", "w0_NR", "w0_R", "w8_R", "w8_NR")
+  cells <- combined_df$cn
+  rownames(combined_df) <- combined_df$cn
+  combined_df <- combined_df[,-c(1)]
+  data_t <- t(combined_df)
+  colnames(data_t) <- cells
+  data_t <- data_t[c("w0_NR","w0_R","w8_NR","w8_R"),]
+  data <- data_t[,c("T cell","Plasma cell","B cell","Macrophages","Neutrophils","Mast cells","Inflammatory monocytes","DCs","Eosinophils","Fibroblasts","Endothelium","Glia","Epithelium")]
+  paletteLength = 100
+  myColor <- colorRamp2(range(na.omit(data)), hcl_palette = "Reds", reverse = TRUE)
+  data <- data[c("w8_NR", "w8_R", "w0_NR", "w0_R"),]
+  colnames(data) <- gsub(pattern = "Inflammatory monocytes",replacement = "Inf mono",x = colnames(data))
+
+  #Heatmap
+  progeny_hmap <- Heatmap(data,
+                          name = "PROGENy (500)",
+                          col = myColor,
+                          show_row_names = TRUE,
+                          show_column_names = TRUE,
+                          cluster_rows = FALSE,
+                          cluster_columns = FALSE,
+                          rect_gp = gpar(col = NA),
+                          row_title = NULL,
+                          column_title = NULL,
+                          row_names_gp = gpar(fontsize = 12),
+                          column_names_gp = gpar(fontsize = 18)
+  )
+
+  # Draw the heatmap
+  draw(progeny_hmap, heatmap_legend_side = "right", annotation_legend_side = "left")
+}
