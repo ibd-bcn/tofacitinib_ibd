@@ -44,7 +44,7 @@ corr_tofa <- read_delim("/Figures/extra_data/corr_tofa_sangre.csv",
                                         grouping_mark = "."),
                         na = c("ND","n.d"), trim_ws = TRUE)
 
-corr_tofa <- read_delim("/home/acorraliza/TOFA_data/tofacitinib_ibd/Analysis/data/corr_tofa.csv",
+corr_tofa <- read_delim("/Figures/extra_data/corr_tofa.csv",
                         delim = ";", escape_double = FALSE,
                         locale = locale(decimal_mark = ",",
                                         grouping_mark = "."),
@@ -83,5 +83,4 @@ patchwork::wrap_plots(SOCS1, SOCS3, IRF1, guides = 'collect') &
 combined_plot <- patchwork::wrap_plots(SOCS1, SOCS3, IRF1, guides = 'collect') &
   theme(legend.position = 'top', axis.text = element_text(colour = 'black', size = 8))
 
-# Save the plot
 ggsave("combined_plot_biopsia.png", plot = combined_plot, width = 8, height = 2.5, units = "in")
