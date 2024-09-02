@@ -80,7 +80,7 @@ save_sizes(plot = fig3a_nl, filename = 'Figure_3A_no_legend', device = 'svg')
 save_sizes(plot = fig3a_nl, filename = 'Figure_3A_no_legend', device = 'pdf')
 
 ## Figure 3B -------------------------------------------------------------------
-de_data <- readRDS('Analysis/data/01_DE/REPASO/new_complete.RDS')
+de_data <- readRDS('Figures/extra_data/new_complete.RDS')
 
 # Volcano plots FOLR2+ macrophages
 
@@ -381,7 +381,7 @@ save_sizes(plot = fig4a_nl, filename = 'Figure_4A_no_legend', device = 'pdf')
 
 # Figure 3E  -------------------------------------------------------------------
 
-de_data <- readRDS('Analysis/data/01_DE/REPASO/new_complete.RDS')
+de_data <- readRDS('Figures/extra_data/new_complete.RDS')
 
 # Volcano plots S1
 

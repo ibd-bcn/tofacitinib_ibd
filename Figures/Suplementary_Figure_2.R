@@ -18,7 +18,7 @@ fig2<- read_excel("Figures/extra_data/Analiticas_sup_fig1.xlsx",
                                  "numeric", "numeric", "numeric"))
 
 
-
+##
 ## Supplementary Figure 2A: Boxplots -------------------------------------------
 
 cells <- c("neutros","linfos","mono","leuco")
