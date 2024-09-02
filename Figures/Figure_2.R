@@ -41,41 +41,43 @@ abundances_data_noimmune$Response <- factor(abundances_data_noimmune$Response,
                                           levels = c("PRE R VS NR", "R POST",  "NR POST"))
 
 
-## Figure 2 A: UMAP subset -----------------------------------------------------
-
-fig <- DimPlot(all, group.by = 'subset') +
-  scale_color_manual(values = colors_subset) +
+## Figure 2 A_1: UMAP AND BARPLOTS pre-post-response -----------------------------------------------------
+all_pre <- all[,all$pre_post == "PRE"]
+umap2a1 <- DimPlot(all_pre, group.by = 'response', split.by = 'pre_post') +
+  scale_color_manual(values = colors_response) +
   theme_umap()
 
-save_sizes(plot = fig, filename = 'Figure_2A', device = 'tiff')
-save_sizes(plot = fig, filename = 'Figure_2A', device = 'svg')
-save_sizes(plot = fig, filename = 'Figure_2A', device = 'jpeg')
-save_sizes(plot = fig, filename = 'Figure_2A', device = 'pdf')
+save_sizes(plot = umap2a1, filename = 'Figure_2A1', device = 'tiff')
+save_sizes(plot = umap2a1, filename = 'Figure_2A1', device = 'svg')
+save_sizes(plot = umap2a1, filename = 'Figure_2A1', device = 'jpeg')
+save_sizes(plot = umap2a1, filename = 'Figure_2A1', device = 'pdf')
 
-fig_legend <- fig +
+fig_legend <- umap2a1 +
   theme(legend.position = 'right')
 
-## Figure 2 B: UMAP AND BARPLOTS pre-post-response -----------------------------
+## Figure 2 A_2: UMAP AND BARPLOTS pre-post-response -----------------------------
 
 #
 # UMAP
 #
-umap2b <- DimPlot(all, group.by = 'response', split.by = 'pre_post') +
+all_post <- all[,all$pre_post == "POST"]
+umap2a2 <- DimPlot(all_post, group.by = 'response', split.by = 'pre_post') +
   scale_color_manual(values = colors_response) +
   theme_umap()
 
-save_sizes(plot = umap2b, filename = 'Figure_2B_UMAP', device = 'tiff')
-save_sizes(plot = umap2b, filename = 'Figure_2B_UMAP', device = 'svg')
-save_sizes(plot = umap2b, filename = 'Figure_2B_UMAP', device = 'jpeg')
-save_sizes(plot = umap2b, filename = 'Figure_2B_UMAP', device = 'pdf')
+save_sizes(plot = umap2a2, filename = 'Figure_2B_UMAP', device = 'tiff')
+save_sizes(plot = umap2a2, filename = 'Figure_2B_UMAP', device = 'svg')
+save_sizes(plot = umap2a2, filename = 'Figure_2B_UMAP', device = 'jpeg')
+save_sizes(plot = umap2a2, filename = 'Figure_2B_UMAP', device = 'pdf')
 
-umap2b_legend <- umap2b +
+umap2a2_legend <- umap2a2 +
   theme(legend.position = 'right')
 #
 # UMAPs 2a & 2b together
 #
-umaps_tog <- fig + umap2b + patchwork::plot_layout(ncol = 2, widths = c(0.33,0.66))
-
+umaps_tog <- umap2a1 + umap2a2 + patchwork::plot_layout(ncol = 2, widths = c(0.66,0.66))
+umaps_tog_legend <- umap2a1 + umap2a2 +
+  theme(legend.position = 'right')
 save_sizes(plot = umaps_tog, filename = 'Figure_2AB_UMAPS_together', device = 'tiff')
 save_sizes(plot = umaps_tog, filename = 'Figure_2AB_UMAPS_together', device = 'svg')
 save_sizes(plot = umaps_tog, filename = 'Figure_2AB_UMAPS_together', device = 'jpeg')
@@ -104,8 +106,8 @@ pat <- patchwork::wrap_plots(list_plots, ncol=2, guides='collect') &
 pat2 <- patchwork::wrap_plots(list_plots, ncol=2, guides='collect') &
   theme_figure_wo_text()
 
-pat3 <- umap2b / pat
-pat4 <- umap2b / pat2
+pat3 <- umaps_tog / pat
+pat4 <- umaps_tog / pat2
 
 save_sizes(plot = pat, filename = 'Figure_2B_BARPLOTS_text', device = 'tiff')
 save_sizes(plot = pat, filename = 'Figure_2B_BARPLOTS_text', device = 'svg')
@@ -137,7 +139,7 @@ design <- "#AA#
            CCCC
            CCCC"
 
-fin <- fig + umap2b + pat + patchwork::plot_layout(design = design) & theme(text = element_text(family = 'Helvetica', size = 6))
+fin <-  umaps_tog  + pat + patchwork::plot_layout(design = design) & theme(text = element_text(family = 'Helvetica', size = 6))
 
 ggsave(filename = 'Figure_2AB_text.jpeg', plot = fin, dpi = 300, device = 'jpeg', path = 'Figures/output/')
 
@@ -147,7 +149,7 @@ ggsave(filename = 'Figure_2AB_text.jpeg', plot = fin, dpi = 300, device = 'jpeg'
 immune <- ggplot(abundances_data_immune[abundances_data_immune$Response != "PRE R VS NR", ],
             aes(Response, Cluster, fill= e.score)) +
   geom_raster() +
-  geom_text(mapping = aes(label = ast_Chisq),  size = 10/.pt, nudge_y = -0.25) +
+  geom_text(mapping = aes(label = ast),  size = 10/.pt, nudge_y = -0.25) +
   scale_fill_gradient2(low = '#023fa5', mid = '#FFFCFC',
                        high = '#8e063b',limits = c(-30,30),
                        midpoint = 0) +
@@ -158,14 +160,14 @@ immune <- ggplot(abundances_data_immune[abundances_data_immune$Response != "PRE 
                             size = 6),
         axis.title = element_blank(),
         legend.position = 'none') +
-  labs(fill = 'Enrichment\nscore\nvs\nPRE')
+  labs(fill = 'Enrichment\nscore\nvs\nPre-tx')
 
 plot(immune)
 
 no_immune <- ggplot(abundances_data_noimmune[abundances_data_noimmune$Response != "PRE R VS NR", ],
                  aes(Response, Cluster, fill= e.score)) +
   geom_raster() +
-  geom_text(mapping = aes(label = ast_Chisq), size = 10/.pt, nudge_y = -0.15) +
+  geom_text(mapping = aes(label = ast), size = 10/.pt, nudge_y = -0.15) +
   scale_fill_gradient2(low = '#023fa5', mid = '#FFFCFC',
                        high = '#8e063b',limits = c(-30,30),
                        midpoint = 0) +
@@ -176,7 +178,7 @@ no_immune <- ggplot(abundances_data_noimmune[abundances_data_noimmune$Response !
                             size = 6),
         axis.title = element_blank(),
         legend.position = 'none') +
-  labs(fill = 'Enrichment\nscore\nvs\nPRE')
+  labs(fill = 'Enrichment\nscore\nvs\nPre-tx')
 
 plot(no_immune)
 
@@ -201,6 +203,7 @@ ggsave(a, filename = 'Figures/output/Figure_2C_legend.pdf', dpi = 300)
 ggsave(a, filename = 'Figures/output/Figure_2C_legend.svg', dpi = 300)
 ggsave(a, filename = 'Figures/output/Figure_2C_legend.tiff', dpi = 300)
 
+# Vertical figure
 
 fig2c_legend <- fig2c +
   theme(panel.border = element_blank(),
@@ -212,11 +215,12 @@ fig2c_legend <- fig2c +
 
 fig2c_legend & theme(text = element_text(color = 'white'), axis.text = element_text(color = 'white'))
 
+# Horizontal figure
 
 t_immune <- ggplot(abundances_data_immune[abundances_data_immune$Response != "PRE R VS NR", ],
                  aes(Cluster,Response, fill= e.score)) +
   geom_raster() +
-  geom_text(mapping = aes(label = ast_Chisq),  size = 10/.pt,angle = 90, vjust = 0.85) +
+  geom_text(mapping = aes(label = ast),  size = 10/.pt,angle = 90, vjust = 0.85) +
   scale_fill_gradient2(low = '#023fa5', mid = '#FFFCFC',
                        high = '#8e063b',limits = c(-30,30),
                        midpoint = 0) +
@@ -227,12 +231,12 @@ t_immune <- ggplot(abundances_data_immune[abundances_data_immune$Response != "PR
         axis.title = element_blank(),
         axis.text.x = element_text(angle = 90,vjust = 0.5, hjust= 1),
         legend.position = 'none') +
-  labs(fill = 'Enrichment\nscore\nvs\nPRE')
+  labs(fill = 'Enrichment\nscore\nvs\nPre-tx')
 
 t_no_immune <- ggplot(abundances_data_noimmune[abundances_data_noimmune$Response != "PRE R VS NR", ],
                     aes(Cluster, Response, fill= e.score)) +
   geom_raster() +
-  geom_text(mapping = aes(label = ast_Chisq), size = 10/.pt, angle = 90, vjust = 0.85) +
+  geom_text(mapping = aes(label = ast), size = 10/.pt, angle = 90, vjust = 0.85) +
   scale_fill_gradient2(low = '#023fa5', mid = '#FFFCFC',
                        high = '#8e063b',limits = c(-30,30),
                        midpoint = 0) +
@@ -244,7 +248,7 @@ t_no_immune <- ggplot(abundances_data_noimmune[abundances_data_noimmune$Response
         axis.title = element_blank(),
         legend.position = 'right',
         legend.title = element_text(family = 'Helvetica', size = 6)) +
-  labs(fill = 'Enrichment\nscore\nvs\nPRE')
+  labs(fill = 'Enrichment\nscore\nvs\nPre-tx')
 
 fig2ct <- t_immune / t_no_immune  &
   theme(panel.border = element_blank(),
@@ -270,7 +274,7 @@ design <- "#AAAA#
            DDDDDD
            DDDDDD"
 
-fin <- fig_legend + umap2b_legend + pat + fig2ct +
+fin <- fig_legend + umaps_tog_legend + pat + fig2ct +
   patchwork::plot_layout(design = design, guides = 'collect') &
   theme(text = element_text(family = 'Helvetica', size = 7), legend.text = element_text(family = 'Helvetica', size = 6))
 

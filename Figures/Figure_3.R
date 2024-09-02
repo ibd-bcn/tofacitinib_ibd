@@ -16,6 +16,9 @@ message('Loading data')
 myeloids <- readRDS('Analysis/data/00_annotation_process/00_anotadas/myeloids.RDS')
 myeloids$pre_post <- plyr::mapvalues(myeloids$week_3, from = c('W0', 'POST'), to = c('PRE', 'POST'))
 myeloids$annotation_intermediate <- gsub('Macrophage NRG1', 'IDA macrophages', myeloids$annotation_intermediate)
+myeloids$annotation_intermediate <- gsub('M1', 'INHBA+ macrophages', myeloids$annotation_intermediate)
+myeloids$annotation_intermediate <- gsub('M2', 'FOLR2+ macrophages', myeloids$annotation_intermediate)
+myeloids$annotation_intermediate <- gsub('M0', 'M0 macrophages', myeloids$annotation_intermediate)
 myeloids$pre_post <- factor(myeloids$pre_post, levels = c('PRE', 'POST'))
 myeloids$response <- factor(myeloids$response, levels = c('R', 'NR'))
 myeloids$subset <- factor(myeloids$subset, levels = c('epi', 'stroma', 'plasmas', 'myeloids', 'cycling', 'tcells'))
@@ -34,9 +37,9 @@ stroma$subset <- factor(stroma$subset, levels = c('epi', 'stroma', 'plasmas', 'm
 
 colors <- c('HS' = '#bed0e8',
             'Inflammatory monocytes' = '#eb6c92',
-            'M0' = '#c1d665',
-            'M1' = '#053370',
-            'M2' = '#018d7e',
+            'M0 macrophages' = '#c1d665',
+            'INHBA+ macrophages' = '#053370',
+            'FOLR2+ macrophages' = '#018d7e',
             'IDA macrophages' = '#f3bf5d',
             'Neutrophils' = '#ba4042')
 
@@ -79,9 +82,9 @@ save_sizes(plot = fig3a_nl, filename = 'Figure_3A_no_legend', device = 'pdf')
 ## Figure 3B -------------------------------------------------------------------
 de_data <- readRDS('Analysis/data/01_DE/REPASO/new_complete.RDS')
 
-# Volcano plots M2
+# Volcano plots FOLR2+ macrophages
 
-# M2 responders
+# FOLR2+ responders
 cluster <- "M2"
 comp <- "w0R_vs_POSTR"
 
@@ -149,7 +152,7 @@ save_sizes(plot = fig3b_M2R, filename = 'fig3b_M2R', device = 'tiff')
 save_sizes(plot = fig3b_M2R, filename = 'fig3b_M2R', device = 'svg')
 save_sizes(plot = fig3b_M2R, filename = 'fig3b_M2R', device = 'pdf')
 
-# M2 non-responders
+# FOLR2+ non-responders
 
 cluster <- "M2"
 comp <- "w0NR_vs_POSTNR"
@@ -246,7 +249,7 @@ save_sizes(plot = leg, filename = 'legvolcano', device = 'pdf')
 
 ## Figure 3C -------------------------------------------------------------------
 # healthy Macrophages from Garrido-Trigo et al.
-myeloids_HC <- readRDS("~/data_Albas/HC_13122021/01_piezas_anotadas/myeloids.RDS")
+myeloids_HC <- readRDS("/data_Albas/HC_13122021/01_piezas_anotadas/myeloids.RDS")
 
 #
 # get markers from this project and Garrido-Trigo et al.
@@ -531,7 +534,7 @@ save_sizes(plot = fig4c_S1NR, filename = 'fig4c_S1NR', device = 'pdf')
 # Figure 3F  -------------------------------------------------------------------
 
 # healthy stroma from Garrido-Trigo et al.
-stroma_HC <- readRDS("~/data_Albas/HC_13122021/01_piezas_anotadas/stroma.RDS")
+stroma_HC <- readRDS("/data_Albas/HC_13122021/01_piezas_anotadas/stroma.RDS")
 
 #
 # get markers from this project and Garrido-Trigo et al.
