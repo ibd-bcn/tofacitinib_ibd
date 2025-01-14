@@ -14,7 +14,7 @@ __Conclusions:__ We conclude that resistance to tofacitinib is mediated by the h
 
 ## Distribution of this repository
 
-This repository is composed with two main directories.
+This repository is composed of two main directories.
 
 - Figures: In this directory you can find the code to develop each figure of the study. 
 - Analysis: In this directory you can find all the code to perform the same analysis of the study.
