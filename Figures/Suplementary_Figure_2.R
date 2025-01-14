@@ -10,15 +10,77 @@ source('Figures/functions_plots.R')
 
 # Correlations found in Analysis folder
 
+## Functions -------------------------------------------------------------------
+boxplot_analitica <- function(df, cp) {
+  #Dictionary to grab column
+  figures <- c(
+    "neutros" = 4,
+    "linfos" = 5,
+    "mono" = 6,
+    "leuco" = 3
+  )
+  #Grab columns
+  fig_cell <- df[, c(1, 2, figures[[cp]])]
+  #Convert week_2 column to factor
+  fig_cell$Time <-
+    factor(fig_cell$Time,
+           levels = c("w0", "w2", "≥w8"))
+  #Change column name of the celltype
+  colnames(fig_cell)[3] <- cp
+  #Convert column response to factor
+  fig_cell$Response <-
+    factor(fig_cell$Response, levels = c("R", "NR"))
+  fig_cell$black <- "black"
+
+  #Grab Max value of datapoints
+  max <- max(fig_cell[, 3], na.rm = TRUE)
+
+  #Jitter width selection
+  if (cp == "mono") {
+    jw <- 0.5
+  } else{
+    jw <- 0.2
+  }
+
+  #Plot
+  p <- ggplot(na.omit(fig_cell), aes(x = Time, y = .data[[cp]])) +
+    geom_boxplot(
+      aes(fill = Response),
+      color = "black",
+      alpha = 0.9,
+      size = 0.5,
+      outlier.shape = NA
+    ) +
+    geom_jitter(
+      aes(color = black),
+      position = position_jitterdodge(dodge.width = 0.4, jitter.width = jw),
+      alpha = 1,
+      size = 1
+    ) +
+    facet_grid(~ Response, scales = "free", space = "free") +
+    theme_bw(base_rect_size = 1, base_size = 20) +
+    theme(
+      legend.position = 'none',
+      axis.title.x = element_blank(),
+      axis.text.x = element_blank(),
+      axis.title.y = element_blank(),
+      strip.text.y = element_blank(),
+      plot.title = element_blank(),
+      axis.ticks = element_line(size = 0.5),
+      axis.ticks.length = unit(0.1, "cm")
+    ) + scale_fill_manual(values = c("#70ADE6", "#FF8E47")) + scale_color_manual(values = c("#000000")) + ylim(c(0, round(max)))
+
+}
+
 
 ## Data ------------------------------------------------------------------------
-fig2<- read_excel("Figures/extra_data/Analiticas_sup_fig1.xlsx",
-                   col_types = c("text", "text", "text",
-                                 "numeric", "numeric", "numeric",
-                                 "numeric", "numeric", "numeric"))
+fig2 <- read_excel("Figures/extra_data/Supporting data values Melon-Ardanaz et al.xlsx",
+                   sheet = "Sup figure 2A", col_types = c("text",
+                                                          "text", "numeric", "numeric", "numeric",
+                                                          "numeric"))
+colnames(fig2) <- gsub(" \\(week\\)", "", colnames(fig2))
 
 
-##
 ## Supplementary Figure 2A: Boxplots -------------------------------------------
 
 cells <- c("neutros","linfos","mono","leuco")

@@ -361,7 +361,9 @@ ggplot(data = combined_a, aes(
   )
 dev.off()
 
-#Statistical analysis Expression
+# Figure 5E --------------------------------------------------------------------
+#currently using todas_R and todas_NR from Figure 4D
+
 cells_R <- colnames(todas_R)
 cells_NR <- colnames(todas_NR)
 

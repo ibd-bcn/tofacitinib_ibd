@@ -5,44 +5,60 @@ library(plyr)
 library(dplyr)
 options(bitmapType='cairo')
 
-#Supplementary Figure 7---------------------------------------------------------
-#i
+#Supplementary Figure 8A--------------------------------------------------------
 
 #DMSO
 
 #Color
 col_fun = colorRamp2(c(-7,0,7), c("green", "black","red"))
-DMSO <- read_excel("Figures/extra_data/230916 Base de datos macrofagos Madrid FC 3.xlsx",
-                   sheet = "FC Stimuli-Control")
-DMSO <- DMSO %>%
-  mutate(across(where(is.numeric), log2))
-colnames(DMSO)[2] <- "Sample"
-colnames(DMSO)[3] <- "Condition"
-DMSO <- DMSO[DMSO$Condition != "M-DMSO-IL4", ]
+
+DMSO <-
+  read_excel(
+    "Figures/extra_data/Supporting data values Melon-Ardanaz et al.xlsx",
+    sheet = "Sup figure 8A",
+    skip = 1,
+    col_types = c(
+      "text",
+      "numeric",
+      "numeric",
+      "numeric",
+      "numeric",
+      "numeric",
+      "numeric",
+      "numeric",
+      "numeric",
+      "numeric"
+    )
+  )
+
+colnames(DMSO)[1] <- "Condition"
 row_title <- gpar(fontsize = 14)
 col_names <- gpar(fontsize = 14)
 gene_vector <- c("IDO1", "IRF1", "OAS1","CCL5","IL10","SPP1","ACOD1","CD209","MMP9")
+
+DMSO <- DMSO %>%
+  mutate(across(where(is.numeric), log2))
 
 # Identify numeric columns in the elisa dataframe
 numeric_cols <- sapply(DMSO, is.numeric)
 
 #LPS
-LPS <- subset(DMSO, Condition == "M-DMSO-LPS")
+LPS <- subset(DMSO, Condition == "LPS")
 LPS <- data.frame(LPS, row.names = NULL)
 rownames(LPS) <- c("LPS1","LPS2","LPS3","LPS4","LPS5")
-LPS <- LPS[,4:length(colnames(LPS))]
+LPS <- LPS[,2:length(colnames(LPS))]
 LPS <- colMeans(LPS)
 #TNFa
-TNFa <- subset(DMSO, Condition == "M-DMSO-TNF?")
+TNFa <- subset(DMSO, Condition == "TNF")
 TNFa <- data.frame(TNFa, row.names = NULL)
 rownames(TNFa) <- c("TNF1","TNF2","TNF3","TNF4","TNF5")
-TNFa <- TNFa[,4:length(colnames(TNFa))]
+TNFa <- TNFa[,2:length(colnames(TNFa))]
 TNFa <- colMeans(TNFa)
 #IFNg
-IFNG <- subset(DMSO, Condition == "M-DMSO-IFN?")
+IFNG <- subset(DMSO, Condition == "IFNg")
 IFNG <- data.frame(IFNG, row.names = NULL)
 rownames(IFNG) <- c("IFNG1","IFNG2","IFNG3","IFNG4","IFNG5")
-IFNG <- IFNG[,4:length(colnames(IFNG))]
+IFNG <- IFNG[,2:length(colnames(IFNG))]
 IFNG <- colMeans(IFNG)
 
 t_DMSO <- t(data.frame(
@@ -55,8 +71,6 @@ t_DMSO <- t_DMSO[,gene_vector]
 col_names <- colnames(t_DMSO)
 
 #Create_Grups
-grupos <- c("VERD", "VERD", "VERD","ROSA", "NARANJA", "AZULCLARA", "AZULCLARA", "AZULOSCURO","AZULOSCURO")
-col_groups <- factor(grupos, levels = c("VERD", "ROSA", "NARANJA","AZULCLARA","AZULOSCURO"))
 colnames(t_DMSO) <- paste0(colnames(t_DMSO), " ")
 rownames(t_DMSO) <- paste0(rownames(t_DMSO), " ")
 
@@ -80,14 +94,11 @@ heatmap <- Heatmap(t_DMSO,
                    cluster_columns = FALSE,
                    row_names_side = "left",
                    show_heatmap_legend = FALSE,
-                   column_split = col_groups,
                    row_split = as.factor(c("IFNG","LPS","TNFa")),
                    row_title = NULL,
-                   column_title = c("","","","",""),
                    row_names_gp = gpar(fontsize = 25),
                    column_names_gp =  gpar(fontsize = 25, fontface ="italic"),
                    column_names_rot = 60,
-                   column_title_gp = gpar(fill = c("#B4DC7F", "#FF6392", "#F9A03F","#8BAEC7","#516C7B"), col = "white",lwd = 8,fontsize = 10),
                    border_gp = gpar(col = "white", lwd = 2),
                    cell_fun = function(j, i, x, y, width, height, fill) {
                      if (sig_mat[i, j] == "1") {
@@ -110,38 +121,53 @@ heatmap <- Heatmap(t_DMSO,
 draw(heatmap)
 dev.off()
 
-#ii
+#Supplementary Figure 8B--------------------------------------------------------
 # TOFA
 col_fun = colorRamp2(c(-1.5,0,1.5), c("green","black","red"))
-TOFA <- read_excel("Figures/extra_data/230916 Base de datos macrofagos Madrid FC 3.xlsx",
-                   sheet = "FC Tofa stimuli-stimuli")
+TOFA <-
+  read_excel(
+    "Figures/extra_data/Supporting data values Melon-Ardanaz et al.xlsx",
+    sheet = "Sup figure 8B",
+    skip = 1,
+    col_types = c(
+      "text",
+      "numeric",
+      "numeric",
+      "numeric",
+      "numeric",
+      "numeric",
+      "numeric",
+      "numeric",
+      "numeric",
+      "numeric"
+    )
+  )
 TOFA <- TOFA %>%
   mutate(across(where(is.numeric), log2))
-colnames(TOFA)[2] <- "Sample"
-colnames(TOFA)[3] <- "Condition"
-TOFA <- TOFA[TOFA$Condition != "M-TOFA-IL4", ]
+
+colnames(TOFA)[1] <- "Condition"
 row_title <- gpar(fontsize = 14)
 col_names <- gpar(fontsize = 14)
 gene_vector <- c("IDO1", "IRF1", "OAS1","CCL5", "IL10","SPP1","ACOD1","CD209","MMP9")
 numeric_cols <- sapply(TOFA, is.numeric)
 
 #LPS
-LPS <- subset(TOFA, Condition == "M-TOFA-LPS")
+LPS <- subset(TOFA, Condition == "LPS")
 LPS <- data.frame(LPS, row.names = NULL)
 rownames(LPS) <- c("LPS1","LPS2","LPS3","LPS4","LPS5")
-LPS <- LPS[,4:length(colnames(LPS))]
+LPS <- LPS[,2:length(colnames(LPS))]
 LPS <- colMeans(LPS)
 #TNFa
-TNFa <- subset(TOFA, Condition == "M-TOFA-TNF?")
+TNFa <- subset(TOFA, Condition == "TNF")
 TNFa <- data.frame(TNFa, row.names = NULL)
 rownames(TNFa) <- c("TNF1","TNF2","TNF3","TNF4","TNF5")
-TNFa <- TNFa[,4:length(colnames(TNFa))]
+TNFa <- TNFa[,2:length(colnames(TNFa))]
 TNFa <- colMeans(TNFa)
 #IFNg
-IFNG <- subset(TOFA, Condition == "M-TOFA-IFN?")
+IFNG <- subset(TOFA, Condition == "IFNg")
 IFNG <- data.frame(IFNG, row.names = NULL)
 rownames(IFNG) <- c("IFNG1","IFNG2","IFNG3","IFNG4","IFNG5")
-IFNG <- IFNG[,4:length(colnames(IFNG))]
+IFNG <- IFNG[,2:length(colnames(IFNG))]
 IFNG <- colMeans(IFNG)
 
 t_TOFA <- t(data.frame(
@@ -154,8 +180,6 @@ t_TOFA <- t_TOFA[,gene_vector]
 col_names <- colnames(t_TOFA)
 
 #Create Grups
-grupos <- c("VERD", "VERD", "VERD","ROSA", "NARANJA", "AZULCLARA", "AZULCLARA", "AZULOSCURO","AZULOSCURO")
-col_groups <- factor(grupos, levels = c("VERD", "ROSA", "NARANJA","AZULCLARA","AZULOSCURO"))
 colnames(t_TOFA) <- paste0(colnames(t_TOFA), " ")
 rownames(t_TOFA) <- paste0(rownames(t_TOFA), " ")
 
@@ -178,14 +202,11 @@ heatmap <- Heatmap(t_TOFA,
                    cluster_columns = FALSE,
                    row_names_side = "left",
                    show_heatmap_legend = FALSE,
-                   column_split = col_groups,
                    row_split = as.factor(c("IFNG","LPS","TNFa")),
                    row_title = NULL,
-                   column_title = c("","","","",""),
                    row_names_gp = gpar(fontsize = 25),
                    column_names_gp =  gpar(fontsize = 25, fontface ="italic"),
                    column_names_rot = 60,
-                   column_title_gp = gpar(fill = c("#B4DC7F", "#FF6392","#F9A03F", "#8BAEC7","#516C7B"), col = "white",lwd = 8,fontsize = 10),
                    border_gp = gpar(col = "white", lwd = 2),
                    cell_fun = function(j, i, x, y, width, height, fill) {
                      if (sig_mat[i, j] == "1") {
@@ -209,11 +230,11 @@ draw(heatmap)
 dev.off()
 
 #Legends------------------------------------------------------------------------
-#Legend SUPP MACROS TOFA
+#Legend Figure 8B---------------------------------------------------------------
 col_fun = colorRamp2(c(-1.5, 0, 1.5), c("green", "black", "red"))
 
 png(
-  "output/supp_macs_TOFA.png",
+  "Figures/output/supp_macs_TOFA.png",
   width = 5,
   height = 5,
   units = "in",
@@ -229,11 +250,11 @@ lgd = Legend(
 draw(lgd)
 dev.off()
 
-#Legend SUPP DMSO TOFA
+#Legend Figure 8A---------------------------------------------------------------
 col_fun = colorRamp2(c(-7, 0, 7), c("green", "black", "red"))
 
 png(
-  "output/supp_macs_DMSO.png",
+  "Figures/output/supp_macs_DMSO.png",
   width = 5,
   height = 5,
   units = "in",

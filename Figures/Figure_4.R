@@ -6,20 +6,37 @@ library(dplyr)
 library(readr)
 library(dplyr)
 library(ggrepel)
+library(readxl)
 source('Figures/functions_plots.R')
 
-#Figure_4A----------------------------------------------------------------------
-#Heatmap Macrophages
-# i
-col_fun = colorRamp2(c(-7, 0, 7), c("green", "black", "red"))
+#Figure_4C----------------------------------------------------------------------
+#Heatmap Macrophages C
+
 DMSO <-
-  read_excel("extra_data/230916 Base de datos macrofagos Madrid FC 3.xlsx",
-             sheet = "FC Stimuli-Control")
+  read_excel(
+    "Figures/extra_data/Supporting data values Melon-Ardanaz et al.xlsx",
+    sheet = "Figure 4C",
+    col_types = c(
+      "text",
+      "numeric",
+      "numeric",
+      "numeric",
+      "numeric",
+      "numeric",
+      "numeric",
+      "numeric",
+      "numeric",
+      "numeric",
+      "numeric",
+      "numeric"
+    ),
+    skip = 1
+  )
+
 DMSO <- DMSO %>%
   mutate(across(where(is.numeric), log2))
-colnames(DMSO)[2] <- "Sample"
-colnames(DMSO)[3] <- "Condition"
-DMSO <- DMSO[DMSO$Condition != "M-DMSO-IL4",]
+
+colnames(DMSO)[1] <- "Condition"
 row_title <- gpar(fontsize = 14)
 col_names <- gpar(fontsize = 14)
 gene_vector <-
@@ -39,22 +56,22 @@ gene_vector <-
 numeric_cols <- sapply(DMSO, is.numeric)
 
 #LPS
-LPS <- subset(DMSO, Condition == "M-DMSO-LPS")
+LPS <- subset(DMSO, Condition == "LPS")
 LPS <- data.frame(LPS, row.names = NULL)
 rownames(LPS) <- c("LPS1", "LPS2", "LPS3", "LPS4", "LPS5")
-LPS <- LPS[, 4:length(colnames(LPS))]
+LPS <- LPS[, 2:length(colnames(LPS))]
 LPS <- colMeans(LPS)
 #TNFa
-TNFa <- subset(DMSO, Condition == "M-DMSO-TNF?")
+TNFa <- subset(DMSO, Condition == "TNF")
 TNFa <- data.frame(TNFa, row.names = NULL)
 rownames(TNFa) <- c("TNF1", "TNF2", "TNF3", "TNF4", "TNF5")
-TNFa <- TNFa[, 4:length(colnames(TNFa))]
+TNFa <- TNFa[, 2:length(colnames(TNFa))]
 TNFa <- colMeans(TNFa)
 #IFNg
-IFNG <- subset(DMSO, Condition == "M-DMSO-IFN?")
+IFNG <- subset(DMSO, Condition == "IFNg")
 IFNG <- data.frame(IFNG, row.names = NULL)
 rownames(IFNG) <- c("IFNG1", "IFNG2", "IFNG3", "IFNG4", "IFNG5")
-IFNG <- IFNG[, 4:length(colnames(IFNG))]
+IFNG <- IFNG[, 2:length(colnames(IFNG))]
 IFNG <- colMeans(IFNG)
 
 t_DMSO <- t(data.frame(LPS = LPS,
@@ -86,14 +103,14 @@ rownames(t_DMSO) <- paste0(rownames(t_DMSO), " ")
 
 #Statistics
 macros_dmso_stats <-
-  as.data.frame(read_excel("macros_dmso_stats.xlsx"))
+  as.data.frame(read_excel("Figures/extra_data/macros_dmso_stats.xlsx"))
 genes_adjusted <- paste(gene_vector, "_p_adjusted", sep = "")
 macros_dmso_stats <-
   macros_dmso_stats[, c("Condition", genes_adjusted)]
 macros_dmso_stats <- unique(macros_dmso_stats)
 rownames(macros_dmso_stats) <- macros_dmso_stats$Condition
 macros_dmso_stats <-
-  macros_dmso_stats[c("M-DMSO-LPS", "M-DMSO-TNF?", "M-DMSO-IFN?"), ]
+  macros_dmso_stats[c("M-DMSO-LPS", "M-DMSO-TNF?", "M-DMSO-IFN?"),]
 macros_dmso_stats <- macros_dmso_stats[, 2:ncol(macros_dmso_stats)]
 sig_mat <-
   ifelse(macros_dmso_stats < 0.05,
@@ -110,7 +127,7 @@ sig_mat <-
 
 ## Obtain database
 png(
-  "output/DMSO.png",
+  "Figures/output/DMSO.png",
   width = 10,
   height = 6,
   units = "in",
@@ -125,19 +142,11 @@ heatmap <- Heatmap(
   cluster_columns = FALSE,
   row_names_side = "left",
   show_heatmap_legend = FALSE,
-  column_split = col_groups,
   row_split = as.factor(c("IFNG", "LPS", "TNFa")),
   row_title = NULL,
-  column_title = c("", "", "", ""),
   row_names_gp = gpar(fontsize = 25),
   column_names_gp =  gpar(fontsize = 25, fontface = "italic"),
   column_names_rot = 60,
-  column_title_gp = gpar(
-    fill = c("#B4DC7F", "#FF6392", "#8BAEC7", "#516C7B"),
-    col = "white",
-    lwd = 8,
-    fontsize = 10
-  ),
   border_gp = gpar(col = "white", lwd = 2),
   cell_fun = function(j, i, x, y, width, height, fill) {
     if (sig_mat[i, j] == "1") {
@@ -161,16 +170,35 @@ draw(heatmap)
 dev.off()
 
 
-#ii
+#Figure_4E----------------------------------------------------------------------
+#Heatmap Macrophages C
 col_fun = colorRamp2(c(-3, 0, 3), c("green", "black", "red"))
+
+
 TOFA <-
-  read_excel("230916 Base de datos macrofagos Madrid FC 3.xlsx",
-             sheet = "FC Tofa stimuli-stimuli")
+  read_excel(
+    "Figures/extra_data/Supporting data values Melon-Ardanaz et al.xlsx",
+    sheet = "Figure 4E",
+    col_types = c(
+      "text",
+      "numeric",
+      "numeric",
+      "numeric",
+      "numeric",
+      "numeric",
+      "numeric",
+      "numeric",
+      "numeric",
+      "numeric",
+      "numeric",
+      "numeric"
+    ),
+    skip = 1
+  )
+
 TOFA <- TOFA %>%
   mutate(across(where(is.numeric), log2))
-colnames(TOFA)[2] <- "Sample"
-colnames(TOFA)[3] <- "Condition"
-TOFA <- TOFA[TOFA$Condition != "M-TOFA-IL4",]
+colnames(TOFA)[1] <- "Condition"
 row_title <- gpar(fontsize = 14)
 col_names <- gpar(fontsize = 14)
 gene_vector <-
@@ -190,22 +218,22 @@ gene_vector <-
 numeric_cols <- sapply(TOFA, is.numeric)
 
 #LPS
-LPS <- subset(TOFA, Condition == "M-TOFA-LPS")
+LPS <- subset(TOFA, Condition == "LPS")
 LPS <- data.frame(LPS, row.names = NULL)
 rownames(LPS) <- c("LPS1", "LPS2", "LPS3", "LPS4", "LPS5")
-LPS <- LPS[, 4:length(colnames(LPS))]
+LPS <- LPS[, 2:length(colnames(LPS))]
 LPS <- colMeans(LPS)
 #TNFa
-TNFa <- subset(TOFA, Condition == "M-TOFA-TNF?")
+TNFa <- subset(TOFA, Condition == "TNF")
 TNFa <- data.frame(TNFa, row.names = NULL)
 rownames(TNFa) <- c("TNF1", "TNF2", "TNF3", "TNF4", "TNF5")
-TNFa <- TNFa[, 4:length(colnames(TNFa))]
+TNFa <- TNFa[, 2:length(colnames(TNFa))]
 TNFa <- colMeans(TNFa)
 #IFNg
-IFNG <- subset(TOFA, Condition == "M-TOFA-IFN?")
+IFNG <- subset(TOFA, Condition == "IFNg")
 IFNG <- data.frame(IFNG, row.names = NULL)
 rownames(IFNG) <- c("IFNG1", "IFNG2", "IFNG3", "IFNG4", "IFNG5")
-IFNG <- IFNG[, 4:length(colnames(IFNG))]
+IFNG <- IFNG[, 2:length(colnames(IFNG))]
 IFNG <- colMeans(IFNG)
 
 t_TOFA <- t(data.frame(LPS = LPS,
@@ -237,14 +265,14 @@ rownames(t_TOFA) <- paste0(rownames(t_TOFA), " ")
 
 #AStatistics
 macros_tofa_stats <-
-  as.data.frame(read_excel("macros_tofa_stats.xlsx"))
+  as.data.frame(read_excel("Figures/extra_data/macros_tofa_stats.xlsx"))
 genes_adjusted <- paste(gene_vector, "_p_adjusted", sep = "")
 macros_tofa_stats <-
   macros_tofa_stats[, c("Condition", genes_adjusted)]
 macros_tofa_stats <- unique(macros_tofa_stats)
 rownames(macros_tofa_stats) <- macros_tofa_stats$Condition
 macros_tofa_stats <-
-  macros_tofa_stats[c("M-TOFA-LPS", "M-TOFA-TNF?", "M-TOFA-IFN?"), ]
+  macros_tofa_stats[c("M-TOFA-LPS", "M-TOFA-TNF?", "M-TOFA-IFN?"),]
 macros_tofa_stats <- macros_tofa_stats[, 2:ncol(macros_tofa_stats)]
 sig_mat <-
   ifelse(macros_tofa_stats < 0.05,
@@ -262,7 +290,7 @@ sig_mat <-
 
 ## Obtain database
 png(
-  "~/TOFA/Heatmap/TOFA.png",
+  "Figures/output/TOFA.png",
   width = 10,
   height = 6,
   units = "in",
@@ -277,19 +305,11 @@ heatmap <- Heatmap(
   cluster_columns = FALSE,
   row_names_side = "left",
   show_heatmap_legend = FALSE,
-  column_split = col_groups,
   row_split = as.factor(c("IFNG", "LPS", "TNFa")),
   row_title = NULL,
-  column_title = c("", "", "", ""),
   row_names_gp = gpar(fontsize = 25),
   column_names_gp =  gpar(fontsize = 25, fontface = "italic"),
   column_names_rot = 60,
-  column_title_gp = gpar(
-    fill = c("#B4DC7F", "#FF6392", "#8BAEC7", "#516C7B"),
-    col = "white",
-    lwd = 8,
-    fontsize = 10
-  ),
   border_gp = gpar(col = "white", lwd = 2),
   cell_fun = function(j, i, x, y, width, height, fill) {
     if (sig_mat[i, j] == "1") {
@@ -312,18 +332,34 @@ heatmap <- Heatmap(
 draw(heatmap)
 dev.off()
 
-#Figure_4B----------------------------------------------------------------------
-#Heatmap fibros B
-# i
+#Figure_4D----------------------------------------------------------------------
+#Heatmap fibros D
+
 col_fun = colorRamp2(c(-5, 0, 5), c("green", "black", "red"))
+
 DMSO <-
-  read_excel("~/TOFA/Heatmap/fibros/Base de datos fibroblasts qPCR 1.xlsx",
-             sheet = "FC DMSO")
+  read_excel(
+    "Figures/extra_data/Supporting data values Melon-Ardanaz et al.xlsx",
+    sheet = "Figure 4D",
+    col_types = c(
+      "text",
+      "numeric",
+      "numeric",
+      "numeric",
+      "numeric",
+      "numeric",
+      "numeric",
+      "numeric",
+      "numeric",
+      "numeric",
+      "numeric"
+    ),
+    skip = 1
+  )
+
 DMSO <- DMSO %>%
   mutate(across(where(is.numeric), log2))
 colnames(DMSO)[1] <- "Sample"
-colnames(DMSO)[2] <- "Condition"
-DMSO <- DMSO[DMSO$Condition != "FIB1", ]
 gene_vector <-
   c("TNF",
     "SOCS3",
@@ -344,17 +380,17 @@ numeric_cols <- sapply(DMSO, is.numeric)
 #LPS
 LPS <- subset(DMSO, Sample == "LPS")
 LPS <- data.frame(LPS, row.names = NULL)
-LPS <- LPS[, 3:length(colnames(LPS))]
+LPS <- LPS[, 2:length(colnames(LPS))]
 LPS <- colMeans(LPS)
 #TNFa
 TNFa <- subset(DMSO, Sample == "TNF")
 TNFa <- data.frame(TNFa, row.names = NULL)
-TNFa <- TNFa[, 3:length(colnames(TNFa))]
+TNFa <- TNFa[, 2:length(colnames(TNFa))]
 TNFa <- colMeans(TNFa)
 #IFNg
-IFNG <- subset(DMSO, Sample == "IFN")
+IFNG <- subset(DMSO, Sample == "IFNg")
 IFNG <- data.frame(IFNG, row.names = NULL)
-IFNG <- IFNG[, 3:length(colnames(IFNG))]
+IFNG <- IFNG[, 2:length(colnames(IFNG))]
 IFNG <- colMeans(IFNG)
 
 t_DMSO <- t(data.frame(LPS = LPS,
@@ -385,13 +421,13 @@ rownames(t_DMSO) <- paste0(rownames(t_DMSO), " ")
 
 #Statistics
 fibros_dmso_stats <-
-  as.data.frame(read_excel("fibros/fibros_dmso_stats.xlsx"))
+  as.data.frame(read_excel("Figures/extra_data/fibros_dmso_stats.xlsx"))
 genes_adjusted <- paste(gene_vector, "_p_adjusted", sep = "")
 fibros_dmso_stats <-
   fibros_dmso_stats[, c("Condition", genes_adjusted)]
 fibros_dmso_stats <- unique(fibros_dmso_stats)
 rownames(fibros_dmso_stats) <- fibros_dmso_stats$Condition
-fibros_dmso_stats <- fibros_dmso_stats[c("LPS", "TNF", "IFN"), ]
+fibros_dmso_stats <- fibros_dmso_stats[c("LPS", "TNF", "IFN"),]
 fibros_dmso_stats <- fibros_dmso_stats[, 2:ncol(fibros_dmso_stats)]
 sig_mat <-
   ifelse(fibros_dmso_stats < 0.05,
@@ -408,7 +444,7 @@ sig_mat <-
 
 
 png(
-  "~/TOFA/Heatmap/fibros/DMSO.png",
+  "Figures/output/DMSO.png",
   width = 10,
   height = 6,
   units = "in",
@@ -423,19 +459,11 @@ heatmap <- Heatmap(
   cluster_columns = FALSE,
   row_names_side = "left",
   show_heatmap_legend = FALSE,
-  column_split = col_groups,
   row_split = as.factor(c("IFNG", "LPS", "TNFa")),
   row_title = NULL,
-  column_title = c("", "", "", ""),
   row_names_gp = gpar(fontsize = 25),
   column_names_gp =  gpar(fontsize = 25, fontface = "italic"),
   column_names_rot = 60,
-  column_title_gp = gpar(
-    fill = c("#B4DC7F", "#FF6392", "#8BAEC7", "#516C7B"),
-    col = "white",
-    lwd = 8,
-    fontsize = 10
-  ),
   border_gp = gpar(col = "white", lwd = 2),
   cell_fun = function(j, i, x, y, width, height, fill) {
     if (sig_mat[i, j] == "1") {
@@ -458,16 +486,33 @@ heatmap <- Heatmap(
 draw(heatmap)
 dev.off()
 
-# ii
+#Figure_4F----------------------------------------------------------------------
+#Heatmap fibros F
 col_fun = colorRamp2(c(-2, 0, 2), c("green", "black", "red"))
+
 TOFA <-
-  read_excel("~/TOFA/Heatmap/fibros/Base de datos fibroblasts qPCR 1.xlsx",
-             sheet = "FC TOFA")
+  read_excel(
+    "Figures/extra_data/Supporting data values Melon-Ardanaz et al.xlsx",
+    sheet = "Figure 4F",
+    col_types = c(
+      "text",
+      "numeric",
+      "numeric",
+      "numeric",
+      "numeric",
+      "numeric",
+      "numeric",
+      "numeric",
+      "numeric",
+      "numeric",
+      "numeric"
+    ),
+    skip = 1
+  )
+
 TOFA <- TOFA %>%
   mutate(across(where(is.numeric), log2))
 colnames(TOFA)[1] <- "Sample"
-colnames(TOFA)[2] <- "Condition"
-TOFA <- TOFA[TOFA$Condition != "FIB1", ]
 gene_vector <-
   c("TNF",
     "SOCS3",
@@ -486,19 +531,19 @@ ha = columnAnnotation(foo = anno_empty(border = FALSE,
 numeric_cols <- sapply(TOFA, is.numeric)
 
 #LPS
-LPS <- subset(TOFA, Sample == "LPS+TOFA")
+LPS <- subset(TOFA, Sample == "LPS")
 LPS <- data.frame(LPS, row.names = NULL)
-LPS <- LPS[, 3:length(colnames(LPS))]
+LPS <- LPS[, 2:length(colnames(LPS))]
 LPS <- colMeans(LPS)
 #TNFa
-TNFa <- subset(TOFA, Sample == "TNF+TOFA")
+TNFa <- subset(TOFA, Sample == "TNF")
 TNFa <- data.frame(TNFa, row.names = NULL)
-TNFa <- TNFa[, 3:length(colnames(TNFa))]
+TNFa <- TNFa[, 2:length(colnames(TNFa))]
 TNFa <- colMeans(TNFa)
 #IFNg
-IFNG <- subset(TOFA, Sample == "IFN+TOFA")
+IFNG <- subset(TOFA, Sample == "IFNg")
 IFNG <- data.frame(IFNG, row.names = NULL)
-IFNG <- IFNG[, 3:length(colnames(IFNG))]
+IFNG <- IFNG[, 2:length(colnames(IFNG))]
 IFNG <- colMeans(IFNG)
 
 t_TOFA <- t(data.frame(LPS = LPS,
@@ -530,14 +575,14 @@ rownames(t_TOFA) <- paste0(rownames(t_TOFA), " ")
 
 #Statistics
 fibros_tofa_stats <-
-  as.data.frame(read_excel("fibros/fibros_tofa_stats.xlsx"))
+  as.data.frame(read_excel("Figures/extra_data/fibros_tofa_stats.xlsx"))
 genes_adjusted <- paste(gene_vector, "_p_adjusted", sep = "")
 fibros_tofa_stats <-
   fibros_tofa_stats[, c("Condition", genes_adjusted)]
 fibros_tofa_stats <- unique(fibros_tofa_stats)
 rownames(fibros_tofa_stats) <- fibros_tofa_stats$Condition
 fibros_tofa_stats <-
-  fibros_tofa_stats[c("LPS+TOFA", "TNF+TOFA", "IFN+TOFA"), ]
+  fibros_tofa_stats[c("LPS+TOFA", "TNF+TOFA", "IFN+TOFA"),]
 fibros_tofa_stats <- fibros_tofa_stats[, 2:ncol(fibros_tofa_stats)]
 sig_mat <-
   ifelse(fibros_tofa_stats < 0.05,
@@ -554,7 +599,7 @@ sig_mat <-
 
 
 png(
-  "~/TOFA/Heatmap/fibros/TOFA.png",
+  "Figures/output/TOFA.png",
   width = 10,
   height = 6,
   units = "in",
@@ -569,19 +614,11 @@ heatmap <- Heatmap(
   cluster_columns = FALSE,
   row_names_side = "left",
   show_heatmap_legend = FALSE,
-  column_split = col_groups,
-  column_title = c("", "", "", ""),
   row_split = as.factor(c("IFNG", "LPS", "TNFa")),
   row_title = NULL,
   row_names_gp = gpar(fontsize = 25),
   column_names_gp =  gpar(fontsize = 25, fontface = "italic"),
   column_names_rot = 60,
-  column_title_gp = gpar(
-    fill = c("#B4DC7F", "#FF6392", "#8BAEC7", "#516C7B"),
-    col = "white",
-    lwd = 8,
-    fontsize = 10
-  ),
   border_gp = gpar(col = "white", lwd = 2),
   cell_fun = function(j, i, x, y, width, height, fill) {
     if (sig_mat[i, j] == "1") {
@@ -600,12 +637,12 @@ heatmap <- Heatmap(
 draw(heatmap)
 dev.off()
 
-#Legends of Figure 4A and Figure 4B---------------------------------------------
+#Legends of Figure 4C-4D-4E-4F -------------------------------------------------
 #Legend MACROS TOFA
 col_fun = colorRamp2(c(-3, 0, 3), c("green", "black", "red"))
 
 png(
-  "output/legend_macs_TOFA.png",
+  "Figures/output/legend_macs_TOFA.png",
   width = 5,
   height = 5,
   units = "in",
@@ -625,7 +662,7 @@ dev.off()
 col_fun = colorRamp2(c(-7, 0, 7), c("green", "black", "red"))
 
 png(
-  "output/legend_macs_DMSO.png",
+  "Figures/output/legend_macs_DMSO.png",
   width = 5,
   height = 5,
   units = "in",
@@ -645,7 +682,7 @@ dev.off()
 col_fun = colorRamp2(c(-2, 0, 2), c("green", "black", "red"))
 
 png(
-  "output/legend_fibros_TOFA.png",
+  "Figures/output/legend_fibros_TOFA.png",
   width = 5,
   height = 5,
   units = "in",
@@ -665,7 +702,7 @@ dev.off()
 col_fun = colorRamp2(c(-5, 0, 5), c("green", "black", "red"))
 
 png(
-  "output/legend_fibros_DMSO.png",
+  "Figures/output/legend_fibros_DMSO.png",
   width = 5,
   height = 5,
   units = "in",
@@ -680,4 +717,3 @@ lgd = Legend(
 )
 draw(lgd)
 dev.off()
-

@@ -4,33 +4,25 @@ library(ggplot2)
 library(readxl)
 source('Figures/functions_plots.R')
 
-
-## Supplementary Figure 3-------------------------------------------------------
+## Supplementary Figure 4-------------------------------------------------------
 
 #
 # qPCR Boxplots data
 #
 
-qpcr <- read_excel("Figures/extra_data/Base_de_datos_bx_reals_bcn_bram_boxplots.xlsx",
-                   col_types = c("text", "text", "text",
-                                 "text", "numeric", "numeric", "numeric",
-                                 "numeric", "numeric", "numeric",
-                                 "numeric", "numeric", "numeric",
-                                 "numeric", "numeric", "numeric",
-                                 "numeric", "numeric", "numeric",
-                                 "numeric", "numeric", "numeric",
-                                 "numeric", "numeric", "numeric",
-                                 "numeric", "numeric", "numeric",
-                                 "numeric", "numeric", "numeric",
-                                 "numeric", "numeric", "numeric",
-                                 "numeric", "numeric", "numeric","numeric","numeric","numeric"))
+qpcr <- read_excel("Figures/extra_data/Supporting data values Melon-Ardanaz et al.xlsx",
+                   sheet = "Sup Figure 4", col_types = c("text",
+                                                         "text", "numeric", "numeric", "numeric",
+                                                         "numeric", "numeric"))
+
+colnames(qpcr) <- gsub(" \\(AU\\)","",colnames(qpcr))
+qpcr <- head(qpcr, -2)
 
 #
 # qPCR Boxplots
 #
 
 qpcr$Response <- factor(qpcr$Response, levels = c("R", "NR"))
-qpcr$Cohort <- factor(qpcr$Cohort, levels = c("BCN", "LEU"))
 qpcr$Time <- factor(qpcr$Time, levels = c("Pre-tx", "Post-tx"))
 qpcr$facet_group <- factor(qpcr$Response)
 
