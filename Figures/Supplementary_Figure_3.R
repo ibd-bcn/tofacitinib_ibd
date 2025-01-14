@@ -5,10 +5,19 @@ library(patchwork)
 library(grid)
 
 
-## Supplementary Figure 3A: Dotplot -------------------------------------------
+## Supplementary Figure 3A: UMAP and Dotplot -------------------------------------------
 # All annotated together
 
 todas <- readRDS('Analysis/data/00_annotation_process/00_anotadas/todas.RDS')
+
+umap_todas <- DimPlot(todas, group.by = "subset", pt.size = 0.1, cols = colors_subset)  +
+  theme_void() +
+  theme(legend.position = "none",
+        text = element_text(family = "Helvetica", size = 12),
+        legend.spacing.y = unit(0.2, "cm"),
+        legend.key.size = unit(0.25, "lines")) +
+  ggtitle(NULL)
+
 todas$subset  <- gsub('myeloids', 'Myeloids', todas$subset)
 todas$subset  <- gsub('stroma', 'Stroma', todas$subset)
 todas$subset  <- gsub('epi', 'Epithelium', todas$subset)
@@ -16,8 +25,6 @@ todas$subset  <- gsub('tcells', 'T cells', todas$subset)
 todas$subset  <- gsub('plasmas', 'Plasma and B cells', todas$subset)
 todas$subset  <- gsub('cycling', 'Cycling', todas$subset)
 todas$subset <- factor(todas$subset, levels = c("Myeloids", "Stroma", "Epithelium", "T cells", "Plasma and B cells", "Cycling"))
-
-
 dotplot_together <- DotPlot(todas, features = c("TYROBP", "FCER1G", "S100A8", "PLAUR", "LYZ","NNMT", "COL3A1", "COL1A1", "DCN", "LUM","KRT8", "PIGR",
                             "EPCAM", "MUC12", "TFF3","CD2", "CD3E", "TRBC2", "CD7", "KLRB1",  "IGHA1", "CD79A", "MZB1", "DERL3",
                             "IGHG1", "PCLAF", "PTTG1", "TOP2A", "CDKN3", "MKI67"),
@@ -33,10 +40,13 @@ dotplot_together <- DotPlot(todas, features = c("TYROBP", "FCER1G", "S100A8", "P
          size = guide_legend(title = '%'))
 
 
-save_sizes(plot = dotplot_together, filename = 'sup_3_dotplot_together', device = 'jpeg')
-save_sizes(plot = dotplot_together, filename = 'sup_3_dotplot_together', device = 'tiff')
-save_sizes(plot = dotplot_together, filename = 'sup_3_dotplot_together', device = 'svg')
-save_sizes(plot = dotplot_together, filename = 'sup_3_dotplot_together', device = 'pdf')
+sup3a <- patchwork::wrap_plots(umap_todas, dotplot_together, guides = 'collect') &
+  theme(legend.position = 'none', axis.text = element_text(colour = 'black', size = 8))
+
+save_sizes(plot = sup3a, filename = 'sup_3_dotplot_together', device = 'jpeg')
+save_sizes(plot = sup3a, filename = 'sup_3_dotplot_together', device = 'tiff')
+save_sizes(plot = sup3a, filename = 'sup_3_dotplot_together', device = 'svg')
+save_sizes(plot = sup3a, filename = 'sup_3_dotplot_together', device = 'pdf')
 
 
 

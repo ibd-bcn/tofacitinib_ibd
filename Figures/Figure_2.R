@@ -73,9 +73,9 @@ save_sizes(plot = umap2a2, filename = 'Figure_2B_UMAP', device = 'pdf')
 umap2a2_legend <- umap2a2 +
   theme(legend.position = 'right')
 #
-# UMAPs 2a & 2b together
+# UMAPs 2a1 & 2a2 together
 #
-umaps_tog <- umap2a1 + umap2a2 + patchwork::plot_layout(ncol = 2, widths = c(0.66,0.66))
+umaps_tog <- umap2a1 + umap2a2 + patchwork::plot_layout(nrow = 2, widths = c(0.66,0.66))
 umaps_tog_legend <- umap2a1 + umap2a2 +
   theme(legend.position = 'right')
 save_sizes(plot = umaps_tog, filename = 'Figure_2AB_UMAPS_together', device = 'tiff')
@@ -84,7 +84,7 @@ save_sizes(plot = umaps_tog, filename = 'Figure_2AB_UMAPS_together', device = 'j
 save_sizes(plot = umaps_tog, filename = 'Figure_2AB_UMAPS_together', device = 'pdf')
 
 #
-# Barplot
+# Barplot 2a3
 #
 list_plots <- vector(mode = 'list')
 
@@ -109,27 +109,27 @@ pat2 <- patchwork::wrap_plots(list_plots, ncol=2, guides='collect') &
 pat3 <- umaps_tog / pat
 pat4 <- umaps_tog / pat2
 
-save_sizes(plot = pat, filename = 'Figure_2B_BARPLOTS_text', device = 'tiff')
-save_sizes(plot = pat, filename = 'Figure_2B_BARPLOTS_text', device = 'svg')
-save_sizes(plot = pat, filename = 'Figure_2B_BARPLOTS_text', device = 'jpeg')
-save_sizes(plot = pat, filename = 'Figure_2B_BARPLOTS_text', device = 'pdf')
+save_sizes(plot = pat, filename = 'Figure_2a3_BARPLOTS_text', device = 'tiff')
+save_sizes(plot = pat, filename = 'Figure_2a3_BARPLOTS_text', device = 'svg')
+save_sizes(plot = pat, filename = 'Figure_2a3_BARPLOTS_text', device = 'jpeg')
+save_sizes(plot = pat, filename = 'Figure_2a3_BARPLOTS_text', device = 'pdf')
 
-save_sizes(plot = pat2, filename = 'Figure_2B_BARPLOTS', device = 'tiff')
-save_sizes(plot = pat2, filename = 'Figure_2B_BARPLOTS', device = 'svg')
-save_sizes(plot = pat2, filename = 'Figure_2B_BARPLOTS', device = 'jpeg')
-save_sizes(plot = pat2, filename = 'Figure_2B_BARPLOTS', device = 'pdf')
+save_sizes(plot = pat2, filename = 'Figure_2a3_BARPLOTS', device = 'tiff')
+save_sizes(plot = pat2, filename = 'Figure_2a3_BARPLOTS', device = 'svg')
+save_sizes(plot = pat2, filename = 'Figure_2a3_BARPLOTS', device = 'jpeg')
+save_sizes(plot = pat2, filename = 'Figure_2a3_BARPLOTS', device = 'pdf')
 
-save_sizes(plot = pat3, filename = 'Figure_2B_BARPLOTS_AND_UMAP_text', device = 'tiff')
-save_sizes(plot = pat3, filename = 'Figure_2B_BARPLOTS_AND_UMAP_text', device = 'svg')
-save_sizes(plot = pat3, filename = 'Figure_2B_BARPLOTS_AND_UMAP_text', device = 'jpeg')
-save_sizes(plot = pat3, filename = 'Figure_2B_BARPLOTS_AND_UMAP_text', device = 'pdf')
+save_sizes(plot = pat3, filename = 'Figure_2a3_BARPLOTS_AND_UMAP_text', device = 'tiff')
+save_sizes(plot = pat3, filename = 'Figure_2a3_BARPLOTS_AND_UMAP_text', device = 'svg')
+save_sizes(plot = pat3, filename = 'Figure_2a3_BARPLOTS_AND_UMAP_text', device = 'jpeg')
+save_sizes(plot = pat3, filename = 'Figure_2a3_BARPLOTS_AND_UMAP_text', device = 'pdf')
 
-save_sizes(plot = pat4, filename = 'Figure_2B_BARPLOTS_AND_UMAP', device = 'tiff')
-save_sizes(plot = pat4, filename = 'Figure_2B_BARPLOTS_AND_UMAP', device = 'svg')
-save_sizes(plot = pat4, filename = 'Figure_2B_BARPLOTS_AND_UMAP', device = 'jpeg')
-save_sizes(plot = pat4, filename = 'Figure_2B_BARPLOTS_AND_UMAP', device = 'pdf')
+save_sizes(plot = pat4, filename = 'Figure_2a3_BARPLOTS_AND_UMAP', device = 'tiff')
+save_sizes(plot = pat4, filename = 'Figure_2a3_BARPLOTS_AND_UMAP', device = 'svg')
+save_sizes(plot = pat4, filename = 'Figure_2a3_BARPLOTS_AND_UMAP', device = 'jpeg')
+save_sizes(plot = pat4, filename = 'Figure_2a3_BARPLOTS_AND_UMAP', device = 'pdf')
 
-# Figure 2 A and 2B together ---------------------------------------------------
+# Figure 2a1, 2a2 and 2a3 together ---------------------------------------------------
 
 design <- "#AA#
            #AA#
@@ -141,9 +141,9 @@ design <- "#AA#
 
 fin <-  umaps_tog  + pat + patchwork::plot_layout(design = design) & theme(text = element_text(family = 'Helvetica', size = 6))
 
-ggsave(filename = 'Figure_2AB_text.jpeg', plot = fin, dpi = 300, device = 'jpeg', path = 'Figures/output/')
+ggsave(filename = 'Figure_2a123_text.jpeg', plot = fin, dpi = 300, device = 'jpeg', path = 'Figures/output/')
 
-# Figure 2 C: Abundances -------------------------------------------------------
+# Figure 2 B: Abundances -------------------------------------------------------
 
 
 immune <- ggplot(abundances_data_immune[abundances_data_immune$Response != "PRE R VS NR", ],
@@ -182,7 +182,7 @@ no_immune <- ggplot(abundances_data_noimmune[abundances_data_noimmune$Response !
 
 plot(no_immune)
 
-fig2c <- immune + no_immune &
+fig2b <- immune + no_immune &
   theme_figure() &
   theme(panel.border = element_blank(),
         axis.line = element_blank(),
@@ -191,21 +191,21 @@ fig2c <- immune + no_immune &
         axis.title = element_blank(),
         legend.position = 'none')
 
-save_sizes(plot = fig2c, filename = 'Figure_2C', device = 'tiff', max = 7)
-save_sizes(plot = fig2c, filename = 'Figure_2C', device = 'svg', max = 7)
-save_sizes(plot = fig2c, filename = 'Figure_2C', device = 'jpeg', max = 7)
-save_sizes(plot = fig2c, filename = 'Figure_2C', device = 'pdf', max = 7)
+save_sizes(plot = fig2b, filename = 'Figure_2b', device = 'tiff', max = 7)
+save_sizes(plot = fig2b, filename = 'Figure_2b', device = 'svg', max = 7)
+save_sizes(plot = fig2b, filename = 'Figure_2b', device = 'jpeg', max = 7)
+save_sizes(plot = fig2b, filename = 'Figure_2b', device = 'pdf', max = 7)
 
-a <- get_legend(fig2c + theme(legend.position = 'right'))
+a <- get_legend(fig2b + theme(legend.position = 'right'))
 
-ggsave(a, filename = 'Figures/output/Figure_2C_legend.jpeg', dpi = 300)
-ggsave(a, filename = 'Figures/output/Figure_2C_legend.pdf', dpi = 300)
-ggsave(a, filename = 'Figures/output/Figure_2C_legend.svg', dpi = 300)
-ggsave(a, filename = 'Figures/output/Figure_2C_legend.tiff', dpi = 300)
+ggsave(a, filename = 'Figures/output/Figure_2b_legend.jpeg', dpi = 300)
+ggsave(a, filename = 'Figures/output/Figure_2b_legend.pdf', dpi = 300)
+ggsave(a, filename = 'Figures/output/Figure_2b_legend.svg', dpi = 300)
+ggsave(a, filename = 'Figures/output/Figure_2b_legend.tiff', dpi = 300)
 
 # Vertical figure
 
-fig2c_legend <- fig2c +
+fig2b_legend <- fig2b +
   theme(panel.border = element_blank(),
         axis.line = element_blank(),
         axis.ticks = element_blank(),
@@ -213,7 +213,7 @@ fig2c_legend <- fig2c +
         axis.title = element_blank(),
         legend.position = 'right')
 
-fig2c_legend & theme(text = element_text(color = 'white'), axis.text = element_text(color = 'white'))
+fig2b_legend & theme(text = element_text(color = 'white'), axis.text = element_text(color = 'white'))
 
 # Horizontal figure
 
@@ -250,13 +250,13 @@ t_no_immune <- ggplot(abundances_data_noimmune[abundances_data_noimmune$Response
         legend.title = element_text(family = 'Helvetica', size = 6)) +
   labs(fill = 'Enrichment\nscore\nvs\nPre-tx')
 
-fig2ct <- t_immune / t_no_immune  &
+fig2bt <- t_immune / t_no_immune  &
   theme(panel.border = element_blank(),
         panel.grid.major = element_blank(),
         axis.title = element_blank()) &
   patchwork::plot_layout(guides = 'collect')
 
-# Figure 2 ABC -----------------------------------------------------------------
+# Figure 2 A y B -----------------------------------------------------------------
 
 
 design <- "#AAAA#
@@ -278,15 +278,9 @@ fin <- fig_legend + umaps_tog_legend + pat + fig2ct +
   patchwork::plot_layout(design = design, guides = 'collect') &
   theme(text = element_text(family = 'Helvetica', size = 7), legend.text = element_text(family = 'Helvetica', size = 6))
 
-ggsave(filename = 'Figure_2ABC_text_larga.pdf', plot = fin, dpi = 300, device = 'pdf',
+ggsave(filename = 'Figure_2AB_text_larga.pdf', plot = fin, dpi = 300, device = 'pdf',
        path = 'Figures/output/', width = 5, height = 9, units = 'in')
 
-# Figure 2D --------------------------------------------------------------------
-
-
-#
-# qPCR Boxplots data
-#
 
 # Figure 2C --------------------------------------------------------------------
 
