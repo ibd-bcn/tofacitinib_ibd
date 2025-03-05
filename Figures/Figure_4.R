@@ -32,8 +32,28 @@ DMSO <-
     ),
     skip = 1
   )
+DMSO1 <-
+  read_excel(
+    "Figures/extra_data/Supporting data values Melon-Ardanaz et al.xlsx",
+    sheet = "Sup figure 8A",
+    skip = 1,
+    col_types = c(
+      "text",
+      "numeric",
+      "numeric",
+      "numeric",
+      "numeric",
+      "numeric",
+      "numeric",
+      "numeric",
+      "numeric",
+      "numeric"
+    )
+  )
 
-DMSO <- DMSO %>%
+DMSO <- cbind(DMSO,DMSO1[,2:10])
+
+  DMSO <- DMSO %>%
   mutate(across(where(is.numeric), log2))
 
 colnames(DMSO)[1] <- "Condition"
@@ -51,7 +71,8 @@ gene_vector <-
     "IL23A",
     "IL6",
     "INHBA",
-    "CLEC5A"
+    "CLEC5A","IDO1", "IRF1", "OAS1","CCL5","IL10","SPP1","ACOD1","CD209","MMP9"
+
   )
 numeric_cols <- sapply(DMSO, is.numeric)
 
@@ -80,24 +101,6 @@ t_DMSO <- t(data.frame(LPS = LPS,
 
 t_DMSO <- t_DMSO[, gene_vector]
 col_names <- colnames(t_DMSO)
-
-#Create groups
-grupos <-
-  c(
-    "IFN",
-    "IFN",
-    "IFN",
-    "Inflam_cyt",
-    "Inflam_cyt",
-    "Inflam_cyt",
-    "Inflam_cyt",
-    "Inflam_cyt",
-    "JAK",
-    "IF",
-    "IF"
-  )
-col_groups <-
-  factor(grupos, levels = c("IFN", "Inflam_cyt", "JAK", "IF"))
 colnames(t_DMSO) <- paste0(colnames(t_DMSO), " ")
 rownames(t_DMSO) <- paste0(rownames(t_DMSO), " ")
 
@@ -124,11 +127,11 @@ sig_mat <-
            "1"
          ),
          "")
-
+col_fun = colorRamp2(c(-7,0,7), c("green", "black","red"))
 ## Obtain database
 png(
   "Figures/output/DMSO.png",
-  width = 10,
+  width = 15,
   height = 6,
   units = "in",
   res = 600
@@ -146,9 +149,7 @@ heatmap <- Heatmap(
   row_title = NULL,
   row_names_gp = gpar(fontsize = 25),
   column_names_gp =  gpar(fontsize = 25, fontface = "italic"),
-  column_names_rot = 60,
-  border_gp = gpar(col = "white", lwd = 2),
-  cell_fun = function(j, i, x, y, width, height, fill) {
+  column_names_rot = 60, cell_fun = function(j, i, x, y, width, height, fill) {
     if (sig_mat[i, j] == "1") {
       grid.text("*", x  , y  , gp = gpar(fontsize = 40, col = "white"))
     }
@@ -195,6 +196,27 @@ TOFA <-
     ),
     skip = 1
   )
+TOFA1 <-
+  read_excel(
+    "Figures/extra_data/Supporting data values Melon-Ardanaz et al.xlsx",
+    sheet = "Sup figure 8B",
+    skip = 1,
+    col_types = c(
+      "text",
+      "numeric",
+      "numeric",
+      "numeric",
+      "numeric",
+      "numeric",
+      "numeric",
+      "numeric",
+      "numeric",
+      "numeric"
+    )
+  )
+
+TOFA <- cbind(TOFA,TOFA1[,2:10])
+
 
 TOFA <- TOFA %>%
   mutate(across(where(is.numeric), log2))
@@ -213,7 +235,7 @@ gene_vector <-
     "IL23A",
     "IL6",
     "INHBA",
-    "CLEC5A"
+    "CLEC5A","IDO1", "IRF1", "OAS1","CCL5", "IL10","SPP1","ACOD1","CD209","MMP9"
   )
 numeric_cols <- sapply(TOFA, is.numeric)
 
@@ -243,23 +265,7 @@ t_TOFA <- t(data.frame(LPS = LPS,
 
 t_TOFA <- t_TOFA[, gene_vector]
 col_names <- colnames(t_TOFA)
-#Create groups
-grupos <-
-  c(
-    "IFN",
-    "IFN",
-    "IFN",
-    "Inflam_cyt",
-    "Inflam_cyt",
-    "Inflam_cyt",
-    "Inflam_cyt",
-    "Inflam_cyt",
-    "JAK",
-    "IF",
-    "IF"
-  )
-col_groups <-
-  factor(grupos, levels = c("IFN", "Inflam_cyt", "JAK", "IF"))
+
 colnames(t_TOFA) <- paste0(colnames(t_TOFA), " ")
 rownames(t_TOFA) <- paste0(rownames(t_TOFA), " ")
 
@@ -291,7 +297,7 @@ sig_mat <-
 ## Obtain database
 png(
   "Figures/output/TOFA.png",
-  width = 10,
+  width = 15,
   height = 6,
   units = "in",
   res = 600
@@ -310,7 +316,6 @@ heatmap <- Heatmap(
   row_names_gp = gpar(fontsize = 25),
   column_names_gp =  gpar(fontsize = 25, fontface = "italic"),
   column_names_rot = 60,
-  border_gp = gpar(col = "white", lwd = 2),
   cell_fun = function(j, i, x, y, width, height, fill) {
     if (sig_mat[i, j] == "1") {
       grid.text("*", x  , y  , gp = gpar(fontsize = 40, col = "white"))
