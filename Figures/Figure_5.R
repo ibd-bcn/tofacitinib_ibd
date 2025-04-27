@@ -13,6 +13,216 @@ library(viridis)
 
 source('Figures/functions_plots.R')
 
+# Figure 5A Heatmap anti IL10
+
+library(readxl)
+library(ComplexHeatmap)
+library(circlize)
+library(plyr)
+library(dplyr)
+options(bitmapType='cairo')
+# LEE LA BASE DE DATOS QUE TE DE Y LA HOJA QUE TOQUE
+DMSO <-  read_excel("~/Elisa/il10_elisa.xlsx",
+                    sheet = "FC Macs  antiIL-10")
+DMSO <- DMSO %>%
+  dplyr::mutate(across(where(is.numeric), log2))
+
+colnames(DMSO)[2] <- "Sample"
+colnames(DMSO)[3] <- "Condition"
+DMSO <- DMSO[,2:ncol(DMSO)]
+
+# Identify numeric columns in the elisa dataframe
+numeric_cols <- sapply(DMSO, is.numeric)
+
+#LPS anti
+LPS_anti <- subset(DMSO, Condition == "LPS+anti-IL10")
+LPS_anti <- data.frame(LPS_anti, row.names = NULL)
+
+#TNF anti
+TNF_anti <- subset(DMSO, Condition == "TNF+anti-IL10")
+TNF_anti <- data.frame(TNF_anti, row.names = NULL)
+
+#IFN anti
+IFN_anti <- subset(DMSO, Condition == "IFN+anti-IL10")
+IFN_anti <- data.frame(IFN_anti, row.names = NULL)
+
+
+results <- LPS_anti %>%
+  select(-Condition, -Sample) %>%
+  dplyr::summarise(across(everything(), ~list(t.test(.x, mu = 0)$p.value))) %>%
+  mutate(across(everything(), ~unlist(.x)))
+
+all_p_values <- unlist(results)
+adjusted_p_values <- p.adjust(all_p_values, method = "fdr")
+
+for (gene in names(results)) {
+  LPS_anti[[paste(gene, "p_value", sep = "_")]] <- results[[gene]]
+  LPS_anti[[paste(gene, "p_adjusted", sep = "_")]] <- adjusted_p_values[names(adjusted_p_values) == gene]
+}
+
+results <- TNF_anti %>%
+  select(-Condition, -Sample) %>%
+  dplyr::summarise(across(everything(), ~list(t.test(.x, mu = 0)$p.value))) %>%
+  mutate(across(everything(), ~unlist(.x)))
+
+all_p_values <- unlist(results)
+adjusted_p_values <- p.adjust(all_p_values, method = "fdr")
+
+for (gene in names(results)) {
+  TNF_anti[[paste(gene, "p_value", sep = "_")]] <- results[[gene]]
+  TNF_anti[[paste(gene, "p_adjusted", sep = "_")]] <- adjusted_p_values[names(adjusted_p_values) == gene]
+}
+
+
+results <- IFN_anti %>%
+  select(-Condition, -Sample) %>%
+  dplyr::summarise(across(everything(), ~list(t.test(.x, mu = 0)$p.value))) %>%
+  mutate(across(everything(), ~unlist(.x)))
+
+all_p_values <- unlist(results)
+adjusted_p_values <- p.adjust(all_p_values, method = "fdr")
+
+for (gene in names(results)) {
+  IFN_anti[[paste(gene, "p_value", sep = "_")]] <- results[[gene]]
+  IFN_anti[[paste(gene, "p_adjusted", sep = "_")]] <- adjusted_p_values[names(adjusted_p_values) == gene]
+}
+
+
+heatmap_tt <- rbind(LPS_anti, TNF_anti, IFN_anti)
+heatmap_tt <- heatmap_tt %>% relocate(Sample)
+
+openxlsx::write.xlsx(heatmap_tt, "~/stats_il10new.xlsx", rowNames=T)
+
+
+
+
+col_fun = colorRamp2(c(-3, 0, 5), c("green", "black", "red"))
+
+
+row_title <- gpar(fontsize = 14)
+col_names <- gpar(fontsize = 14)
+gene_vector <-
+  c(
+    "TNF",
+    "SOCS3",
+    "MX1",
+    "CXCL1",
+    "CXCL10",
+    "CXCL8",
+    "IL1B",
+    "IL23A",
+    "IL6",
+    "INHBA",
+    "CLEC5A",
+    "IL10"
+  )
+numeric_cols <- sapply(DMSO, is.numeric)
+
+DMSO$Condition <- as.character(DMSO$Condition)
+
+lps_anti <- subset(DMSO, Condition == "LPS+anti-IL10")
+lps_anti <- data.frame(lps_anti, row.names = NULL)
+rownames(lps_anti) <- c("LPS+anti-IL10_1", "LPS+anti-IL10_2", "LPS+anti-IL10_3")
+lps_anti <- lps_anti[, 3:length(colnames(lps_anti))]
+lps_anti <- colMeans(lps_anti)
+
+tnf_anti <- subset(DMSO, Condition == "TNF+anti-IL10")
+tnf_anti <- data.frame(tnf_anti, row.names = NULL)
+rownames(tnf_anti) <- c("TNF+anti-IL10_1", "TNF+anti-IL10_2", "TNF+anti-IL10_3")
+tnf_anti <- tnf_anti[, 3:length(colnames(tnf_anti))]
+tnf_anti <- colMeans(tnf_anti)
+
+ifn_anti <- subset(DMSO, Condition == "IFN+anti-IL10")
+ifn_anti <- data.frame(ifn_anti, row.names = NULL)
+rownames(ifn_anti) <- c("IFN+anti-IL10_1", "IFN+anti-IL10_2", "IFN+anti-IL10_3")
+ifn_anti <- ifn_anti[, 3:length(colnames(ifn_anti))]
+ifn_anti <- colMeans(ifn_anti)
+
+
+t_DMSO <- t(data.frame( LPS_anti = lps_anti, TNF_anti = tnf_anti, IFN_anti = ifn_anti))
+
+t_DMSO <- t_DMSO[, gene_vector]
+col_names <- colnames(t_DMSO)
+
+valid_genes <- intersect(gene_vector, colnames(t_DMSO))
+t_DMSO <- t_DMSO[, valid_genes, drop = FALSE]
+rownames(t_DMSO) <- gsub("LPS_anti", "LPS+anti-IL10", rownames(t_DMSO))
+rownames(t_DMSO) <- gsub("TNF_anti", "TNF+anti-IL10", rownames(t_DMSO))
+rownames(t_DMSO) <- gsub("IFN_anti", "IFN+anti-IL10", rownames(t_DMSO))
+
+#Statistics
+macros_dmso_stats <-
+  as.data.frame(read_excel("~/stats_il10new.xlsx"))
+genes_adjusted <- paste(valid_genes, "_p_adjusted", sep = "")
+macros_dmso_stats <-
+  macros_dmso_stats[, c("Condition", genes_adjusted)]
+macros_dmso_stats <- unique(macros_dmso_stats)
+rownames(macros_dmso_stats) <- macros_dmso_stats$Condition
+macros_dmso_stats <-
+  macros_dmso_stats[c( "LPS+anti-IL10", "TNF+anti-IL10", "IFN+anti-IL10"),]
+macros_dmso_stats <- macros_dmso_stats[, 2:ncol(macros_dmso_stats)]
+sig_mat <-
+  ifelse(macros_dmso_stats < 0.05,
+         ifelse(
+           macros_dmso_stats < 0.005,
+           ifelse(
+             macros_dmso_stats < 0.001,
+             ifelse(macros_dmso_stats < 0.0001, "4", "3"),
+             "2"
+           ),
+           "1"
+         ),
+         "")
+
+png(
+  "Figures/output/il10.png",
+  width = 10,
+  height = 4,
+  units = "in",
+  res = 600
+)
+heatmap <- Heatmap(
+  t_DMSO,
+  na_col = "white",
+  name = "Legend",
+  col = col_fun,
+  cluster_rows = FALSE,
+  cluster_columns = FALSE,
+  row_names_side = "left",
+  show_heatmap_legend = FALSE,
+  row_split = as.factor(c("IFN+anti-IL10","LPS+anti-IL10",  "TNF+anti-IL10")),
+  row_title = NULL,
+  row_names_gp = gpar(fontsize = 25),
+  column_names_gp =  gpar(fontsize = 25, fontface = "italic"),
+  column_names_rot = 60,
+  border_gp = gpar(col = "white", lwd = 2),
+  heatmap_legend_param = list(
+    at = c(-7, 0, 7),  # Force the legend range
+    color_bar = "continuous"
+  ),
+  cell_fun = function(j, i, x, y, width, height, fill) {
+    if (sig_mat[i, j] == "1") {
+      grid.text("*", x  , y  , gp = gpar(fontsize = 40, col = "white"))
+    }
+    if (sig_mat[i, j] == "2") {
+      grid.text("**", x  , y  , gp = gpar(fontsize = 40, col = "white"))
+    }
+    if (sig_mat[i, j] == "3") {
+      grid.text("***", x  , y  , gp = gpar(fontsize = 40, col = "white"))
+    }
+    if (sig_mat[i, j] == "4") {
+      grid.text("****", x  , y  , gp = gpar(fontsize = 40, col = "white"))
+    }
+  }
+)
+
+
+
+
+draw(heatmap)
+dev.off()
+
+
 # Figure 5B --------------------------------------------------------------------
 
 ## Scatter plots of our DE data and Cuevas et al.

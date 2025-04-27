@@ -1,273 +1,83 @@
+options(stringsAsFactors = FALSE,bitmapType = "cairo")
+
+library(ggplot2)
 library(readxl)
-library(ComplexHeatmap)
-library(circlize)
-library(plyr)
-library(dplyr)
-options(bitmapType='cairo')
+source('Figures/functions_plots.R')
 
-#Supplementary Figure 8A--------------------------------------------------------
+## Data ------------------------------------------------------------------------
 
-#DMSO
+pathway_RESP_DWW_enrichGO_BP_fig4 <- read_excel("Figures/extra_data/pathway_RESP_DWW_enrichGO_BP_fig4.xlsx")
 
-#Color
-col_fun = colorRamp2(c(-7,0,7), c("green", "black","red"))
+## Supplementary Figure 6-------------------------------------------------------
 
-DMSO <-
-  read_excel(
-    "Figures/extra_data/Supporting data values Melon-Ardanaz et al.xlsx",
-    sheet = "Sup figure 8A",
-    skip = 1,
-    col_types = c(
-      "text",
-      "numeric",
-      "numeric",
-      "numeric",
-      "numeric",
-      "numeric",
-      "numeric",
-      "numeric",
-      "numeric",
-      "numeric"
-    )
-  )
+filas_seleccionadas <- c(1,4,7,8,9,11,13,16,21,27,31,47)
 
-colnames(DMSO)[1] <- "Condition"
-row_title <- gpar(fontsize = 14)
-col_names <- gpar(fontsize = 14)
-gene_vector <- c("IDO1", "IRF1", "OAS1","CCL5","IL10","SPP1","ACOD1","CD209","MMP9")
+pathway <- pathway_RESP_DWW_enrichGO_BP_fig4[filas_seleccionadas,]
 
-DMSO <- DMSO %>%
-  mutate(across(where(is.numeric), log2))
-
-# Identify numeric columns in the elisa dataframe
-numeric_cols <- sapply(DMSO, is.numeric)
-
-#LPS
-LPS <- subset(DMSO, Condition == "LPS")
-LPS <- data.frame(LPS, row.names = NULL)
-rownames(LPS) <- c("LPS1","LPS2","LPS3","LPS4","LPS5")
-LPS <- LPS[,2:length(colnames(LPS))]
-LPS <- colMeans(LPS)
-#TNFa
-TNFa <- subset(DMSO, Condition == "TNF")
-TNFa <- data.frame(TNFa, row.names = NULL)
-rownames(TNFa) <- c("TNF1","TNF2","TNF3","TNF4","TNF5")
-TNFa <- TNFa[,2:length(colnames(TNFa))]
-TNFa <- colMeans(TNFa)
-#IFNg
-IFNG <- subset(DMSO, Condition == "IFNg")
-IFNG <- data.frame(IFNG, row.names = NULL)
-rownames(IFNG) <- c("IFNG1","IFNG2","IFNG3","IFNG4","IFNG5")
-IFNG <- IFNG[,2:length(colnames(IFNG))]
-IFNG <- colMeans(IFNG)
-
-t_DMSO <- t(data.frame(
-  LPS = LPS,
-  TNFa = TNFa,
-  IFNG = IFNG
-))
-
-t_DMSO <- t_DMSO[,gene_vector]
-col_names <- colnames(t_DMSO)
-
-#Create_Grups
-colnames(t_DMSO) <- paste0(colnames(t_DMSO), " ")
-rownames(t_DMSO) <- paste0(rownames(t_DMSO), " ")
-
-#Statistics
-macros_dmso_stats <- as.data.frame(read_excel("Figures/extra_data/macros_dmso_stats.xlsx"))
-genes_adjusted <- paste(gene_vector,"_p_adjusted",sep = "")
-macros_dmso_stats <- macros_dmso_stats[,c("Condition",genes_adjusted)]
-macros_dmso_stats <- unique(macros_dmso_stats)
-rownames(macros_dmso_stats) <- macros_dmso_stats$Condition
-macros_dmso_stats <- macros_dmso_stats[c("M-DMSO-LPS","M-DMSO-TNF?","M-DMSO-IFN?"),]
-macros_dmso_stats <- macros_dmso_stats[,2:ncol(macros_dmso_stats)]
-sig_mat <- ifelse(macros_dmso_stats < 0.05, ifelse(macros_dmso_stats < 0.005,ifelse(macros_dmso_stats < 0.001, ifelse(macros_dmso_stats < 0.0001, "4", "3"), "2"),"1"), "")
-
-## Obtain database
-png("Figures/output/comp_DMSO.png",width=10,height=6,units="in",res=600)
-heatmap <- Heatmap(t_DMSO,
-                   na_col = "white",
-                   name = "Legend",
-                   col = col_fun,
-                   cluster_rows = FALSE,
-                   cluster_columns = FALSE,
-                   row_names_side = "left",
-                   show_heatmap_legend = FALSE,
-                   row_split = as.factor(c("IFNG","LPS","TNFa")),
-                   row_title = NULL,
-                   row_names_gp = gpar(fontsize = 25),
-                   column_names_gp =  gpar(fontsize = 25, fontface ="italic"),
-                   column_names_rot = 60,
-                   border_gp = gpar(col = "white", lwd = 2),
-                   cell_fun = function(j, i, x, y, width, height, fill) {
-                     if (sig_mat[i, j] == "1") {
-                       grid.text("*", x  , y  , gp = gpar(fontsize = 40, col = "white"))
-                     }
-                     if (sig_mat[i, j] == "2") {
-                       grid.text("**", x  , y  , gp = gpar(fontsize = 40, col = "white"))
-                     }
-                     if (sig_mat[i, j] == "3") {
-                       grid.text("***", x  , y  , gp = gpar(fontsize = 40, col = "white"))
-                     }
-                     if (sig_mat[i, j] == "4") {
-                       grid.text("****", x  , y  , gp = gpar(fontsize = 40, col = "white"))
-                     }
-                   }
+pathway$S1 <- rep("S1", nrow(pathway))
 
 
-)
 
-draw(heatmap)
-dev.off()
+pathway <- pathway %>%
+  arrange(pvalue)
 
-#Supplementary Figure 8B--------------------------------------------------------
-# TOFA
-col_fun = colorRamp2(c(-1.5,0,1.5), c("green","black","red"))
-TOFA <-
-  read_excel(
-    "Figures/extra_data/Supporting data values Melon-Ardanaz et al.xlsx",
-    sheet = "Sup figure 8B",
-    skip = 1,
-    col_types = c(
-      "text",
-      "numeric",
-      "numeric",
-      "numeric",
-      "numeric",
-      "numeric",
-      "numeric",
-      "numeric",
-      "numeric",
-      "numeric"
-    )
-  )
-TOFA <- TOFA %>%
-  mutate(across(where(is.numeric), log2))
+pathway <- pathway %>%
+  dplyr::mutate(Description = factor(Description,
+                                     levels = unique(Description))) %>%
+  dplyr::arrange(pvalue)
 
-colnames(TOFA)[1] <- "Condition"
-row_title <- gpar(fontsize = 14)
-col_names <- gpar(fontsize = 14)
-gene_vector <- c("IDO1", "IRF1", "OAS1","CCL5", "IL10","SPP1","ACOD1","CD209","MMP9")
-numeric_cols <- sapply(TOFA, is.numeric)
+pathway$gene_ratio_ok <- as.numeric(sub("\\/.*", "", pathway$GeneRatio)) / as.numeric(sub(".*\\/", "", pathway$GeneRatio))
+pathway$log10pval <- -log10(pathway$pvalue)
 
-#LPS
-LPS <- subset(TOFA, Condition == "LPS")
-LPS <- data.frame(LPS, row.names = NULL)
-rownames(LPS) <- c("LPS1","LPS2","LPS3","LPS4","LPS5")
-LPS <- LPS[,2:length(colnames(LPS))]
-LPS <- colMeans(LPS)
-#TNFa
-TNFa <- subset(TOFA, Condition == "TNF")
-TNFa <- data.frame(TNFa, row.names = NULL)
-rownames(TNFa) <- c("TNF1","TNF2","TNF3","TNF4","TNF5")
-TNFa <- TNFa[,2:length(colnames(TNFa))]
-TNFa <- colMeans(TNFa)
-#IFNg
-IFNG <- subset(TOFA, Condition == "IFNg")
-IFNG <- data.frame(IFNG, row.names = NULL)
-rownames(IFNG) <- c("IFNG1","IFNG2","IFNG3","IFNG4","IFNG5")
-IFNG <- IFNG[,2:length(colnames(IFNG))]
-IFNG <- colMeans(IFNG)
+#
+# Polar plot ----
+#
+library(plotrix)
+colorsElena<-colorRampPalette(colors=c('#C1D4E8', '#83A9D3', '#0652A9'))
+fun <- function(str, n) {gsub(paste0("([^ ]+( +[^ ]+){",n-1,"}) +"),
+                              "\\1\n", str)}
 
-t_TOFA <- t(data.frame(
-  LPS = LPS,
-  TNFa = TNFa,
-  IFNG = IFNG
-))
+taula <- arrange(pathway, gene_ratio_ok) %>% mutate(Color = colorsElena(n = nrow(taula)))
+taula <- arrange(taula, desc(log10pval))
+taula$nom <- fun(taula$Description, n = 3)
 
-t_TOFA <- t_TOFA[,gene_vector]
-col_names <- colnames(t_TOFA)
+svg(filename = 'polar_plot.svg', onefile = T, family = 'helvetica')
+par(cex.lab=0.6, mar=c(5.1,5,5,2.1), cex.axis = 0.8, cex = 1)
+polar.plot(taula$log10pval, start = 90, rp.type = 'p',show.centroid = F,
+           boxed.radial=F, labels = taula$nom, radial.lim=c(0,8),
+           poly.col = NULL)
 
-#Create Grups
-colnames(t_TOFA) <- paste0(colnames(t_TOFA), " ")
-rownames(t_TOFA) <- paste0(rownames(t_TOFA), " ")
-
-#Statistics
-macros_tofa_stats <- as.data.frame(read_excel("Figures/extra_data/macros_tofa_stats.xlsx"))
-genes_adjusted <- paste(gene_vector,"_p_adjusted",sep = "")
-macros_tofa_stats <- macros_tofa_stats[,c("Condition",genes_adjusted)]
-macros_tofa_stats <- unique(macros_tofa_stats)
-rownames(macros_tofa_stats) <- macros_tofa_stats$Condition
-macros_tofa_stats <- macros_tofa_stats[c("M-TOFA-LPS","M-TOFA-TNF?","M-TOFA-IFN?"),]
-macros_tofa_stats <- macros_tofa_stats[,2:ncol(macros_tofa_stats)]
-sig_mat <- ifelse(macros_tofa_stats < 0.05, ifelse(macros_tofa_stats < 0.005,ifelse(macros_tofa_stats < 0.001, ifelse(macros_tofa_stats < 0.0001, "4", "3"), "2"),"1"), "")
-
-png("Figures/output/comp_TOFA.png",width=10,height=6,units="in",res=600)
-heatmap <- Heatmap(t_TOFA,
-                   na_col = "white",
-                   name = "Legend",
-                   col = col_fun,
-                   cluster_rows = FALSE,
-                   cluster_columns = FALSE,
-                   row_names_side = "left",
-                   show_heatmap_legend = FALSE,
-                   row_split = as.factor(c("IFNG","LPS","TNFa")),
-                   row_title = NULL,
-                   row_names_gp = gpar(fontsize = 25),
-                   column_names_gp =  gpar(fontsize = 25, fontface ="italic"),
-                   column_names_rot = 60,
-                   border_gp = gpar(col = "white", lwd = 2),
-                   cell_fun = function(j, i, x, y, width, height, fill) {
-                     if (sig_mat[i, j] == "1") {
-                       grid.text("*", x  , y  , gp = gpar(fontsize = 40, col = "white"))
-                     }
-                     if (sig_mat[i, j] == "2") {
-                       grid.text("**", x  , y  , gp = gpar(fontsize = 40, col = "white"))
-                     }
-                     if (sig_mat[i, j] == "3") {
-                       grid.text("***", x  , y  , gp = gpar(fontsize = 40, col = "white"))
-                     }
-                     if (sig_mat[i, j] == "4") {
-                       grid.text("****", x  , y  , gp = gpar(fontsize = 40, col = "white"))
-                     }
-                   }
-
-
-)
-
-draw(heatmap)
-dev.off()
-
-#Legends------------------------------------------------------------------------
-#Legend Figure 8B---------------------------------------------------------------
-col_fun = colorRamp2(c(-1.5, 0, 1.5), c("green", "black", "red"))
-
-png(
-  "Figures/output/supp_macs_TOFA.png",
-  width = 5,
-  height = 5,
-  units = "in",
-  res = 600
-)
-lgd = Legend(
-  col_fun = col_fun,
-  direction = "vertical",
-  legend_width = unit(7, "cm"),
-  at = c(-1.5, 0, 1.5),
-  labels = c(-1.5, 0, 1.5)
-)
-draw(lgd)
-dev.off()
-
-#Legend Figure 8A---------------------------------------------------------------
-col_fun = colorRamp2(c(-7, 0, 7), c("green", "black", "red"))
-
-png(
-  "Figures/output/supp_macs_DMSO.png",
-  width = 5,
-  height = 5,
-  units = "in",
-  res = 600
-)
-lgd = Legend(
-  col_fun = col_fun,
-  direction = "vertical",
-  legend_width = unit(7, "cm"),
-  at = c(-7, 0, 7),
-  labels = c(-7, 0, 7)
-)
-draw(lgd)
+polar.plot(taula$log10pval, start = 90,
+           rp.type = 's',show.centroid = F,
+           boxed.radial=F, labels = NULL , radial.lim=c(0,360),
+           add=T, point.symbols=19,
+           point.col = as.character(taula$Color), cex=2.5)
 
 dev.off()
 
+taula <- taula %>% arrange(desc(gene_ratio_ok))
+legend("topleft", legend=unique(taula$GeneRatio), pch=16, col=unique(taula$Color))
+
+# no labels ------
+plot.new()
+taula <- taula %>% arrange(desc(log10pval))
+polar.plot(taula$log10pval, start = 90, rp.type = 'p',show.centroid = F,
+           boxed.radial=F,
+           radial.lim=c(0,8), labels = rep('', 12),
+           poly.col = NULL)
+polar.plot(taula$log10pval, start = 90,
+           rp.type = 's',show.centroid = F,
+           boxed.radial=F, labels = NULL , radial.lim=c(0,8),
+           add=T, point.symbols=19,
+           point.col = as.character(taula$Color), cex=2.5)
+
+## ggplot legend -----
+
+a <- ggplot(data = taula, aes(x = S1 , y = Description,  color = gene_ratio_ok)) +
+  geom_point() +
+  scale_color_stepsn(colours = c('#C1D4E8', '#83A9D3', '#0652A9'), guide = 'colourbar') +
+  theme(legend.title = element_blank(), legend.key.size = unit(1, units = 'cm'))
+
+legend <- cowplot::get_legend(a)
+
+plot(legend)
