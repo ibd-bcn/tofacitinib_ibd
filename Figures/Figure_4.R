@@ -113,7 +113,7 @@ macros_dmso_stats <-
 macros_dmso_stats <- unique(macros_dmso_stats)
 rownames(macros_dmso_stats) <- macros_dmso_stats$Condition
 macros_dmso_stats <-
-  macros_dmso_stats[c("M-DMSO-LPS", "M-DMSO-TNF?", "M-DMSO-IFN?"),]
+  macros_dmso_stats[c("M-DMSO-LPS", "M-DMSO-TNF", "M-DMSO-IFN"),]
 macros_dmso_stats <- macros_dmso_stats[, 2:ncol(macros_dmso_stats)]
 sig_mat <-
   ifelse(macros_dmso_stats < 0.05,
@@ -269,7 +269,7 @@ col_names <- colnames(t_TOFA)
 colnames(t_TOFA) <- paste0(colnames(t_TOFA), " ")
 rownames(t_TOFA) <- paste0(rownames(t_TOFA), " ")
 
-#AStatistics
+#Statistics
 macros_tofa_stats <-
   as.data.frame(read_excel("Figures/extra_data/macros_tofa_stats.xlsx"))
 genes_adjusted <- paste(gene_vector, "_p_adjusted", sep = "")
@@ -278,7 +278,7 @@ macros_tofa_stats <-
 macros_tofa_stats <- unique(macros_tofa_stats)
 rownames(macros_tofa_stats) <- macros_tofa_stats$Condition
 macros_tofa_stats <-
-  macros_tofa_stats[c("M-TOFA-LPS", "M-TOFA-TNF?", "M-TOFA-IFN?"),]
+  macros_tofa_stats[c("M-TOFA-LPS", "M-TOFA-TNF", "M-TOFA-IFN"),]
 macros_tofa_stats <- macros_tofa_stats[, 2:ncol(macros_tofa_stats)]
 sig_mat <-
   ifelse(macros_tofa_stats < 0.05,

@@ -22,28 +22,28 @@ library(plyr)
 library(dplyr)
 options(bitmapType='cairo')
 # LEE LA BASE DE DATOS QUE TE DE Y LA HOJA QUE TOQUE
-DMSO <-  read_excel("~/Elisa/il10_elisa.xlsx",
+df <-  read_excel("Figures/extra_data/Supporting data values Melon-Ardanaz et al.xlsx",
                     sheet = "FC Macs  antiIL-10")
-DMSO <- DMSO %>%
+df <- df %>%
   dplyr::mutate(across(where(is.numeric), log2))
 
-colnames(DMSO)[2] <- "Sample"
-colnames(DMSO)[3] <- "Condition"
-DMSO <- DMSO[,2:ncol(DMSO)]
+colnames(df)[2] <- "Sample"
+colnames(df)[3] <- "Condition"
+df <- df[,2:ncol(df)]
 
-# Identify numeric columns in the elisa dataframe
-numeric_cols <- sapply(DMSO, is.numeric)
+# Identify numeric columns in the dataframe
+numeric_cols <- sapply(df, is.numeric)
 
 #LPS anti
-LPS_anti <- subset(DMSO, Condition == "LPS+anti-IL10")
+LPS_anti <- subset(df, Condition == "LPS+anti-IL10")
 LPS_anti <- data.frame(LPS_anti, row.names = NULL)
 
 #TNF anti
-TNF_anti <- subset(DMSO, Condition == "TNF+anti-IL10")
+TNF_anti <- subset(df, Condition == "TNF+anti-IL10")
 TNF_anti <- data.frame(TNF_anti, row.names = NULL)
 
 #IFN anti
-IFN_anti <- subset(DMSO, Condition == "IFN+anti-IL10")
+IFN_anti <- subset(df, Condition == "IFN+anti-IL10")
 IFN_anti <- data.frame(IFN_anti, row.names = NULL)
 
 
@@ -116,58 +116,58 @@ gene_vector <-
     "CLEC5A",
     "IL10"
   )
-numeric_cols <- sapply(DMSO, is.numeric)
+numeric_cols <- sapply(df, is.numeric)
 
-DMSO$Condition <- as.character(DMSO$Condition)
+df$Condition <- as.character(df$Condition)
 
-lps_anti <- subset(DMSO, Condition == "LPS+anti-IL10")
+lps_anti <- subset(df, Condition == "LPS+anti-IL10")
 lps_anti <- data.frame(lps_anti, row.names = NULL)
 rownames(lps_anti) <- c("LPS+anti-IL10_1", "LPS+anti-IL10_2", "LPS+anti-IL10_3")
 lps_anti <- lps_anti[, 3:length(colnames(lps_anti))]
 lps_anti <- colMeans(lps_anti)
 
-tnf_anti <- subset(DMSO, Condition == "TNF+anti-IL10")
+tnf_anti <- subset(df, Condition == "TNF+anti-IL10")
 tnf_anti <- data.frame(tnf_anti, row.names = NULL)
 rownames(tnf_anti) <- c("TNF+anti-IL10_1", "TNF+anti-IL10_2", "TNF+anti-IL10_3")
 tnf_anti <- tnf_anti[, 3:length(colnames(tnf_anti))]
 tnf_anti <- colMeans(tnf_anti)
 
-ifn_anti <- subset(DMSO, Condition == "IFN+anti-IL10")
+ifn_anti <- subset(df, Condition == "IFN+anti-IL10")
 ifn_anti <- data.frame(ifn_anti, row.names = NULL)
 rownames(ifn_anti) <- c("IFN+anti-IL10_1", "IFN+anti-IL10_2", "IFN+anti-IL10_3")
 ifn_anti <- ifn_anti[, 3:length(colnames(ifn_anti))]
 ifn_anti <- colMeans(ifn_anti)
 
 
-t_DMSO <- t(data.frame( LPS_anti = lps_anti, TNF_anti = tnf_anti, IFN_anti = ifn_anti))
+t_df <- t(data.frame( LPS_anti = lps_anti, TNF_anti = tnf_anti, IFN_anti = ifn_anti))
 
-t_DMSO <- t_DMSO[, gene_vector]
-col_names <- colnames(t_DMSO)
+t_df <- t_df[, gene_vector]
+col_names <- colnames(t_df)
 
-valid_genes <- intersect(gene_vector, colnames(t_DMSO))
-t_DMSO <- t_DMSO[, valid_genes, drop = FALSE]
-rownames(t_DMSO) <- gsub("LPS_anti", "LPS+anti-IL10", rownames(t_DMSO))
-rownames(t_DMSO) <- gsub("TNF_anti", "TNF+anti-IL10", rownames(t_DMSO))
-rownames(t_DMSO) <- gsub("IFN_anti", "IFN+anti-IL10", rownames(t_DMSO))
+valid_genes <- intersect(gene_vector, colnames(t_df))
+t_df <- t_df[, valid_genes, drop = FALSE]
+rownames(t_df) <- gsub("LPS_anti", "LPS+anti-IL10", rownames(t_df))
+rownames(t_df) <- gsub("TNF_anti", "TNF+anti-IL10", rownames(t_df))
+rownames(t_df) <- gsub("IFN_anti", "IFN+anti-IL10", rownames(t_df))
 
 #Statistics
-macros_dmso_stats <-
-  as.data.frame(read_excel("~/stats_il10new.xlsx"))
+macros_df_stats <-
+  as.data.frame(read_excel("Figures/extra_data/stats_il10new.xlsx"))
 genes_adjusted <- paste(valid_genes, "_p_adjusted", sep = "")
-macros_dmso_stats <-
-  macros_dmso_stats[, c("Condition", genes_adjusted)]
-macros_dmso_stats <- unique(macros_dmso_stats)
-rownames(macros_dmso_stats) <- macros_dmso_stats$Condition
-macros_dmso_stats <-
-  macros_dmso_stats[c( "LPS+anti-IL10", "TNF+anti-IL10", "IFN+anti-IL10"),]
-macros_dmso_stats <- macros_dmso_stats[, 2:ncol(macros_dmso_stats)]
+macros_df_stats <-
+  macros_df_stats[, c("Condition", genes_adjusted)]
+macros_df_stats <- unique(macros_df_stats)
+rownames(macros_df_stats) <- macros_df_stats$Condition
+macros_df_stats <-
+  macros_df_stats[c( "LPS+anti-IL10", "TNF+anti-IL10", "IFN+anti-IL10"),]
+macros_df_stats <- macros_df_stats[, 2:ncol(macros_df_stats)]
 sig_mat <-
-  ifelse(macros_dmso_stats < 0.05,
+  ifelse(macros_df_stats < 0.05,
          ifelse(
-           macros_dmso_stats < 0.005,
+           macros_df_stats < 0.005,
            ifelse(
-             macros_dmso_stats < 0.001,
-             ifelse(macros_dmso_stats < 0.0001, "4", "3"),
+             macros_df_stats < 0.001,
+             ifelse(macros_df_stats < 0.0001, "4", "3"),
              "2"
            ),
            "1"
@@ -182,7 +182,7 @@ png(
   res = 600
 )
 heatmap <- Heatmap(
-  t_DMSO,
+  t_df,
   na_col = "white",
   name = "Legend",
   col = col_fun,

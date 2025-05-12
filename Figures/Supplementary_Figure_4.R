@@ -51,7 +51,7 @@ cell_type_dictionary <- list(
 
 )
 
-todas <- readRDS("~/thommas_et_al.RDS")
+todas <- readRDS("/adalimumab/todas.RDS")
 todas$reduced_anot <- todas$annotation
 
 for (pattern in names(cell_type_dictionary)) {
@@ -175,7 +175,7 @@ summarized_pscores_w0_R$row_names <-
 write_csv(
   summarized_pscores_w0_R,
   paste0(
-    "~/todas_reduced_anot_w0_R.csv",
+    "/adalimumab/todas_reduced_anot_w0_R.csv",
     sep = ""
   )
 )
@@ -199,7 +199,7 @@ summarized_pscores_w0_NR$row_names <-
 write_csv(
   summarized_pscores_w0_NR,
   paste0(
-    "~/todas_reduced_anot_w0_NR.csv",
+    "/adalimumab/todas_reduced_anot_w0_NR.csv",
     sep = ""
   )
 )
@@ -262,7 +262,7 @@ for (com in 1:6) {
     openxlsx::write.xlsx(
       x = results,
       file = paste0(
-        "~/progeny/",
+        "/adalimumab/",
         cond1,
         "_vs_",
         cond2,
@@ -282,12 +282,12 @@ for (com in 1:6) {
 heatmap_progeny <- function(stimuli, anot = "reduced_anot") {
   #Open dfs
   todas_intermediate_w0_NR <-
-    read_csv(paste0("~/todas_reduced_anot_w0_NR.csv", sep = ""))
+    read_csv(paste0("/adalimumab/todas_reduced_anot_w0_NR.csv", sep = ""))
   cn_w0_NR <- todas_intermediate_w0_NR$row_names
   jak_w0_NR <- todas_intermediate_w0_NR[[stimuli]]
 
   todas_intermediate_w0_R <-
-    read_csv(paste0("~/todas_reduced_anot_w0_R.csv", sep = ""))
+    read_csv(paste0("/adalimumab/todas_reduced_anot_w0_R.csv", sep = ""))
   cn_w0_R <- todas_intermediate_w0_R$row_names
   jak_w0_R <- todas_intermediate_w0_R[[stimuli]]
 
@@ -399,6 +399,6 @@ results$q_value <- q_values_full
 colnames(results)[which(names(results) == "median_group1")] <- paste0("median_todas_", cond1)
 colnames(results)[which(names(results) == "median_group2")] <- paste0("median_todas_", cond2)
 
-openxlsx::write.xlsx(x = results, file = paste0("~/progeny/", cond1, "_vs_", cond2, "_", gsub("annotation_", "", anot), ".xlsx"))
+openxlsx::write.xlsx(x = results, file = paste0("adalimumab/progeny/", cond1, "_vs_", cond2, "_", gsub("annotation_", "", anot), ".xlsx"))
 
 

@@ -111,13 +111,13 @@ save_sizes(plot = fig1c, filename = 'fig1b', device = 'svg')
 save_sizes(plot = fig1c, filename = 'fig1b', device = 'jpeg')
 save_sizes(plot = fig1c, filename = 'fig1b', device = 'pdf')
 
-fig1c_legend <- fig1b +
+fig1c_legend <- fig1c +
   theme(legend.position = 'right')
 
-save_sizes(plot = fig1c_legend, filename = 'fig1b_legend', device = 'tiff')
-save_sizes(plot = fig1c_legend, filename = 'fig1b_legend', device = 'svg')
-save_sizes(plot = fig1c_legend, filename = 'fig1b_legend', device = 'jpeg')
-save_sizes(plot = fig1c_legend, filename = 'fig1b_legend', device = 'pdf')
+save_sizes(plot = fig1c_legend, filename = 'fig1c_legend', device = 'tiff')
+save_sizes(plot = fig1c_legend, filename = 'fig1c_legend', device = 'svg')
+save_sizes(plot = fig1c_legend, filename = 'fig1c_legend', device = 'jpeg')
+save_sizes(plot = fig1c_legend, filename = 'fig1c_legend', device = 'pdf')
 
 
 

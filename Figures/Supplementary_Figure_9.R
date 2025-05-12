@@ -15,7 +15,7 @@ col_fun = colorRamp2(c(-7,0,7), c("green", "black","red"))
 DMSO <-
   read_excel(
     "Figures/extra_data/Supporting data values Melon-Ardanaz et al.xlsx",
-    sheet = "Sup figure 8A",
+    sheet = "Sup figure 9C",
     skip = 1,
     col_types = c(
       "text",
@@ -121,13 +121,13 @@ heatmap <- Heatmap(t_DMSO,
 draw(heatmap)
 dev.off()
 
-#Supplementary Figure 8D--------------------------------------------------------
+#Supplementary Figure 9E--------------------------------------------------------
 # TOFA
 col_fun = colorRamp2(c(-1.5,0,1.5), c("green","black","red"))
 TOFA <-
   read_excel(
     "Figures/extra_data/Supporting data values Melon-Ardanaz et al.xlsx",
-    sheet = "Sup figure 8B",
+    sheet = "Sup figure 9D",
     skip = 1,
     col_types = c(
       "text",
@@ -230,7 +230,7 @@ draw(heatmap)
 dev.off()
 
 #Legends------------------------------------------------------------------------
-#Legend Figure 8D---------------------------------------------------------------
+#Legend Figure 9E---------------------------------------------------------------
 col_fun = colorRamp2(c(-1.5, 0, 1.5), c("green", "black", "red"))
 
 png(
@@ -250,7 +250,7 @@ lgd = Legend(
 draw(lgd)
 dev.off()
 
-#Legend Figure 8A---------------------------------------------------------------
+#Legend Figure 9C---------------------------------------------------------------
 col_fun = colorRamp2(c(-7, 0, 7), c("green", "black", "red"))
 
 png(
@@ -271,34 +271,34 @@ draw(lgd)
 
 dev.off()
 
-# Supplementary Figure 8 E
+# Supplementary Figure 9 D
 
 
-DMSO <-read_excel("Elisa/250212 Base de datos UC Macs JCC Revision Angela Heatmap 4.xlsx",
-                  sheet = "FC df UC Stimuli vs Control")
+df <-read_excel("Figures/extra_data/Supporting data values Melon-Ardanaz et al.xlsx",
+                  sheet = "sup 9D")
 
 
-DMSO <- DMSO %>%
+df <- df %>%
   dplyr::mutate(across(where(is.numeric), log2))
 
-colnames(DMSO)[1] <- "Sample"
-colnames(DMSO)[2] <- "Condition"
+colnames(df)[1] <- "Sample"
+colnames(df)[2] <- "Condition"
 
-DMSO
+df
 
 # Identify numeric columns
-numeric_cols <- sapply(DMSO, is.numeric)
+numeric_cols <- sapply(df, is.numeric)
 
 #LPS
-LPS <- subset(DMSO, Condition == "LPS")
+LPS <- subset(df, Condition == "LPS")
 LPS <- data.frame(LPS, row.names = NULL)
 
 #TNFa
-TNFa <- subset(DMSO, Condition == "TNF")
+TNFa <- subset(df, Condition == "TNF")
 TNFa <- data.frame(TNFa, row.names = NULL)
 
 #IFNg
-IFNG <- subset(DMSO, Condition == "IFN")
+IFNG <- subset(df, Condition == "IFN")
 IFNG <- data.frame(IFNG, row.names = NULL)
 
 
@@ -349,8 +349,8 @@ heatmap_tt <- heatmap_tt %>% relocate(Sample)
 openxlsx::write.xlsx(heatmap_tt, "~/stats_df_control_2519.xlsx", rowNames=T)
 
 
-DMSO <-read_excel("Elisa/250212 Base de datos UC Macs JCC Revision Angela Heatmap 4.xlsx",
-                  sheet = "FC df UC Stimuli vs Control",
+df <-read_excel("Figures/extra_data/Supporting data values Melon-Ardanaz et al.xlsx",
+                  sheet = "sup 9D",
                   col_types = c(
                     "text",
                     "text",
@@ -366,11 +366,11 @@ DMSO <-read_excel("Elisa/250212 Base de datos UC Macs JCC Revision Angela Heatma
                   skip = 0
 )
 
-DMSO <- DMSO %>%
+df <- df %>%
   dplyr::mutate(across(where(is.numeric), log2))
-colnames(DMSO)[1] <- "Sample"
-colnames(DMSO)[2] <- "Condition"
-# colnames(DMSO)[1] <- "Condition"
+colnames(df)[1] <- "Sample"
+colnames(df)[2] <- "Condition"
+# colnames(df)[1] <- "Condition"
 row_title <- gpar(fontsize = 14)
 col_names <- gpar(fontsize = 14)
 gene_vector <-
@@ -378,37 +378,37 @@ gene_vector <-
     "SOCS3", "CXCL10", "CXCL1", "IL6", "IL1B", "TNF", "CHI3L1", "WNT5A"
 
   )
-numeric_cols <- sapply(DMSO, is.numeric)
+numeric_cols <- sapply(df, is.numeric)
 
 #LPS
-DMSO$Condition <- as.character(DMSO$Condition)
-LPS <- subset(DMSO, Condition == "LPS")
+df$Condition <- as.character(df$Condition)
+LPS <- subset(df, Condition == "LPS")
 LPS <- data.frame(LPS, row.names = NULL)
 rownames(LPS) <- c("LPS1", "LPS2", "LPS3", "LPS4","LPS5", "LPS6", "LPS7")
 LPS <- LPS[, 3:length(colnames(LPS))]
 LPS <- colMeans(LPS)
 #TNFa
-TNFa <- subset(DMSO, Condition == "TNF")
+TNFa <- subset(df, Condition == "TNF")
 TNFa <- data.frame(TNFa, row.names = NULL)
 rownames(TNFa) <- c("TNF1", "TNF2", "TNF3", "TNF4", "TNF5", "TNF6", "TNF7")
 TNFa <- TNFa[, 3:length(colnames(TNFa))]
 TNFa <- colMeans(TNFa)
 #IFNg
-IFNG <- subset(DMSO, Condition == "IFN")
+IFNG <- subset(df, Condition == "IFN")
 IFNG <- data.frame(IFNG, row.names = NULL)
 rownames(IFNG) <- c("IFNG1", "IFNG2", "IFNG3", "IFNG4", "IFNG5", "IFNG6", "IFNG7")
 IFNG <- IFNG[, 3:length(colnames(IFNG))]
 IFNG <- colMeans(IFNG)
 
-t_DMSO <- t(data.frame(LPS = LPS,
+t_df <- t(data.frame(LPS = LPS,
                        TNFa = TNFa,
                        IFNG = IFNG))
 
-t_DMSO <- t_DMSO[, gene_vector]
-col_names <- colnames(t_DMSO)
+t_df <- t_df[, gene_vector]
+col_names <- colnames(t_df)
 
-valid_genes <- intersect(gene_vector, colnames(t_DMSO))
-t_DMSO <- t_DMSO[, valid_genes, drop = FALSE]
+valid_genes <- intersect(gene_vector, colnames(t_df))
+t_df <- t_df[, valid_genes, drop = FALSE]
 
 
 
@@ -429,27 +429,27 @@ grupos <-
   )
 col_groups <-
   factor(grupos, levels = c("IFN", "Inflam_cyt", "JAK", "IF"))
-colnames(t_DMSO) <- paste0(colnames(t_DMSO), " ")
-rownames(t_DMSO) <- paste0(rownames(t_DMSO), " ")
+colnames(t_df) <- paste0(colnames(t_df), " ")
+rownames(t_df) <- paste0(rownames(t_df), " ")
 
 #Statistics
-df_dmso_stats <-
+df_df_stats <-
   as.data.frame(read_excel("~/stats_df_control_2519.xlsx"))
 genes_adjusted <- paste(valid_genes, "_p_adjusted", sep = "")
-df_dmso_stats <-
-  df_dmso_stats[, c("Condition", genes_adjusted)]
-df_dmso_stats <- unique(df_dmso_stats)
-rownames(df_dmso_stats) <- df_dmso_stats$Condition
-df_dmso_stats <-
-  df_dmso_stats[c("LPS", "TNF", "IFN"),]
-df_dmso_stats <- df_dmso_stats[, 2:ncol(df_dmso_stats)]
+df_df_stats <-
+  df_df_stats[, c("Condition", genes_adjusted)]
+df_df_stats <- unique(df_df_stats)
+rownames(df_df_stats) <- df_df_stats$Condition
+df_df_stats <-
+  df_df_stats[c("LPS", "TNF", "IFN"),]
+df_df_stats <- df_df_stats[, 2:ncol(df_df_stats)]
 sig_mat <-
-  ifelse(df_dmso_stats < 0.05,
+  ifelse(df_df_stats < 0.05,
          ifelse(
-           df_dmso_stats < 0.005,
+           df_df_stats < 0.005,
            ifelse(
-             df_dmso_stats < 0.001,
-             ifelse(df_dmso_stats < 0.0001, "4", "3"),
+             df_df_stats < 0.001,
+             ifelse(df_df_stats < 0.0001, "4", "3"),
              "2"
            ),
            "1"
@@ -465,7 +465,7 @@ png(
   res = 600
 )
 heatmap <- Heatmap(
-  t_DMSO,
+  t_df,
   na_col = "white",
   name = "Legend",
   col = col_fun,
@@ -505,12 +505,12 @@ heatmap <- Heatmap(
 draw(heatmap)
 dev.off()
 
-# Supplementary Figure 8F
+# Supplementary Figure 9F
 
 
 ## TOFA
-TOFA <-read_excel("Elisa/250212 Base de datos UC Macs JCC Revision Angela Heatmap 4.xlsx",
-                  sheet = "FC df Stimuli vs Stimuli+tofa")
+TOFA <-read_excel("Figures/extra_data/Supporting data values Melon-Ardanaz et al.xlsx",
+                  sheet = "Sup 9F")
 
 TOFA <- TOFA %>%
   dplyr::mutate(across(where(is.numeric), log2))
@@ -584,8 +584,8 @@ openxlsx::write.xlsx(heatmap_tt, "~/df_tofa_stats_2519.xlsx", rowNames=T)
 col_fun = colorRamp2(c(-2, 0, 2), c("green", "black", "red"))
 
 
-TOFA <-read_excel("Elisa/250212 Base de datos UC Macs JCC Revision Angela Heatmap 4.xlsx",
-                  sheet = "FC df Stimuli vs Stimuli+tofa")
+TOFA <-read_excel("Figures/extra_data/Supporting data values Melon-Ardanaz et al.xlsx",
+                  sheet = "Sup 9F")
 colnames(TOFA)[1] <- "Sample"
 colnames(TOFA)[2] <- "Condition"
 TOFA <- TOFA %>%

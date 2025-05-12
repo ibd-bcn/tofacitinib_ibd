@@ -71,14 +71,14 @@ volcano_plot <- function(cluster, comp, genes_up, genes_down) {
 }
 
 
-sup5_M0R <- volcano_plot(cluster, comp, genes_up, genes_down)
+sup6_M0R <- volcano_plot(cluster, comp, genes_up, genes_down)
 
-print(sup5_M0R)
+print(sup6_M0R)
 
-save_sizes(plot =sup5_M0R , filename = 'sup5_M0R', device = 'jpeg')
-save_sizes(plot = sup5_M0R, filename = 'sup5_M0R', device = 'tiff')
-save_sizes(plot = sup5_M0R, filename = 'sup5_M0R', device = 'svg')
-save_sizes(plot = sup5_M0R, filename = 'sup5_M0R', device = 'pdf')
+save_sizes(plot =sup6_M0R , filename = 'sup6_M0R', device = 'jpeg')
+save_sizes(plot = sup6_M0R, filename = 'sup6_M0R', device = 'tiff')
+save_sizes(plot = sup6_M0R, filename = 'sup6_M0R', device = 'svg')
+save_sizes(plot = sup6_M0R, filename = 'sup6_M0R', device = 'pdf')
 
 
 # IDA macrophages
@@ -143,14 +143,14 @@ volcano_plot <- function(cluster, comp, genes_up, genes_down) {
 }
 
 
-sup5_IDAR <- volcano_plot(cluster, comp, genes_up, genes_down)
+sup6_IDAR <- volcano_plot(cluster, comp, genes_up, genes_down)
 
-print(sup5_IDAR)
+print(sup6_IDAR)
 
-save_sizes(plot =sup5_IDAR , filename = 'sup5_IDAR', device = 'jpeg')
-save_sizes(plot = sup5_IDAR, filename = 'sup5_IDAR', device = 'tiff')
-save_sizes(plot = sup5_IDAR, filename = 'sup5_IDAR', device = 'svg')
-save_sizes(plot = sup5_IDAR, filename = 'sup5_IDAR', device = 'pdf')
+save_sizes(plot =sup6_IDAR , filename = 'sup6_IDAR', device = 'jpeg')
+save_sizes(plot = sup6_IDAR, filename = 'sup6_IDAR', device = 'tiff')
+save_sizes(plot = sup6_IDAR, filename = 'sup6_IDAR', device = 'svg')
+save_sizes(plot = sup6_IDAR, filename = 'sup6_IDAR', device = 'pdf')
 
 
 # Supplementary Figure 5B-------------------------------------------------------
@@ -216,14 +216,14 @@ volcano_plot <- function(cluster, comp, genes_up, genes_down) {
 }
 
 
-sup5_M0NR <- volcano_plot(cluster, comp, genes_up, genes_down)
+sup6_M0NR <- volcano_plot(cluster, comp, genes_up, genes_down)
 
-print(sup5_M0NR)
+print(sup6_M0NR)
 
-save_sizes(plot =sup5_M0NR , filename = 'sup5_M0NR', device = 'jpeg')
-save_sizes(plot = sup5_M0NR, filename = 'sup5_M0NR', device = 'tiff')
-save_sizes(plot = sup5_M0NR, filename = 'sup5_M0NR', device = 'svg')
-save_sizes(plot = sup5_M0NR, filename = 'sup5_M0NR', device = 'pdf')
+save_sizes(plot =sup6_M0NR , filename = 'sup6_M0NR', device = 'jpeg')
+save_sizes(plot = sup6_M0NR, filename = 'sup6_M0NR', device = 'tiff')
+save_sizes(plot = sup6_M0NR, filename = 'sup6_M0NR', device = 'svg')
+save_sizes(plot = sup6_M0NR, filename = 'sup6_M0NR', device = 'pdf')
 
 # IDA macrophages non-responders
 
@@ -282,14 +282,14 @@ volcano_plot <- function(cluster, comp, genes_up, genes_down) {
 }
 
 
-sup5_IDANR <- volcano_plot(cluster, comp, genes_up, genes_down)
+sup6_IDANR <- volcano_plot(cluster, comp, genes_up, genes_down)
 
-print(sup5_IDANR)
+print(sup6_IDANR)
 
-save_sizes(plot =sup5_IDANR , filename = 'sup5_IDANR', device = 'jpeg')
-save_sizes(plot = sup5_IDANR, filename = 'sup5_IDANR', device = 'tiff')
-save_sizes(plot = sup5_IDANR, filename = 'sup5_IDANR', device = 'svg')
-save_sizes(plot = sup5_IDANR, filename = 'sup5_IDANR', device = 'pdf')
+save_sizes(plot =sup6_IDANR , filename = 'sup6_IDANR', device = 'jpeg')
+save_sizes(plot = sup6_IDANR, filename = 'sup6_IDANR', device = 'tiff')
+save_sizes(plot = sup6_IDANR, filename = 'sup6_IDANR', device = 'svg')
+save_sizes(plot = sup6_IDANR, filename = 'sup6_IDANR', device = 'pdf')
 
 
 
@@ -353,14 +353,14 @@ volcano_plot <- function(cluster, comp, genes_up, genes_down) {
 }
 
 
-sup5_M1NR <- volcano_plot(cluster, comp, genes_up, genes_down)
+sup6_M1NR <- volcano_plot(cluster, comp, genes_up, genes_down)
 
-print(sup5_M1NR)
+print(sup6_M1NR)
 
-save_sizes(plot =sup5_M1NR , filename = 'sup5_M1NR', device = 'jpeg')
-save_sizes(plot = sup5_M1NR, filename = 'sup5_M1NR', device = 'tiff')
-save_sizes(plot = sup5_M1NR, filename = 'sup5_M1NR', device = 'svg')
-save_sizes(plot = sup5_M1NR, filename = 'sup5_M1NR', device = 'pdf')
+save_sizes(plot =sup6_M1NR , filename = 'sup6_M1NR', device = 'jpeg')
+save_sizes(plot = sup6_M1NR, filename = 'sup6_M1NR', device = 'tiff')
+save_sizes(plot = sup6_M1NR, filename = 'sup6_M1NR', device = 'svg')
+save_sizes(plot = sup6_M1NR, filename = 'sup6_M1NR', device = 'pdf')
 
 
 

@@ -71,14 +71,14 @@ volcano_plot <- function(cluster, comp, genes_up, genes_down) {
 }
 
 
-sup6_S2R <- volcano_plot(cluster, comp, genes_up, genes_down)
+sup7_S2R <- volcano_plot(cluster, comp, genes_up, genes_down)
 
-print(sup6_S2R)
+print(sup7_S2R)
 
-save_sizes(plot =sup6_S2R , filename = 'sup6_S2R', device = 'jpeg')
-save_sizes(plot = sup6_S2R, filename = 'sup6_S2R', device = 'tiff')
-save_sizes(plot = sup6_S2R, filename = 'sup6_S2R', device = 'svg')
-save_sizes(plot = sup6_S2R, filename = 'sup6_S2R', device = 'pdf')
+save_sizes(plot =sup7_S2R , filename = 'sup7_S2R', device = 'jpeg')
+save_sizes(plot = sup7_S2R, filename = 'sup7_S2R', device = 'tiff')
+save_sizes(plot = sup7_S2R, filename = 'sup7_S2R', device = 'svg')
+save_sizes(plot = sup7_S2R, filename = 'sup7_S2R', device = 'pdf')
 
 # S3 Responders
 
@@ -143,14 +143,14 @@ volcano_plot <- function(cluster, comp, genes_up, genes_down) {
 }
 
 
-sup6_S3R <- volcano_plot(cluster, comp, genes_up, genes_down)
+sup7_S3R <- volcano_plot(cluster, comp, genes_up, genes_down)
 
-print(sup6_S3R)
+print(sup7_S3R)
 
-save_sizes(plot =sup6_S3R , filename = 'sup6_S3R', device = 'jpeg')
-save_sizes(plot = sup6_S3R, filename = 'sup6_S3R', device = 'tiff')
-save_sizes(plot = sup6_S3R, filename = 'sup6_S3R', device = 'svg')
-save_sizes(plot = sup6_S3R, filename = 'sup6_S3R', device = 'pdf')
+save_sizes(plot =sup7_S3R , filename = 'sup7_S3R', device = 'jpeg')
+save_sizes(plot = sup7_S3R, filename = 'sup7_S3R', device = 'tiff')
+save_sizes(plot = sup7_S3R, filename = 'sup7_S3R', device = 'svg')
+save_sizes(plot = sup7_S3R, filename = 'sup7_S3R', device = 'pdf')
 
 
 # Inflammatory fibroblasts responders
@@ -210,14 +210,14 @@ volcano_plot <- function(cluster, comp, genes_down) {
 }
 
 
-sup6_IFR <- volcano_plot(cluster, comp, genes_down)
+sup7_IFR <- volcano_plot(cluster, comp, genes_down)
 
-print(sup6_IFR)
+print(sup7_IFR)
 
-save_sizes(plot =sup6_IFR , filename = 'sup6_IFR', device = 'jpeg')
-save_sizes(plot = sup6_IFR, filename = 'sup6_IFR', device = 'tiff')
-save_sizes(plot = sup6_IFR, filename = 'sup6_IFR', device = 'svg')
-save_sizes(plot = sup6_IFR, filename = 'sup6_IFR', device = 'pdf')
+save_sizes(plot =sup7_IFR , filename = 'sup7_IFR', device = 'jpeg')
+save_sizes(plot = sup7_IFR, filename = 'sup7_IFR', device = 'tiff')
+save_sizes(plot = sup7_IFR, filename = 'sup7_IFR', device = 'svg')
+save_sizes(plot = sup7_IFR, filename = 'sup7_IFR', device = 'pdf')
 
 ## Supplementary Figure 6B------------------------------------------------------
 
@@ -278,14 +278,14 @@ volcano_plot <- function(cluster, comp, genes_up, genes_down) {
 }
 
 
-sup6_S2NR <- volcano_plot(cluster, comp, genes_up, genes_down)
+sup7_S2NR <- volcano_plot(cluster, comp, genes_up, genes_down)
 
-print(sup6_S2NR)
+print(sup7_S2NR)
 
-save_sizes(plot =sup6_S2NR , filename = 'sup6_S2NR', device = 'jpeg')
-save_sizes(plot = sup6_S2NR, filename = 'sup6_S2NR', device = 'tiff')
-save_sizes(plot = sup6_S2NR, filename = 'sup6_S2NR', device = 'svg')
-save_sizes(plot = sup6_S2NR, filename = 'sup6_S2NR', device = 'pdf')
+save_sizes(plot =sup7_S2NR , filename = 'sup7_S2NR', device = 'jpeg')
+save_sizes(plot = sup7_S2NR, filename = 'sup7_S2NR', device = 'tiff')
+save_sizes(plot = sup7_S2NR, filename = 'sup7_S2NR', device = 'svg')
+save_sizes(plot = sup7_S2NR, filename = 'sup7_S2NR', device = 'pdf')
 
 
 #S3 non-responders
@@ -349,14 +349,14 @@ volcano_plot <- function(cluster, comp, genes_up, genes_down) {
 }
 
 
-sup6_S3NR <- volcano_plot(cluster, comp, genes_up, genes_down)
+sup7_S3NR <- volcano_plot(cluster, comp, genes_up, genes_down)
 
-print(sup6_S3NR)
+print(sup7_S3NR)
 
-save_sizes(plot =sup6_S3NR , filename = 'sup6_S3NR', device = 'jpeg')
-save_sizes(plot = sup6_S3NR, filename = 'sup6_S3NR', device = 'tiff')
-save_sizes(plot = sup6_S3NR, filename = 'sup6_S3NR', device = 'svg')
-save_sizes(plot = sup6_S3NR, filename = 'sup6_S3NR', device = 'pdf')
+save_sizes(plot =sup7_S3NR , filename = 'sup7_S3NR', device = 'jpeg')
+save_sizes(plot = sup7_S3NR, filename = 'sup7_S3NR', device = 'tiff')
+save_sizes(plot = sup7_S3NR, filename = 'sup7_S3NR', device = 'svg')
+save_sizes(plot = sup7_S3NR, filename = 'sup7_S3NR', device = 'pdf')
 
 
 #Inflammatory_fibroblasts non-responders
@@ -420,12 +420,12 @@ volcano_plot <- function(cluster, comp, genes_up, genes_down) {
 }
 
 
-sup6_IFNR <- volcano_plot(cluster, comp, genes_up, genes_down)
+sup7_IFNR <- volcano_plot(cluster, comp, genes_up, genes_down)
 
-print(sup6_IFNR)
+print(sup7_IFNR)
 
-save_sizes(plot =sup6_IFNR , filename = 'sup6_IFNR', device = 'jpeg')
-save_sizes(plot = sup6_IFNR, filename = 'sup6_IFNR', device = 'tiff')
-save_sizes(plot = sup6_IFNR, filename = 'sup6_IFNR', device = 'svg')
-save_sizes(plot = sup6_IFNR, filename = 'sup6_IFNR', device = 'pdf')
+save_sizes(plot =sup7_IFNR , filename = 'sup7_IFNR', device = 'jpeg')
+save_sizes(plot = sup7_IFNR, filename = 'sup7_IFNR', device = 'tiff')
+save_sizes(plot = sup7_IFNR, filename = 'sup7_IFNR', device = 'svg')
+save_sizes(plot = sup7_IFNR, filename = 'sup7_IFNR', device = 'pdf')
 

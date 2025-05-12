@@ -11,7 +11,7 @@ library(readr)
 
 # Supplementary 12 ----------------------------------------
 #Object TODAS
-todas <- readRDS("~/Thommasetal.RDS")
+todas <- readRDS("/adalimumab/todas.RDS")
 
 #First part: Prepare INPUT cytosig and RUN; -----------------------------------
 
@@ -28,12 +28,12 @@ todas_w0_R[["log_TPM"]] <- CreateAssayObject(counts = log_TPM)
 #Write 10x Counts
 print("TODAS_w0_R: Writting 10x Counts")
 write10xCounts(x = todas_w0_R@assays$log_TPM@data,
-               path = "~/Elisa/adalimumab/todas_w0_R",
+               path = "/adalimumab/todas_w0_R",
                version = "3")
 #Run Cytosig
 print("TODAS: Run Cytosig")
 system(
-  "taskset -c 0-20 ~/CytoSig/CytoSig/CytoSig_run.py -i ~/Elisa/adalimumab/todas_w0_R/ -o Analysis/Cytosig/results/todas_w0_R.xlsx -r 1000 -a 10000  -e 1  -s 1 -c 1000 -z 0.95"
+  "taskset -c 0-20 ~/CytoSig/CytoSig/CytoSig_run.py -i ~/adalimumab/todas_w0_R/ -o Analysis/Cytosig/results/todas_w0_R.xlsx -r 1000 -a 10000  -e 1  -s 1 -c 1000 -z 0.95"
 )
 
 
@@ -51,12 +51,12 @@ todas_w0_NR[["log_TPM"]] <- CreateAssayObject(counts = log_TPM)
 #Write 10x Counts
 print("TODAS_w0_NR: Writting 10x Counts")
 write10xCounts(x = todas_w0_NR@assays$log_TPM@data,
-               path = "~/Elisa/adalimumab/todas_w0_NR",
+               path = "~/adalimumab/todas_w0_NR",
                version = "3")
 #Run Cytosig
 print("TODAS_w0_NR Run Cytosig")
 system(
-  "taskset -c 0-10 ~/CytoSig/CytoSig_run.py -i ~/Elisa/adalimumab/todas_w0_NR/ -o ~/Elisa/adalimumab/todas_w0_NR.xlsx -r 1000 -a 10000  -e 1  -s 1 -c 1000 -z 0.95"
+  "taskset -c 0-10 ~/CytoSig/CytoSig_run.py -i ~/adalimumab/todas_w0_NR/ -o ~/adalimumab/todas_w0_NR.xlsx -r 1000 -a 10000  -e 1  -s 1 -c 1000 -z 0.95"
 )
 
 #Second part:Convert Cytosig output TO EXCELL-----------------------------------
@@ -71,13 +71,7 @@ anotacio_cytosig <-
 #Modify TODAS and ADD column for annotation_cyt // cell names // condition
 todas$cell_name <- colnames(todas)
 
-# todas$annotation_cyt <- mapvalues(
-#   x =  todas$annotation_intermediate,
-#   from =  anotacio_cytosig$intermediate,
-#   to = anotacio_cytosig$intermediate_Cytosig
-# )
-#
-# todas$condition <- paste(todas$week_3, "_", todas$response, sep = "")
+
 
 #Specify Conditions/Combinations/Annotation
 conditions <- c(unique(todas$Remission_status))
@@ -88,11 +82,11 @@ annotation <-
 
 #Read cytosig data
 cyt_data1 <-
-  read_csv("~/Elisa/adalimumab/todas_w0_R_converted.csv")
+  read_csv("~/adalimumab/todas_w0_R_converted.csv")
 colnames(cyt_data1)[which(names(cyt_data1) == "...1")] <- "cytokine"
 
 cyt_data2 <-
-  read_csv("~/Elisa/adalimumab/todas_w0_NR_converted.csv")
+  read_csv("~/adalimumab/todas_w0_NR_converted.csv")
 cyt_data2 <- cyt_data2[, 2:ncol(cyt_data2)]
 
 cyt_data <- cbind(cyt_data1,cyt_data2)
@@ -176,7 +170,7 @@ for (com in 1:6) {
     openxlsx::write.xlsx(
       x = results,
       file = paste0(
-        "~/Elisa/adalimumab/",
+        "~/adalimumab/",
         cond1,
         "_vs_",
         cond2,
@@ -337,7 +331,7 @@ results <- results[results$q_value < 0.05,]
 
 
 todas_w0_R_vs_w0_NR_annotation_cyt <-
-  read_excel("adalimumab/Non_Remission_vs_Remission_annotation.xlsx")
+  read_excel("~/adalimumab/Non_Remission_vs_Remission_annotation.xlsx")
 R_vs_NR <-
   todas_w0_R_vs_w0_NR_annotation_cyt[todas_w0_R_vs_w0_NR_annotation_cyt$cytokine == "IL10",]
 R_vs_NR <- R_vs_NR[!is.na(R_vs_NR$annotation), ]
@@ -406,7 +400,7 @@ df_hm$annotation <-
 
 df_hm$annotation
 png(
-  "~/Elisa/adalimumab/heatmap2.png",
+  "~/adalimumab/heatmap2.png",
   width = 10,
   height = 3,
   units = "in",

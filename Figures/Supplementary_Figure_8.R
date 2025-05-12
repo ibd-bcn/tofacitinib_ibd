@@ -8,7 +8,7 @@ source('Figures/functions_plots.R')
 
 pathway_RESP_DWW_enrichGO_BP_fig4 <- read_excel("Figures/extra_data/pathway_RESP_DWW_enrichGO_BP_fig4.xlsx")
 
-## Supplementary Figure 6-------------------------------------------------------
+## Supplementary Figure 8-------------------------------------------------------
 
 filas_seleccionadas <- c(1,4,7,8,9,11,13,16,21,27,31,47)
 
